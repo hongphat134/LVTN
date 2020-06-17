@@ -5,15 +5,16 @@
 	<div class="col-md-12">
 	<div class="mb-5 text-center">
 	<h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, quas fugit ex!</p>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, quas fugit ex! {{$name}}</p>
 	</div>
 	<form action="{{route('search')}}" class="search-jobs-form">				
 		<div class="row mb-5">
 		<div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-		<input name="key" type="text" class="form-control form-control-lg" placeholder="ngành, kĩ năng, công ty..." value="{{empty($key)?'':$key}}">
+		<input name="key" type="text" class="form-control form-control-lg" placeholder="ngành, kĩ năng, công ty..." value="{{old('key')}}">
 		</div>
 		<div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
 		<select name="region" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Chọn khu vực...">
+		<!-- <select name="region[]" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Chọn khu vực..." data-max-options="3" multiple> -->
 		<option value=''>Tất cả</option>
 		@foreach($city_list as $city)		
 	    <option value="{{$city->Title}}" 

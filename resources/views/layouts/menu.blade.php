@@ -65,14 +65,16 @@
               Hi, {{Auth::user()->ten}}
             </button>
             <div class="dropdown-menu">
-              <h5 class="dropdown-header">HỒ SƠ</h5>
-              <a class="dropdown-item" href="{{url('/nguoitimviec/profile')}}">Tạo hồ sơ</a>
-              <a class="dropdown-item" href="#">Link 2</a>
-              <a class="dropdown-item" href="#">Link 3</a>
-              <h5 class="dropdown-header">TIN TUYỂN DỤNG</h5>
-              <a class="dropdown-item" href="#">Tin đã apply</a>
-              <a class="dropdown-item" href="#">Tin đã lưu</a>
-              <h5 class="dropdown-header">TÀI KHOẢN</h5>
+              <h4 class="dropdown-header">HỒ SƠ</h4>
+              <a class="dropdown-item" href="{{url('/nguoitimviec/profile')}}">Tạo mẫu hồ sơ</a>
+              <a class="dropdown-item" href="#">Quản lý mẫu hồ sơ</a>              
+              <h4 class="dropdown-header">TIN TUYỂN DỤNG</h4>
+              <a class="dropdown-item" href="#">Tin đã ứng tuyển</a>
+              <a class="dropdown-item" href="{{route('saveJobs')}}">Tin đã lưu</a>
+              <h4 class="dropdown-header">NHÀ TUYỂN DỤNG</h4>
+              <a class="dropdown-item" href="#">Theo dõi nhà tuyển dụng</a>
+              <h4 class="dropdown-header">TÀI KHOẢN</h4>
+              <a class="dropdown-item" href="#">Cập nhật tài khoản</a>
               <a class="dropdown-item" href="{{ route('logout') }}"
                   onclick="event.preventDefault();
                              document.getElementById('logout-form').submit();">

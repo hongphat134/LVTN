@@ -45,12 +45,20 @@
           </div>
           <div class="col-lg-4">
             <div class="row">
-              <div class="col-6">
-                <a 
-href="{{ !Auth::check() ? url('nguoitimviec/save-job',$news->id):'javascript:void(0)'}}" 
-                id="{{$news->id}}" class="btn btn-block btn-light btn-md follow-news"><span class="icon-heart-o mr-2 text-danger"></span>
+              <div class="col-6 follow">
+              @if(Auth::check())
+                @if(in_array($news->id,json_decode(Auth::user()->theodoi)))
+                <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-dark btn-md">
+                <span class="icon-heart mr-2 text-danger"></span>
+                Đang theo dõi
+                </a>
+                @else
+                <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-light btn-md follow-news">
+                <span class="icon-heart-o mr-2 text-danger"></span>
                 Theo dõi tin tuyển dụng
                 </a>
+                @endif              
+              @endif
               </div>
               <div class="col-6">
                 @if(empty($hoso))
@@ -107,11 +115,17 @@ href="{{ !Auth::check() ? url('nguoitimviec/save-job',$news->id):'javascript:voi
             </div>
 
             <div class="row mb-5">
-              <div class="col-6">
-                <a
-href="{{ !Auth::check() ? url('nguoitimviec/save-job',$news->id):'javascript:void(0)'}}" 
-                 id="{{$news->id}}" class="btn btn-block btn-light btn-md follow-news"><span class="icon-heart-o mr-2 text-danger"></span>Theo dõi tin tuyển dụng</a>
-              </div>
+              @if(Auth::check())               
+                @if(in_array($news->id,json_decode(Auth::user()->theodoi)))
+                <div class="col-6 follow">                
+                  <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-dark btn-md"><span class="icon-heart mr-2 text-danger"></span>Đang theo dõi</a>                
+                </div>
+                @else
+                <div class="col-6 follow">                
+                  <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-light btn-md follow-news"><span class="icon-heart-o mr-2 text-danger"></span>Theo dõi tin tuyển dụng</a>                
+                </div>
+                @endif
+              @endif
               <div class="col-6">
                 @if(empty($hoso))
                 <a href="{{route('apply',$news->id)}}" class="btn btn-block btn-primary btn-md">Ứng tuyển</a>

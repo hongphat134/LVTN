@@ -1,8 +1,8 @@
-$('.follow-news').click(function(){
+$('.follow a').click(function(){
 	if($(this).hasClass('follow-news')){
 		// console.log($(this).attr('id'));
-		$(this).removeClass('btn-light follow-news');		
-		$(this).html('<span class="icon-heart mr-2 text-danger"></span>Đang theo dõi');	
+		$(".follow a").removeClass('btn-light follow-news');		
+		$(".follow a").html('<span class="icon-heart mr-2 text-danger"></span>Đang theo dõi');	
 		let id = $(this).attr('id');
 		$.ajax({
 			url: "/nguoitimviec/save-job/" + id,
@@ -18,8 +18,8 @@ $('.follow-news').click(function(){
 	}
 	else{
 		// console.log($(this).attr('id'));			
-		$(this).addClass('btn-light follow-news');
-		$(this).html('<span class="icon-heart-o mr-2 text-danger"></span>Theo dõi tin tuyển dụng');	
+		$(".follow a").addClass('btn-light follow-news');
+		$(".follow a").html('<span class="icon-heart-o mr-2 text-danger"></span>Theo dõi tin tuyển dụng');	
 		let id = $(this).attr('id');
 		$.ajax({
 			url: "/nguoitimviec/unsave-job/" + id,
@@ -32,7 +32,7 @@ $('.follow-news').click(function(){
 			}
 		});
 	}
-	$(this).toggleClass('btn-dark');	
+	$(".follow a").toggleClass('btn-dark');	
 });
 
 

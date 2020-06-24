@@ -23,12 +23,10 @@ class NhaTuyenDungController extends Controller
     	$skill_list = KiNang::all();
         $degree_list = BangCap::all();
     	$job_list = NganhNghe::all();
-    	$city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
-    	array_pop($city_list);
         $exp_list = KinhNghiem::all();
         $salary_list = MucLuong::all();
     	// dd($skill_list->toArray());
-    	return view('nhatuyendung.post-job',compact('skill_list','job_list','city_list','exp_list','salary_list','degree_list'));
+    	return view('nhatuyendung.post-job',compact('skill_list','job_list','exp_list','salary_list','degree_list'));
     }
 
     public function postPostJob(Request $rq){
@@ -100,15 +98,12 @@ class NhaTuyenDungController extends Controller
         $skill_list = KiNang::all();
         $job_list = NganhNghe::all();
         $exp_list = KinhNghiem::all();
-        $salary_list = MucLuong::all();
-        $city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
-        array_pop($city_list);
-        
+        $salary_list = MucLuong::all();              
         
         // Biến chuỗi json kĩ năng thành mảng
         $news->kinang = json_decode($news->kinang);
         // dd($news);
-        return view('nhatuyendung.update-job',compact('skill_list','job_list','city_list','exp_list','salary_list','news','degree_list'));
+        return view('nhatuyendung.update-job',compact('skill_list','job_list','exp_list','salary_list','news','degree_list'));
     }
 
     public function postUpdateJob(Request $rq,$news_id){
@@ -169,9 +164,6 @@ class NhaTuyenDungController extends Controller
     public function getEditProfile(){
         $profile = NhaTuyenDung::find(Auth::user()->id);
 
-        $city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
-        array_pop($city_list);
-
         $scale_list = array(
                     'Dưới 20 người',
                     '20 - 150 người',
@@ -179,7 +171,7 @@ class NhaTuyenDungController extends Controller
                     'Trên 300 người',                    
                 );
         // dd($profile);
-        return view('nhatuyendung.profile',compact('profile','city_list','scale_list'));
+        return view('nhatuyendung.profile',compact('profile','scale_list'));
     }
 
     public function postEditProfile(Request $rq){

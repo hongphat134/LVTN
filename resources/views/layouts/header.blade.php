@@ -7,7 +7,7 @@
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <meta name="author" content="Free-Template.co" />
-    <link rel="shortcut icon" href="ftco-32x32.png">
+    <link rel="shortcut icon" href="{{url('favicon.png')}}">
     
     <!-- CSS -->
     <link rel="stylesheet" href="{{asset('css/custom-bs.css')}}">

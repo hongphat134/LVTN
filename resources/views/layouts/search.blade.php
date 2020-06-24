@@ -1,23 +1,29 @@
-<section class="section-hero home-section overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+<section class="section-hero home-section overlay inner-page bg-image" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
 
 	<div class="container">
 	<div class="row align-items-center justify-content-center">
 	<div class="col-md-12">
 	<div class="mb-5 text-center">
 	<h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, quas fugit ex! {{$name}}</p>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, quas fugit ex!</p>	
 	</div>
 	<form action="{{route('search')}}" class="search-jobs-form">				
 		<div class="row mb-5">
 		<div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-		<input name="key" type="text" class="form-control form-control-lg" placeholder="ngành, kĩ năng, công ty..." value="{{old('key')}}">
+			
+			<input id="search" name="key" type="text" class="form-control form-control-lg" placeholder="ngành, công ty..." value="{{ empty($key)?'':$key }}">
+			
+			<ul class="list-group" id="job-skill-autocomplete">						
+				
+			</ul>
+			
 		</div>
 		<div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-		<select name="region" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Chọn khu vực...">
-		<!-- <select name="region[]" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Chọn khu vực..." data-max-options="3" multiple> -->
+		<!-- Single  -->
+		<!-- <select name="region" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" data-size="10" title="Chọn khu vực...">		
 		<option value=''>Tất cả</option>
 		@foreach($city_list as $city)		
-	    <option value="{{$city->Title}}" 
+	    <option
 	    	@if(!empty($region))
 	    		{{ ($region==$city->Title)?'selected':''}}
 	    	@endif
@@ -26,9 +32,24 @@
 	    </option>
 	    @endforeach
 		</select>
+ -->
+
+ 		<!-- Multi -->
+		<select name="region[]" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Chọn khu vực..." data-size="10" data-max-options="3" multiple>
+		<option value=''>Tất cả</option>
+		@foreach($city_list as $city)		
+	    <option
+	    	@if(!empty($regions))
+	    		{{ in_array($city->Title,$regions) ? 'selected' : '' }}
+	    	@endif
+	    	>
+	    	{{$city->Title}}
+	    </option>
+	    @endforeach
+		</select>
 		</div>
 		<div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-		<select name="status" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Chọn hình thức làm việc...">		
+		<select name="status" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" data-size="5" title="Chọn hình thức làm việc...">		
 		<option value=''>Tất cả</option>
 		<option 
 		@if(!empty($status))
@@ -54,9 +75,9 @@
 		<div class="col-md-12 popular-keywords">
 		<h3>Trending Keywords:</h3>
 		<ul class="keywords list-unstyled m-0 p-0">
-		<li><a href="#" class="">UI Designer</a></li>
-		<li><a href="#" class="">Python</a></li>
-		<li><a href="#" class="">Developer</a></li>
+		<li><a href="javascript:void(0)" class="skill">UI Designer</a></li>
+		<li><a href="javascript:void(0)" class="skill">Python</a></li>
+		<li><a href="javascript:void(0)" class="skill">Developer</a></li>
 		</ul>
 		</div>
 		</div>
@@ -69,3 +90,4 @@
 	<span class=" icon-keyboard_arrow_down"></span>
 	</a>
 </section>
+<script src="{{url('ajax/autocomplete.js')}}"></script>

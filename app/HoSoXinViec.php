@@ -9,5 +9,5 @@ class HoSoXinViec extends Model
     //
     protected $table = 'hosoxinviec';
 
-	public $timestamps = true;
+	public $timestamps = false;
 }

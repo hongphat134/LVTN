@@ -4,7 +4,7 @@
     @include('layouts.search')
 
     <!-- HOME -->
-    <section class="py-5 bg-image overlay-primary fixed overlay" id="next" style="background-image: url('images/hero_1.jpg');">
+    <section class="py-5 bg-image overlay-primary fixed overlay" id="next" style="background-image: url({{ url('images/hero_1.jpg')}})">
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
@@ -72,7 +72,7 @@
                 <strong>{{$news->ten}}</strong>
                 <div class="keywords">
                   @foreach($news->kinang as $skill)
-                  <button class="btn btn-outline-info">{{$skill}}</button>
+                  <button class="btn btn-outline-info skill">{{$skill}}</button>
                   @endforeach                 
                 </div>      
               </div>
@@ -104,20 +104,8 @@
 
       </div>
     </section>
-
-    <section class="py-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <h2 class="text-white">Bạn đang tìm việc?</h2>
-            <p class="mb-0 text-white lead">Bạn đang có nhu cầu tìm việc và nộp hồ sơ online!</p>
-          </div>
-          <div class="col-md-3 ml-auto">
-            <a href="{{url('/login')}}" class="btn btn-warning btn-block btn-lg">Đăng ký ngay bây giờ</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    
+    @include('layouts.looking-job')
 
     
     <section class="site-section py-4">

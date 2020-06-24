@@ -46,23 +46,24 @@
           <div class="col-lg-4">
             <div class="row">
               <div class="col-6 follow">
-              @if(Auth::check())
+              @if(Auth::check() && !empty(Auth::user()->theodoi) ) 
                 @if(in_array($news->id,json_decode(Auth::user()->theodoi)))
                 <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-dark btn-md">
                 <span class="icon-heart mr-2 text-danger"></span>
                 Đang theo dõi
-                </a>
-                @else
+                </a>   
+                @else             
                 <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-light btn-md follow-news">
                 <span class="icon-heart-o mr-2 text-danger"></span>
                 Theo dõi tin tuyển dụng
-                </a>
-                @endif              
+                </a>  
+                @endif                          
               @endif
               </div>
               <div class="col-6">
                 @if(empty($hoso))
-                <a href="{{route('apply',$news->id)}}" class="btn btn-block btn-primary btn-md">Ứng tuyển</a>                
+               <!--  <a href="{{--route('apply',$news->id)--}}" class="btn btn-block btn-primary btn-md">Ứng tuyển</a>       -->          
+                <a href="{{url('/nguoitimviec/choose-apply',$news->id)}}" class="btn btn-block btn-primary btn-md">Ứng tuyển</a> 
                 @else                
                 <a href="javascript:void(0)" class="btn btn-block btn-danger btn-md">Đã nộp đơn vào </br>
                   {{date("d-m-Y", strtotime($hoso->created_at))}}
@@ -115,16 +116,16 @@
             </div>
 
             <div class="row mb-5">
-              @if(Auth::check())               
+              @if(Auth::check() && !empty(Auth::user()->theodoi) )
                 @if(in_array($news->id,json_decode(Auth::user()->theodoi)))
                 <div class="col-6 follow">                
-                  <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-dark btn-md"><span class="icon-heart mr-2 text-danger"></span>Đang theo dõi</a>                
-                </div>
+                  <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-dark btn-md"><span class="icon-heart mr-2 text-danger"></span>Đang theo dõi</a>
+                </div>   
                 @else
                 <div class="col-6 follow">                
                   <a href="javascript:void(0)" id="{{$news->id}}" class="btn btn-block btn-light btn-md follow-news"><span class="icon-heart-o mr-2 text-danger"></span>Theo dõi tin tuyển dụng</a>                
-                </div>
-                @endif
+                </div>             
+                @endif             
               @endif
               <div class="col-6">
                 @if(empty($hoso))

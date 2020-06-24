@@ -35,8 +35,22 @@ class NganhNgheSeeder extends Seeder
         	['ten' => 'Lập trình viên Embedded'],
         	['ten' => 'Lập trình viên Games'],
         	['ten' => 'Lập trình viên OOP'],
-        	['ten' => 'Lập trình viên Python'],
+        	['ten' => 'Lập trình viên Python'],            
         	['ten' => 'Full Stack Web Developer'],
+            ['ten' => 'Quản lý sản phẩm'],
+            ['ten' => 'Lập trình viên phần mềm'],
+            ['ten' => 'Lập trình viên ứng dụng di động'],
+            ['ten' => 'Lập trình viên Linux'],
+            ['ten' => 'Chuyên viên phân tích nghiệp vụ'],
+            ['ten' => 'Lập trình viên UI-UX'],
+            ['ten' => 'Lập trình viên Windows Phone'],
+            ['ten' => 'Lập trình viên Django'],
+            ['ten' => 'Lập trình viên C'],
+            ['ten' => 'Lập trình viên JavaScript'],
+            ['ten' => 'Lập trình viên ASP.NET'],
+            ['ten' => 'Lập trình viên Drupal'],
+            ['ten' => 'Lập trình viên NodeJS'],
+            ['ten' => 'Lập trình viên Java'],
         ];
 
         foreach ($data as $v) {

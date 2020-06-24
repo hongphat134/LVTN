@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
     <!-- HOME -->
-    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
@@ -105,7 +105,34 @@
               </div>
 
             </form>
+          
+            <hr>
+            <h2 class="mb-4">Khôi phục mật khẩu</h2>
+            
+            <form action="{{ route('password.email') }}" method="post" class="p-4 border rounded">
+            {{ csrf_field() }}
+              <div class="row form-group">
+                <div class="col-md-12 mb-3 mb-md-0{{ $errors->has('email') ? ' has-error' : '' }}">
+                  <label class="text-black" for="fname">Email</label>
+                  <input type="email" name="email" id="fname" class="form-control" placeholder="Email address" value="{{ old('email') }}" required autofocus>
+                  @if ($errors->has('email'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('email') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>              
+
+              <div class="row form-group">
+                <div class="col-md-12">
+                  <input type="submit" value="Gửi Email" class="btn px-4 btn-primary text-white">
+                </div>
+              </div>
+
+            </form>
           </div>
+          
+                     
         </div>
       </div>
     </section>

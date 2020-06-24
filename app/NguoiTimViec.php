@@ -9,5 +9,5 @@ class NguoiTimViec extends Model
     //
     protected $table = 'nguoitimviec';
 
-    protected $primaryKey = 'idUser';
+    // protected $primaryKey = 'idUser';
 }

@@ -25,7 +25,7 @@
                 <strong>{{$news->ten}}</strong>
                 <div class="keywords">
                   @foreach($news->kinang as $skill)
-                  <button class="btn btn-outline-info">{{$skill}}</button>
+                  <button class="btn btn-outline-info skill">{{$skill}}</button>
                   @endforeach                 
                 </div>      
               </div>
@@ -48,7 +48,7 @@
 
         <div class="row pagination-wrap">
           <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-7 Of 43,167 Jobs</span>
+            <span>Showing 1-{{$job_listings->perPage()}} trong {{$job_listings->total()}} công việc</span>
           </div>
           @include('layouts.paginating')
         </div>
@@ -56,18 +56,6 @@
       </div>
     </section>
 
-    <section class="py-5 bg-image overlay-primary fixed overlay" style="background-image: url({{ url('images/hero_1.jpg')}})">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <h2 class="text-white">Looking For A Job?</h2>
-            <p class="mb-0 text-white lead">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora adipisci impedit.</p>
-          </div>
-          <div class="col-md-3 ml-auto">
-            <a href="#" class="btn btn-warning btn-block btn-lg">Sign Up</a>
-          </div>
-        </div>
-      </div>
-    </section> 
+    @include('layouts.looking-job')
     
 @include('layouts.footer')

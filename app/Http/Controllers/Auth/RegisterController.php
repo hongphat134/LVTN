@@ -58,6 +58,7 @@ class RegisterController extends Controller
             'email.required' => 'Bạn hãy điền địa chỉ Email!',
             'email.max' => 'Email chỉ tối đa 40 kí tự!',
             'email.unique' => 'Email đã có người dùng!',
+            'password.min' => 'Mật khẩu phải có tối thiểu 6 kí tự!',
             'password.required' => 'Bạn hãy điền mật khẩu!',
             'password.confirmed' => 'Mật khẩu nhập lại không chính xác!'
         ]

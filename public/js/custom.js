@@ -261,5 +261,11 @@ jQuery(function($) {
 
 	}
 	quillInit();
-  
+  	
+  	// Tìm kiếm theo Skill
+  	$(".skill").click(function(){
+  		console.log("U clicked a " + $(this).text() + " skill!");
+  		window.location.href = '/tim-kiem-skill/' + $(this).text();
+  		return;
+  	});
 });

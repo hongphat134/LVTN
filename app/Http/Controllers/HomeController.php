@@ -9,6 +9,8 @@ use App\NguoiTimViec;
 use App\HoSoXinViec;
 use App\User;
 use App\KiNang;
+use App\NganhNghe;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -16,7 +18,7 @@ class HomeController extends Controller
     public function index(){
     	// $data = TinTuyenDung::paginate(3);
     	$job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
-    			->paginate(3);
+    			->paginate(5);
 
         // Chuyển JSON kĩ năng thành mảng
         for ($i=0; $i < count($job_listings) ; $i++) { 
@@ -27,17 +29,13 @@ class HomeController extends Controller
             }
             $job_listings[$i]->kinang = $skills;
         }
-		
-		// var_dump($data->toArray());    			
-    	$city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
-    	// var_dump($data);
-    	// var_dump($city_list);
+
         $candidates = NguoiTimViec::count();
         $companies = NhaTuyenDung::count();
         $jobs_posted = TinTuyenDung::count();
         // Biến này chưa hiểu :D
         // $jobs_filled = ?;
-    	return view('pages.home',compact('job_listings','city_list','candidates','companies','jobs_posted'));
+    	return view('pages.home',compact('job_listings','candidates','companies','jobs_posted'));        
     }
 
     public function getNews($news_id){    	
@@ -55,8 +53,7 @@ class HomeController extends Controller
 
         $hoso = HoSoXinViec::where('idTTD','=',$news_id)
             ->select('idTTD','created_at')->get()->first();	
-        // dd($hoso);
-        // echo $hoso->idTTD;
+
     	return view('pages.job-single',compact('news','hoso'));
     }
 
@@ -73,30 +70,49 @@ class HomeController extends Controller
             }
             $job_listings[$i]->kinang = $skills;
         }
-                        
-    	$city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
-    	array_pop($city_list);
-    	return view('pages.job-listings',compact('job_listings','city_list'));
+                            	
+    	return view('pages.job-listings',compact('job_listings'));
     }
     
     public function search(Request $rq){    	
     	// var_dump($rq->all());
     	$key = $rq->key;
-    	$region = $rq->region;
+    	// $region = $rq->region;
     	$status = $rq->status;
 
+        // Multi region
+        $regions = $rq->region;
+        // dd($region);
+
     	$job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD');
-    	if(!empty($key)) $job_listings = $job_listings->where('tintuyendung.nganh','LIKE','%'.$key.'%');
-    	if(!empty($region)) $job_listings = $job_listings->where('tintuyendung.tinhthanhpho','LIKE',$region);
+    	if(!empty($key)){
+            $job_listings = $job_listings->where('tintuyendung.nganh','LIKE','%'.$key.'%')
+                                    // kinang dạng json nên k tìm dc
+                                    // ->orWhere('tintuyendung.kinang','LIKE','%'.$key.'%')
+                                    ->orWhere('nhatuyendung.ten','LIKE','%'.$key.'%');
+
+        } 
+    	// if(!empty($region)) $job_listings = $job_listings->where('tintuyendung.tinhthanhpho','LIKE','%'.$region.'%');
     	if(!empty($status)) $job_listings = $job_listings->where('tintuyendung.trangthailv','LIKE',$status);
+
+        if(!empty($regions)){  
+            $job_listings->where(
+            function($query) use ($regions){                
+                foreach ($regions as $region) {
+                    $query->orWhere('tintuyendung.tinhthanhpho','LIKE','%'.$region.'%');
+                }                                   
+            });              
+        } 
+            
     		
     	$job_listings = $job_listings->paginate(3)->appends(
     										[
     											'key' => $key, 
-    											'region' => $region,
+                                                // 'region' => $region,
+    											'region' => $regions,
     											'status' => $status,
     										]);
-
+        // dd($job_listings);
 
         // Chuyển JSON kĩ năng thành mảng
         for ($i=0; $i < count($job_listings) ; $i++) { 
@@ -108,14 +124,31 @@ class HomeController extends Controller
             $job_listings[$i]->kinang = $skills;
         }
 
-    	$city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
-    	array_pop($city_list);
-    	return view('pages.job-listings',compact('job_listings','city_list','key','region','status'));
+    	// return view('pages.job-listings',compact('job_listings','key','region','status'));
+        return view('pages.job-listings',compact('job_listings','key','regions','status'));
     }
 
-    public function getRecRegister(){
-        $city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
-        array_pop($city_list);
+    public function searchBySkill($skill){
+        // Get ID Skill
+        $skill_id = KiNang::where('ten','LIKE',$skill)->select('id')->first()->id;        
+        $job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
+                ->where('tintuyendung.kinang','LIKE',"%\"$skill_id\"%")
+                ->paginate(3);
+
+        // dd($job_listings);
+        // Chuyển JSON kĩ năng thành mảng
+        for ($i=0; $i < count($job_listings) ; $i++) { 
+            $job_listings[$i]->kinang =  json_decode($job_listings[$i]->kinang);
+            $skills = array();
+            for ($j=0; $j < count($job_listings[$i]->kinang) ; $j++) {                 
+                $skills[] = KiNang::find($job_listings[$i]->kinang[$j])->ten;            
+            }
+            $job_listings[$i]->kinang = $skills;
+        }
+        return view('pages.job-listings',compact('job_listings'));
+    }
+
+    public function getRecRegister(){       
 
         $scale_list = array(
                     'Dưới 20 người',
@@ -124,7 +157,7 @@ class HomeController extends Controller
                     'Trên 300 người',                    
                 );
 
-        return view('pages.rec-register',compact('city_list','scale_list'));
+        return view('pages.rec-register',compact('scale_list'));
     }
 
     public function postRecRegister(Request $rq){
@@ -185,5 +218,73 @@ class HomeController extends Controller
 
     public function notification(){
         return view('pages.notification');
+    }
+
+    public function getSkillsJobs($key){
+        $list1 = KiNang::where('ten','LIKE',"%$key%")->select('ten')->get()->toArray();
+
+        $list2 = NganhNghe::where('ten','LIKE',"%$key%")->select('ten')->get()->toArray();
+
+        $list3 = NhaTuyenDung::where('ten','LIKE',"%$key%")->select('ten')->get()->toArray();
+
+        $list = array_merge($list1,$list2,$list3);
+
+        echo json_encode($list);    
+    }
+
+    public function changeUserName(Request $rq){          
+        session()->flash('user-warning','Thông tin vừa nhập bị lỗi!');
+        $this->validate($rq, 
+            [                
+                'name' => 'required|max:25',                
+            ],          
+            [
+                'name.required' => 'Bạn chưa nhập tên tài khoản!',
+                'name.max' => 'Tên tài khoản chỉ có tối đa 25 kí tự!',
+            ]
+        );
+        session()->forget('user-warning');
+        $user = Auth::user();
+
+        $user->ten = $rq->name;
+        $user->remember_token = $rq->_token;
+
+        $user->update();
+        echo "Change Name";
+
+        return redirect()->back()->with(['user-success' => "Đổi tên thành công!"]);
+    }
+
+    public function changeUserPassword(Request $rq){
+        // echo "Change Password";
+        session()->flash('user-warning','Thông tin vừa nhập bị lỗi!');
+        $this->validate($rq, 
+            [                
+                'password' => 'required|string|min:6|confirmed',
+            ],          
+            [
+                'password.required' => 'Bạn hãy điền mật khẩu!',
+                'password.min' => 'Mật khẩu tối thiểu phải có 6 kí tự!',
+                'password.confirmed' => 'Mật khẩu nhập lại không chính xác!'
+            ]
+        );   
+        session()->forget('user-warning');
+        // Kiểm tra mật khẩu cũ
+        if(Auth::attempt(['email' => Auth::user()->email, 'password' => $rq->old_password])){
+            // echo "Nhập đúng mật khẩu cũ!";            
+            $user = Auth::user();
+
+            $user->password = bcrypt($rq->password);
+            $user->remember_token = $rq->_token;            
+
+            $user->update();
+            // echo "Change Name";
+
+            return redirect()->back()->with(['user-success' => "Đổi mật khẩu thành công!"]);
+        }
+        else{
+            // echo "Sai mật khẩu r";
+            return redirect()->back()->with(['user-error' => "Nhập sai mật khẩu cũ!"]);
+        }
     }
 }

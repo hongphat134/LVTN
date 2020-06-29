@@ -28,6 +28,7 @@ class UsersSeeder extends Seeder
         			'email' => $v['email'],
         			'password' => bcrypt($v['password']),
         			'loaitk' => $v['loaitk'],
+                    'verified' => 1,
         			'created_at' => Carbon\Carbon::now()->toDateTimeString(),        			
         			'updated_at' => Carbon\Carbon::now()->toDateTimeString(),
         		]

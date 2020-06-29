@@ -65,6 +65,11 @@
               </div>
 
               <div class="form-group">
+                <label for="name">Họ và tên:</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Nhập họ tên...." value="{{ old('name') }}" required>
+              </div>
+
+              <div class="form-group">
                 <label for="email">Email liên hệ</label>
                 <input type="email" name="email" class="form-control" id="email" placeholder="Nhập Email...." value="{{ old('email') }}" required>
               </div>

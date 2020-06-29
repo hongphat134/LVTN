@@ -9,7 +9,7 @@
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
             <h2 class="section-title mb-2">
-              Đang theo dõi {{ $job_listings->total()}} tin tuyển dụng
+              Đã ứng tuyển {{ $job_listings->total()}} tin tuyển dụng
             </h2>
           </div>
         </div>    

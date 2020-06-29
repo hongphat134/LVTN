@@ -1,4 +1,6 @@
 @include('layouts.header')
+    <!-- MENU -->
+    @include('layouts.menu')
     <!-- HOME -->
     @include('layouts.search')
 
@@ -23,6 +25,15 @@
               <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
                 <h2>{{$news->nganh}}</h2>
                 <strong>{{$news->ten}}</strong>
+                <p>Ngày cập nhật:
+                  <span class="badge badge-info">
+                  {{date('d/m/Y',strtotime($news->updated_at))}}
+                  </span> &nbsp;
+                Hạn tuyển dụng:
+                  <span class="badge badge-dark">
+                  {{date('d/m/Y',strtotime($news->hantuyendung))}}
+                  </span>
+                </p>
                 <div class="keywords">
                   @foreach($news->kinang as $skill)
                   <button class="btn btn-outline-info skill">{{$skill}}</button>
@@ -40,6 +51,8 @@
                 @else
                 <span class="badge badge-success">{{$news->trangthailv}}</span>
                 @endif
+               
+                
               </div>
             </div>            
           </li>

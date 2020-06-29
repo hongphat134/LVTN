@@ -48,21 +48,37 @@
         <div class="row">
           @foreach($profile_list as $key => $profile)
           <div class="col-6 col-md-6 col-lg-4 mb-4 mb-lg-5">
-            <a href="{{url('/nguoitimviec/update-profile',$profile->id)}}" class="block__16443 text-center d-block">
+            @if($profile->trangthai == 0)
+            <a href="{{url('/nguoitimviec/update-profile',$profile->id)}}" class="block__16443 text-center d-block">              
+            @else
+            <a href="javascript:void(0)" class="block__16443 text-center d-block">
+              <div class="ribbon-wrapper">
+                <div class="ribbon red">Duyệt</div>  
+              </div>              
+            @endif
+
+            @if($profile->congkhai == 1)
+            <div class="ribbon-right-wrapper">
+                <div class="ribbon-right blue">public</div>  
+              </div>
+            @endif
               <span class="custom-icon mx-auto"><span class="icon-file-text d-block"></span></span>
               <h3>Mẫu hô sơ {{$key + 1}}</h3>
+              <p>Họ tên: {{ $profile->hoten }}</p>
               <p>Ngành nghề: {{ $profile->nganh }}</p>              
               <p>Khu vực: {{ $profile->khuvuc }}</p>  
               <p>Ngày cập nhật: {{ date('d/m/Y',strtotime($profile->updated_at)) }}</p>            
             </a>
 
             <div class="row">
-              <span class="col-6">
-              <button class="btn btn-outline-success form-control" data-toggle="modal" data-target="#viewModal{{$key}}"><i class="icon-search"></i> XEM</button>
+              <span class="col-4">
+              <button class="btn btn-outline-success" data-toggle="modal" data-target="#viewModal{{$key}}"><i class="icon-search"></i> XEM</button>
               </span>
-              
-              <span class="col-6">              
-              <button id="{{$profile->id}}" class="btn btn-outline-danger form-control call-delete" data-toggle="modal" data-target="#deleteModal"><i class="icon-trash"></i> XOÁ</button>
+              <span class="col-4">                
+              <a href="{{url('/nguoitimviec/set-status',$profile->id)}}"><button class="btn btn-outline-info">{{$profile->congkhai == 0 ? 'Bật':'Tắt'}} Public</button></a>
+              </span> 
+              <span class="col-4">              
+              <button id="{{$profile->id}}" class="btn btn-outline-danger call-delete" data-toggle="modal" data-target="#deleteModal"><i class="icon-trash"></i> XOÁ</button>
               </span>                 
             </div>
           </div>
@@ -92,6 +108,7 @@
             <div class="border p-3 rounded">
               <ul class="list-unstyled block__47528 mb-0">
                 <li><span class="active"><h3>{{$profile->nganh}}</h3></span></li>
+                <li>Họ & tên: <a href="#">{{$profile->hoten}}</a></li>
                 <li>Email: <a href="#">{{$profile->emaillienhe}}</a></li>
                 <li>Khu vực: <a href="#">{{$profile->khuvuc}}</a></li>
                 <li>Hôn nhân: <a href="#">{{$profile->honnhan}}</a></li>

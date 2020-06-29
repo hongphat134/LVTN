@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //                
         // View::share('name',"Phát");    
-        date_default_timezone_set('Asia/Bangkok');    
+        // date_default_timezone_set('Asia/Bangkok');    
     }
 
     /**

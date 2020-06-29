@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('ntd_layouts.master')
 @section('content')
     <!-- HOME -->
     <section class="section-hero overlay inner-page bg-image" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">

@@ -37,13 +37,12 @@ class CreateHosoxinviecTable extends Migration
 
             // 0 là chưa dc admin phê duyệt và 1 thì ngược lại
             $table->tinyInteger('trangthai')->nullable();            
+            // các trường mong muốn         
 
-            $table->rememberToken();
-            $table->timestamps();
-
-            // các trường mong muốn 
-            $table->rememberToken();
+            $table->rememberToken();            
             $table->timestamp('created_at');
+                
+            
         });
     }
 

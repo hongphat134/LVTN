@@ -1,5 +1,7 @@
 @include('layouts.header')
-    
+    <!-- MENU -->
+    @include('layouts.menu')
+
     <!-- SEARCH -->
     @include('layouts.search')
 
@@ -8,8 +10,8 @@
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2 text-white">JobBoard Site Stats</h2>
-            <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde officiis recusandae sequi excepturi corrupti.</p>
+            <h2 class="section-title mb-2 text-white">Số liệu thống kê</h2>
+           <!--  <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde officiis recusandae sequi excepturi corrupti.</p> -->
           </div>
         </div>
         <div class="row pb-0 block__19738 section-counter">
@@ -49,7 +51,7 @@
 
     
 
-    <section class="site-section">
+    <section class="site-section" id="content">
       <div class="container">
 
         <div class="row mb-5 justify-content-center">
@@ -86,7 +88,7 @@
                 <span class="badge badge-danger">{{$news->trangthailv}}</span>
                 @else
                 <span class="badge badge-success">{{$news->trangthailv}}</span>
-                @endif
+                @endif                
               </div>
             </div>            
           </li>
@@ -99,7 +101,8 @@
             <span>Showing 1-{{$job_listings->perPage()}} trong {{$job_listings->total()}} công việc</span>
           </div>
           
-          @include("layouts.paginating")
+          
+          @include('layouts.paginating')
         </div>
 
       </div>

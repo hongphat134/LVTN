@@ -12,11 +12,15 @@
 */
 Auth::routes();
 Route::get('/thongbao','HomeController@notification')->name('notification');
-Route::get('/error',function(){
+Route::get('/error',function(){	
 	return view('pages.error');
 });
 
-Route::group(['middleware' => 'recruiter'], function() {
+
+Route::get('/auth/redirect/{provider}', 'SocialController@redirect');
+Route::get('/callback/{provider}', 'SocialController@callback');
+
+Route::group(['middleware' => ['guest','isEmailVerified']], function() {
 	Route::get('/', 'HomeController@index');
 	Route::get('/tin-tuyen-dung/{news_id}','HomeController@getNews')->name('news')->where('news_id', '[0-9]+');
 	Route::get('/tim-kiem','HomeController@search')->name('search');
@@ -51,10 +55,12 @@ Route::group(['middleware' => 'recruiter'], function() {
 
 		Route::get('/save-job-list','NguoiTimViecController@getSaveJob')->name('saveJobs');
 		Route::get('/applied-job-list','NguoiTimViecController@getAppliedJob')->name('appliedJobs');
+
+		Route::get('/set-status/{hs_id}','NguoiTimViecController@setStatus')->where('hs_id','[0-9]+');
 	});
 });
 
-Route::group(['prefix' => 'nhatuyendung','middleware' => ['auth','guest']], function() {
+Route::group(['prefix' => 'nhatuyendung','middleware' => ['auth','recruiter','isEmailVerified']], function() {
 	Route::get('/','NhaTuyenDungController@index');
 
 	Route::get('/post-job','NhaTuyenDungController@getPostJob')->name('postJob');
@@ -70,11 +76,29 @@ Route::group(['prefix' => 'nhatuyendung','middleware' => ['auth','guest']], func
 
 	Route::get('/profile','NhaTuyenDungController@getEditProfile');
 	Route::post('/profile','NhaTuyenDungController@postEditProfile');
+
+	Route::get('/thong-tin-ho-so/{hs_id}','NhaTuyenDungController@viewProfile')->name('detailPf')->where('hs_id','[0-9]+');
+
+	Route::get('/save-profile-list','NhaTuyenDungController@getSaveProfiles')->name('savePf');
+	Route::get('/applied-profile-list','NhaTuyenDungController@getAppliedProfiles')->name('appliedPf');
+
+	Route::get('/save-profile/{hs_id}','NhaTuyenDungController@saveProfile');
+	Route::get('/unsave-profile/{hs_id}','NhaTuyenDungController@unsaveProfile');
+
+	Route::get('/tim-kiem','NhaTuyenDungController@search');
 });
 
 Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
 	Route::post('/change-name','HomeController@changeUserName');
 	Route::post('/change-pwd','HomeController@changeUserPassword');
+});
+
+// VERIFICATION EMAIL
+Route::group(['middleware' => ['web', 'auth', 'isEmailVerified']], function () {
+	// Verification
+	Route::get('register/verify','App\Http\Controllers\Auth\RegisterController@verify')->name('verifyEmailLink');
+	Route::get('register/verify/resend','App\Http\Controllers\Auth\RegisterController@showResendVerificationEmailForm')->name('showResendVerificationEmailForm');
+	Route::post('register/verify/resend','App\Http\Controllers\Auth\RegisterController@resendVerificationEmail')->name('resendVerificationEmail')->middleware('throttle:2,1');
 });
 
 // Admin

@@ -17,6 +17,7 @@ class ComposerServiceProvider extends ServiceProvider
         //
         View::composer([
             'layouts.search',
+            'ntd_layouts.search',
             'pages.rec-register',
             'nguoitimviec.apply',
             'nguoitimviec.create-profile',

@@ -1,0 +1,46 @@
+{
+  "name": "josiasmontag/laravel-email-verification",
+  "description": "Laravel Email Verification",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Josias Montag",
+      "email": "josias@montag.info"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.4",
+    "illuminate/support": "5.4.*|5.5.*|5.6.*|5.7.*",
+    "illuminate/queue": "5.4.*|5.5.*|5.6.*|5.7.*",
+    "illuminate/auth": "5.4.*|5.5.*|5.6.*|5.7.*",
+    "nesbot/carbon": "~1.20"
+  },
+  "require-dev": {
+    "mockery/mockery": "~0.9",
+    "phpunit/phpunit": "^5.7|6.2|^7.0",
+    "orchestra/testbench": "~3.4.2|^3.5.0",
+    "laravel/framework": "5.4.*|5.5.*|5.6.*|5.7.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lunaweb\\EmailVerification\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Lunaweb\\EmailVerification\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Lunaweb\\EmailVerification\\Providers\\EmailVerificationServiceProvider"
+      ]
+    }
+  }
+}

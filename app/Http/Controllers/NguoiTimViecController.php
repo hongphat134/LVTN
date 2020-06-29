@@ -30,7 +30,7 @@ class NguoiTimViecController extends Controller
          // Kiểm tra phòng thờ nếu đã nộp thì chuyển về Home
         $profile = HoSoXinViec::where([
                         ['idUser','=',Auth::user()->id],
-                        ['idTTD','=',$news_id],
+                        ['idTTD','=',$ttd_id],
                     ])    
                     ->first();
         if(!empty($profile)) return redirect('/');
@@ -51,17 +51,19 @@ class NguoiTimViecController extends Controller
             [
                 //Kiểm tra giá trị rỗng
                 'email' => 'required|email',
+                'name' => 'required',
                 'title' => 'required',
                 'skill' => 'required',
                 'exp' => 'required',
                 'degree' => 'required',
                 'rank' => 'required',
-                'region' => 'required',   
+                'region' => 'required',
 
             ],          
             [
                 //Tùy chỉnh hiển thị thông báo
                 'email.required' => 'Bạn chưa nhập Email!',
+                'name.required' => 'Bạn chưa nhập họ tên!',
                 'skill.required' => 'Bạn chưa chọn kĩ năng!',
                 'exp.required' => 'Bạn chưa chọn số năm kinh nghiệm!',
                 'email.email' => 'Email không đúng định dạng!',
@@ -78,6 +80,7 @@ class NguoiTimViecController extends Controller
         $profile->idTTD = $ttd_id;            
                                   
         $skills = json_encode($rq->skill);
+        $profile->hoten = $rq->name;
         $profile->kinang = $skills;
         $profile->emaillienhe = $rq->email;
         $profile->nganh = $rq->title;
@@ -90,7 +93,7 @@ class NguoiTimViecController extends Controller
         $profile->remember_token = $rq->_token;
 
         // 0 là chưa phê duyệt, 1 là đã phê duyệt và gửi đến nhà tuyển dụng
-        $profile->trangthai = 1;
+        $profile->trangthai = 0;
                 
         // dd($profile);
         $profile->save();
@@ -113,18 +116,21 @@ class NguoiTimViecController extends Controller
     	$this->validate($rq, 
 			[
 				//Kiểm tra giá trị rỗng
-				'email' => 'required|email',
+                'public' => 'required',
+				'email' => 'required|email',            
+                'name' => 'required',
 				'title' => 'required',
                 'skill' => 'required',
                 'exp' => 'required',
 				'degree' => 'required',
 				'rank' => 'required',
 				'region' => 'required',   
-
 			],			
 			[
 				//Tùy chỉnh hiển thị thông báo
+                'public.required' => 'Bạn chưa chọn chế độ công khai!',
 				'email.required' => 'Bạn chưa nhập Email!',
+                'name.required' => 'Bạn chưa nhập họ tên!',
                 'skill.required' => 'Bạn chưa chọn kĩ năng!',
                 'exp.required' => 'Bạn chưa chọn số năm kinh nghiệm!',
 				'email.email' => 'Email không đúng định dạng!',
@@ -164,6 +170,8 @@ class NguoiTimViecController extends Controller
     	}    	
 		// Nếu k có hình thì để hình mặc định
         $skills = json_encode($rq->skill);
+
+        $profile->hoten = $rq->name;
     	$profile->kinang = $skills;
     	$profile->emaillienhe = $rq->email;
     	$profile->nganh = $rq->title;
@@ -176,9 +184,9 @@ class NguoiTimViecController extends Controller
         $profile->remember_token = $rq->_token;
 
     	// 0 là chưa công khai, 1 là công khai
-        $profile->congkhai = 1;
+        $profile->congkhai = $rq->public;
         // 0 là chưa dc quản trị viên phê duyệt và 1 thì ngược lại
-    	$profile->trangthai = 1;
+    	$profile->trangthai = 0;
         	   
     	// dd($profile);
     	$profile->save();
@@ -208,17 +216,20 @@ class NguoiTimViecController extends Controller
             [
                 //Kiểm tra giá trị rỗng
                 'email' => 'required|email',
+                'public' => 'required',
+                'name' => 'required',
                 'title' => 'required',
                 'skill' => 'required',
                 'exp' => 'required',
                 'degree' => 'required',
                 'rank' => 'required',
                 'region' => 'required',   
-
             ],          
             [
                 //Tùy chỉnh hiển thị thông báo
                 'email.required' => 'Bạn chưa nhập Email!',
+                'public.required' => 'Bạn chưa chọn chế độ công khai!',
+                'name.required' => 'Bạn chưa nhập họ tên!',
                 'skill.required' => 'Bạn chưa chọn kĩ năng!',
                 'exp.required' => 'Bạn chưa chọn số năm kinh nghiệm!',
                 'email.email' => 'Email không đúng định dạng!',
@@ -257,6 +268,7 @@ class NguoiTimViecController extends Controller
         }       
         // Nếu k có hình thì để hình mặc định
         $skills = json_encode($rq->skill);
+        $profile->hoten = $rq->name;
         $profile->kinang = $skills;
         $profile->emaillienhe = $rq->email;
         $profile->nganh = $rq->title;
@@ -269,8 +281,7 @@ class NguoiTimViecController extends Controller
         $profile->remember_token = $rq->_token;
 
         // 0 là chưa công khai, 1 là công khai
-        $profile->congkhai = 1;
-        $profile->trangthai = 1;
+        $profile->congkhai = $rq->public;
                 
         // dd($profile);
         $profile->update();
@@ -312,7 +323,8 @@ class NguoiTimViecController extends Controller
     }
 
     public function getSaveJob(){
-        // Problem: chưa lấy info theo thứ tự được       
+        // Problem: chưa lấy info theo thứ tự được 
+        // Tin tuyển dụng bị xoá r thì s?
         $follow_list = json_decode(Auth::user()->theodoi);
 
         // dd($follow_list);
@@ -337,8 +349,7 @@ class NguoiTimViecController extends Controller
     }
 
     public function getAppliedJob(){
-        // Problem: chưa lấy info theo thứ tự được       
-        
+        // Problem: chưa lấy info theo thứ tự được               
         $profiles = HoSoXinViec::where('idUser','=',Auth::user()->id)
                     ->select('idTTD')->get()->toArray();
 
@@ -355,7 +366,6 @@ class NguoiTimViecController extends Controller
             $job_listings[$i]->kinang = $skills;
         }                
         // dd($job_listings);
-       
             
         return view('nguoitimviec.applied-job-listings',compact('job_listings'));
     }
@@ -376,7 +386,7 @@ class NguoiTimViecController extends Controller
                     ])    
                     ->first();
         if(!empty($profile)) return redirect('/');
-        $profiles = NguoiTimViec::where('idUser','=',Auth::user()->id)->get();
+        $profiles = NguoiTimViec::where('idUser','=',Auth::user()->id)->get();        
         return view('nguoitimviec.select-apply',compact('profiles','news_id'));
     }
 
@@ -409,5 +419,15 @@ class NguoiTimViecController extends Controller
         $apply_profile->save();
 
         return redirect()->route('notification')->with(['alert' => 'Nộp đơn thành công!']);
+    }
+
+    public function setStatus($profile_id){
+        $profile = NguoiTimViec::find($profile_id);
+
+        $profile->congkhai = ($profile->congkhai == 0) ? 1 : 0;
+
+        $profile->update();
+
+        return redirect()->back()->with(['success' => 'Đổi trạng thái thành công!']);
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('ntd_layouts.master')
 @section('content')
     <!-- HOME -->
     <section class="section-hero overlay inner-page bg-image" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
@@ -65,6 +65,11 @@
                 <label for="email">Email</label>
                 <input type="text" class="form-control" id="email" placeholder="you@yourdomain.com">
               </div> -->
+
+              <div class="form-group">
+                <label for="job-title">Hạn tuyển dụng</label>
+                <input type="date" class="form-control" name="deadline" placeholder="Chọn hạn...." value="{{ $news->hantuyendung}}">
+              </div>
 
               <div class="form-group">
                 <label for="job-title">Số lượng tuyển dụng</label>

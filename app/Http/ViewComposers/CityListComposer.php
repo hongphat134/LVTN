@@ -8,8 +8,9 @@ class CityListComposer
   private $city_list = [];
 
   public function __construct(){
-    $this->city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
-    array_pop($this->city_list);
+    // $this->city_list = json_decode(file_get_contents("https://thongtindoanhnghiep.co/api/city"))->LtsItem;
+    // array_pop($this->city_list);
+    $this->city_list = json_decode(file_get_contents(url("resources/cities.json")))->LtsItem;
   }
 
 

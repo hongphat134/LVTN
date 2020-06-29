@@ -2,6 +2,7 @@
 <table>
 	<thead>
 	<tr>
+		<td>{{$test}}</td>
 		<td>Tiêu đề hồ sơ</td>
 		<td>Trình độ + Kinh Nghiệm</td>
 		<td>Mức lương mong muốn???</td>

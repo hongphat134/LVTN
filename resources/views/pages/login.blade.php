@@ -5,10 +5,12 @@
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            <h1 class="text-white font-weight-bold">Sign Up/Login</h1>
+            <h1 class="text-white font-weight-bold">Đăng nhập/Đăng ký</h1>
             <div class="custom-breadcrumbs">
               <a href="#">Home</a> <span class="mx-2 slash">/</span>
-              <span class="text-white"><strong>Log In</strong></span>
+              <span class="text-white"><strong>Đăng nhập</strong> /</span>
+              <span class="text-white"><strong>Đăng ký</strong> /</span> 
+              <span class="text-white"><strong>Khôi phục mật khẩu</strong></span>
             </div>
           </div>
         </div>
@@ -101,10 +103,14 @@
               <div class="row form-group">
                 <div class="col-md-12">
                   <input type="submit" value="Đăng nhập" class="btn px-4 btn-primary text-white">
+                  
+                  <a href="{{url('/auth/redirect/google')}}"><button type="button" class="btn btn-danger"><i class="icon-google-plus"></i> Google</button></a>
+                  <!-- <a href="{{url('/auth/redirect/facebook')}}"><button type="button" class="btn btn-danger"><i class="icon-facebook-square"></i> Facebook</button></a> -->
+
                 </div>
               </div>
-
             </form>
+            
           
             <hr>
             <h2 class="mb-4">Khôi phục mật khẩu</h2>

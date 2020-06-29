@@ -64,6 +64,22 @@
                 </label>
               </div>
 
+              <!-- PUBLIC -->
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="public" name="public" value="1">
+                <label class="custom-control-label" for="public">Công khai để nhà tuyển dụng có thể tìm kiếm hồ sơ</label>
+              </div>
+             
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="private" name="public" value="0">
+                <label class="custom-control-label" for="private">Không công khai và chỉ dùng để làm mẫu</label>
+              </div>
+
+              <div class="form-group">
+                <label for="nae">Họ và tên:</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Nhập họ tên...." value="{{ old('name') }}" required>
+              </div>
+
               <div class="form-group">
                 <label for="email">Email liên hệ</label>
                 <input type="email" name="email" class="form-control" id="email" placeholder="Nhập Email...." value="{{ old('email') }}" required>

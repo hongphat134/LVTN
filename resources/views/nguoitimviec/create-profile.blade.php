@@ -87,12 +87,17 @@
 
               <div class="form-group">
                 <label for="job-title">Ngành nghề</label>
-                <!-- <input type="text" name="job" class="form-control" id="job-title" placeholder="Product Designer"> -->
-                <select class="selectpicker border rounded" name="title" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngành nghề" required>                
+                <select class="selectpicker border rounded" name="title" id="title" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngành nghề" required>                
                       @foreach($ds_job as $job)                      
                       <option {{ strcasecmp(old('title'),$job->ten) == 0?'selected':'' }}>{{$job->ten}}</option>                      
                       @endforeach
+                      <option value="other">Khác</option>
                 </select>
+              </div>
+
+              <div class="form-group" id="other_title" style="display: none;">
+                <label for="nae">Ngành nghề khác</label>
+                <input type="text" name="other_title" class="form-control" placeholder="Nhập tên ngành nghề..." required>
               </div>
 
               <div class="form-group">
@@ -164,30 +169,64 @@
                 </select>
               </div>
 
-
-              <div class="form-group">
+<!--               <div class="form-group">
                 <label for="job-description">Mục tiêu</label>
                 <div class="editor" name="ASSA" id="editor-1">
                   <p>Write Job Description!</p>
                 </div>                
+              </div> -->
+
+              <h3 class="text-black my-5 border-bottom pb-2">Trình độ ngoại ngữ</h3>              
+              <div class="form-group">
+                <label for="job-region">Ngoại ngữ</label>
+                <select class="selectpicker border rounded" name="language[]" id="language" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngoại ngữ" required multiple>
+                      <option>Tiếng Anh</option>
+                      <option>Tiếng Pháp</option>
+                      <option>Tiếng Trung</option>
+                      <option>Tiếng Nhật</option>
+                      <option>Tiếng Hàn</option>
+                      <option>Tiếng Nga</option>
+                      <option>Tiếng Đức</option>
+                      <option>Tiếng Ý</option>
+                      <option>Tiếng Ả-Rập</option>
+                      <option value="other">Ngôn ngữ khác</option>
+                </select>
               </div>
 
-              <h3 class="text-black my-5 border-bottom pb-2">Thông tin thêm</h3>              
+              <div class="form-group" id="other_language" style="display: none;">
+                <label for="nae">Ngoại ngữ khác</label>
+                <input type="text" name="other_language" class="form-control" placeholder="Nếu nhập nhiều, hãy nhập (VD: Anh,Pháp,Đức,...)" required>
+              </div>
+<!-- 
               <div class="form-group">
-                <label for="company-tagline">Trình độ ngoại ngữ</label>
-                <input type="text" class="form-control" id="company-tagline" placeholder="e.g. New York">
+                <label for="job-region">Trình độ</label>
+                <select class="selectpicker border rounded" name="region" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn khu vực" required>
+                      <option>Sơ cấp</option>
+                      <option>Trung cấp</option>
+                      <option>Cao cấp</option>
+                </select>
+              </div> -->
+              
+              <h3 class="text-black my-5 border-bottom pb-2">Trình độ tin học</h3>
+              <div class="form-group">
+                <label for="nae">Phần mềm</label>
+                <select class="selectpicker border rounded" name="itech[]" id="itech" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn phần mềm" required multiple>
+                      <option>MS Word</option>
+                      <option>MS Excel</option>
+                      <option>MS PowerPoint</option>
+                      <option>MS Outlook</option>
+                      <option value="other">Phần mềm khác</option>
+                </select>
               </div>
 
-              <div class="form-group">
-                <label for="job-description">Trình độ tin học</label>
-                <div class="editor" id="editor-2">
-                  <p>Description</p>
-                </div>
+              <div class="form-group" id="other_itech" style="display: none;">
+                <label for="nae">Phần mềm khác</label>
+                <input type="text" name="other_itech" class="form-control" id="name" placeholder="Nhập tên phần mềm...(Access,Visio,Github,...)" value="{{ old('name') }}" required>
               </div>
               
+              <h3 class="text-black my-5 border-bottom pb-2">Sở trường</h3>
               <div class="form-group">
-                <label for="company-website">Sở trường</label>
-                <input type="text" class="form-control" id="company-website" placeholder="https://">
+                  <textarea class="form-control" name="talent" id="" cols="30" rows="10" placeholder="Nhập sở trường...."></textarea>
               </div>
               
             </form>
@@ -215,4 +254,5 @@
         </div>
       </div>
     </section>
+    <script src="{{asset('js/profile.js')}}"></script>
 @endsection

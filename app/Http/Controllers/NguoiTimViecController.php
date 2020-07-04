@@ -112,6 +112,7 @@ class NguoiTimViecController extends Controller
     }
 
     public function postCreateProfile(Request $rq){    	
+        var_dump($rq->all());
         // Problem: chưa giải quyết withInput
     	$this->validate($rq, 
 			[
@@ -119,7 +120,7 @@ class NguoiTimViecController extends Controller
                 'public' => 'required',
 				'email' => 'required|email',            
                 'name' => 'required',
-				'title' => 'required',
+				'title' => 'required',                
                 'skill' => 'required',
                 'exp' => 'required',
 				'degree' => 'required',

@@ -15,6 +15,13 @@ class CreateLienheTable extends Migration
     {
         Schema::create('lienhe', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('from_email')->nullable();;
+            $table->string('ho')->nullable();
+            $table->string('ten')->nullable();
+            $table->string('tieude')->nullable();
+            $table->longText('noidung')->nullable();
+            $table->boolean('trangthai')->default(false);
+            $table->rememberToken();
             $table->timestamps();
         });
     }

@@ -267,8 +267,10 @@ class HomeController extends Controller
         return redirect()->route('notification')->with(['alert' => 'Đăng ký nhà tuyển dụng thành công!']);      
     }
 
-    public function notification(){
-        return view('pages.notification');
+    public function notification(){        
+        if(session()->has('alert')) return view('pages.notification');
+
+        return response()->json(['error'=>'404 Not Found','error_message'=>'Xin hãy kiểm tra lại URL của bạn!'], 404);
     }
 
     public function getSkillsJobs($key){
@@ -283,7 +285,8 @@ class HomeController extends Controller
         echo json_encode($list);    
     }
 
-    public function changeUserName(Request $rq){          
+    public function changeUserName(Request $rq){       
+        // set default lỗi validate
         session()->flash('user-warning','Thông tin vừa nhập bị lỗi!');
         $this->validate($rq, 
             [                
@@ -294,6 +297,7 @@ class HomeController extends Controller
                 'name.max' => 'Tên tài khoản chỉ có tối đa 25 kí tự!',
             ]
         );
+        // Nếu validate success thì xoá user-warning
         session()->forget('user-warning');
         $user = Auth::user();
 

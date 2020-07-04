@@ -102,6 +102,12 @@
 
               <div class="row form-group">
                 <div class="col-md-12">
+                  <div class="checkbox">
+                      <label>
+                          <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                      </label>
+                  </div>
+
                   <input type="submit" value="Đăng nhập" class="btn px-4 btn-primary text-white">
                   
                   <a href="{{url('/auth/redirect/google')}}"><button type="button" class="btn btn-danger"><i class="icon-google-plus"></i> Google</button></a>

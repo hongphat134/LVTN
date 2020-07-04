@@ -1,4 +1,6 @@
 @include('layouts.header')
+    <!-- MENU -->
+    @include('layouts.menu')
     <!-- HOME -->
     @include('layouts.search')
 

@@ -16,6 +16,9 @@ Route::get('/error',function(){
 	return view('pages.error');
 });
 
+Route::get('/contact','LienHeController@getContact');
+Route::post('/contact','LienHeController@sendMessage');
+
 
 Route::get('/auth/redirect/{provider}', 'SocialController@redirect');
 Route::get('/callback/{provider}', 'SocialController@callback');
@@ -102,3 +105,31 @@ Route::group(['middleware' => ['web', 'auth', 'isEmailVerified']], function () {
 });
 
 // Admin
+Route::group(['prefix' => 'administrators'], function () {
+	Route::get('/','AdminController@home');
+	Route::get('/home','AdminController@home');
+
+	Route::get('/lien-he','AdminController@getContactList');
+	Route::get('/lien-he/feedback/{id}','LienHeController@reponseMessage')->where('id', '[0-9]+')->name('feedback');
+
+	Route::group(['prefix' => 'tin-tuyen-dung'], function () {
+		Route::get('/danh-sach','AdminController@getRecList');
+		Route::get('/phe-duyet','AdminController@getApprovedRecList');
+		Route::get('/phe-duyet/{ttd_id}','AdminController@approvedRec')->where('ttd_id', '[0-9]+');
+	});
+	
+	Route::group(['prefix' => 'ho-so'], function () {
+		Route::get('/danh-sach','AdminController@getProfileList');
+		Route::get('/phe-duyet','AdminController@getApprovedPrfList');
+		Route::get('/phe-duyet/{hs_id}','AdminController@approvedPrf')->where('hs_id', '[0-9]+');
+	});
+	
+	Route::group(['prefix' => 'nguoi-dung'], function () {
+		Route::get('/nguoi-tim-viec','AdminController@getJobSeekerList');
+		Route::get('/nha-tuyen-dung','AdminController@getBusinessList');
+	});
+
+	Route::group(['prefix' => 'quan-tri-vien'], function () {
+		Route::get('/danh-sach','AdminController@getAdminList');		
+	});
+});

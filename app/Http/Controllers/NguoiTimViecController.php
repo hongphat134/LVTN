@@ -12,36 +12,32 @@ use App\KiNang;
 use App\HoSoXinViec;
 use App\NhaTuyenDung;
 use App\User;
+use App\YKien;
 use Auth;
+use PDF;
 
 class NguoiTimViecController extends Controller
 {
     //
-    public function getProfiles(){
+    public function getProfiles(){        
         $profile_list = NguoiTimViec::where('idUser','=',Auth::user()->id)->get();
-        // dd($profile_list->toArray());
+        // dd($profile_list->toArray());       
 
         return view('nguoitimviec.profile-listings',compact('profile_list'));
     }
 
     public function getApply($ttd_id){
         $hoso = NguoiTimViec::where('idUser','=',Auth::user()->id)->first();
-        // var_dump($hoso);        
-         // Kiểm tra phòng thờ nếu đã nộp thì chuyển về Home
+        // var_dump($hoso);
+        // Kiểm tra phòng thờ nếu đã nộp thì chuyển về Home
         $profile = HoSoXinViec::where([
                         ['idUser','=',Auth::user()->id],
                         ['idTTD','=',$ttd_id],
-                    ])    
+                    ]) 
                     ->first();
         if(!empty($profile)) return redirect('/');
 
-        $skill_list = KiNang::all();        
-        $exp_list = KinhNghiem::all();
-        $ds_job = NganhNghe::all();
-        $ds_bc = BangCap::all();
-        $ds_cb = CapBac::all();
-
-    	return view('nguoitimviec.apply',compact('exp_list','skill_list','ds_job','ds_bc','ds_cb','hoso','ttd_id'));
+    	return view('nguoitimviec.apply',compact('ttd_id'));
     }
 
     public function postApply(Request $rq,$ttd_id){
@@ -49,7 +45,7 @@ class NguoiTimViecController extends Controller
         // Problem: chưa giải quyết withInput 
         $this->validate($rq, 
             [
-                //Kiểm tra giá trị rỗng
+                //Kiểm tra giá trị rỗng                
                 'email' => 'required|email',
                 'name' => 'required',
                 'title' => 'required',
@@ -90,7 +86,55 @@ class NguoiTimViecController extends Controller
         $profile->trangthailv = $rq->status;
         $profile->bangcap = $rq->degree;
         $profile->capbac = $rq->rank;
+        $profile->muctieu = $rq->target;    
+        $profile->sotruong = $rq->talent;
         $profile->remember_token = $rq->_token;
+
+        if($rq->title != 'other') $profile->nganh = $rq->title;
+        else{            
+            if(empty($rq->other_title))
+             return redirect()->back()->with(['error' => 'Bạn chưa điền ngành nghề khác!'])->withInput();
+            else{
+                $profile->nganh = perfect_trim($rq->other_title);
+                // Bỏ vào table đóng góp ý kiến
+                $opinion = new YKien;
+                $opinion->ten = $profile->nganh;
+                $opinion->loai = "ngành";
+                $opinion->save();
+            }
+        }
+
+        if(!empty($rq->language)){
+            $languages = $rq->language;
+            if(in_array('other', $languages)){
+                // Bỏ mục other
+                array_pop($languages);
+                if(!empty($rq->other_language)){                
+                    $other_languages = explode(',',$rq->other_language);
+                    // Chuẩn hoá giá trị của mảng
+                    $other_languages = array_map('perfect_trim', $other_languages);
+                    
+                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages));
+                }
+                else $profile->ngoaingu = json_encode($languages);
+            }
+            else $profile->ngoaingu = json_encode($languages);
+        }        
+        
+        if(!empty($rq->itech)){
+            $itechs = $rq->itech;
+            if(in_array('other', $itechs)){
+                array_pop($itechs);
+                if(!empty($rq->other_itech)){                
+                    $other_itechs = explode(',',$rq->other_itech);
+                    $other_itechs = array_map('perfect_trim', $other_itechs);
+                   
+                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs));
+                }
+                else $profile->tinhoc = json_encode($itechs);
+            }
+            else $profile->tinhoc = json_encode($itechs);
+        }
 
         // 0 là chưa phê duyệt, 1 là đã phê duyệt và gửi đến nhà tuyển dụng
         $profile->trangthai = 0;
@@ -102,17 +146,12 @@ class NguoiTimViecController extends Controller
     }
 
     public function getCreateProfile(){    	
-        $exp_list = KinhNghiem::all();
-        $skill_list = KiNang::all();
-
-    	$ds_job = NganhNghe::all();
-    	$ds_bc = BangCap::all();
-    	$ds_cb = CapBac::all();
-    	return view('nguoitimviec.create-profile',compact('exp_list','skill_list','ds_job','ds_bc','ds_cb'));
+    	return view('nguoitimviec.create-profile');
     }
 
+    
     public function postCreateProfile(Request $rq){    	
-        var_dump($rq->all());
+        var_dump($rq->all());       
         // Problem: chưa giải quyết withInput
     	$this->validate($rq, 
 			[
@@ -171,24 +210,74 @@ class NguoiTimViecController extends Controller
     	}    	
 		// Nếu k có hình thì để hình mặc định
         $skills = json_encode($rq->skill);
-
-        $profile->hoten = $rq->name;
+        // Chuẩn hoá chuỗi -> chuỗi thường -> đầu từ viết Hoa
+        $profile->hoten = perfect_trim($rq->name);
     	$profile->kinang = $skills;
     	$profile->emaillienhe = $rq->email;
-    	$profile->nganh = $rq->title;
+    	
     	$profile->khuvuc = $rq->region;
         $profile->kinhnghiem = $rq->exp;
     	$profile->honnhan = $rq->marital_stt;    	
     	$profile->trangthailv = $rq->status;
     	$profile->bangcap = $rq->degree;
     	$profile->capbac = $rq->rank;
-        $profile->remember_token = $rq->_token;
+        $profile->remember_token = $rq->_token;        
+        
+        $profile->muctieu = $rq->target;    
+        $profile->sotruong = $rq->talent;
+        // echo '<pre>'.htmlentities($profile->sotruong).'</pre>';                
+
+        if($rq->title != 'other') $profile->nganh = $rq->title;
+        else{            
+            if(empty($rq->other_title))
+             return redirect()->back()->with(['error' => 'Bạn chưa điền ngành nghề khác!'])->withInput();
+            else{
+                $profile->nganh = perfect_trim($rq->other_title);
+                // Bỏ vào table đóng góp ý kiến
+                $opinion = new YKien;
+                $opinion->ten = $profile->nganh;
+                $opinion->loai = "ngành";
+                $opinion->save();
+            }
+        }
+
+        if(!empty($rq->language)){
+            $languages = $rq->language;
+            if(in_array('other', $languages)){
+                // Bỏ mục other
+                array_pop($languages);
+                if(!empty($rq->other_language)){                
+                    $other_languages = explode(',',$rq->other_language);
+                    // Chuẩn hoá giá trị của mảng
+                    $other_languages = array_map('perfect_trim', $other_languages);
+                    
+                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages));
+                }
+                else $profile->ngoaingu = json_encode($languages);
+            }
+            else $profile->ngoaingu = json_encode($languages);
+        }        
+        
+        if(!empty($rq->itech)){
+            $itechs = $rq->itech;
+            if(in_array('other', $itechs)){
+                array_pop($itechs);
+                if(!empty($rq->other_itech)){                
+                    $other_itechs = explode(',',$rq->other_itech);
+                    $other_itechs = array_map('perfect_trim', $other_itechs);
+                   
+                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs));
+                }
+                else $profile->tinhoc = json_encode($itechs);
+            }
+            else $profile->tinhoc = json_encode($itechs);
+        }                        
 
     	// 0 là chưa công khai, 1 là công khai
         $profile->congkhai = $rq->public;
         // 0 là chưa dc quản trị viên phê duyệt và 1 thì ngược lại
     	$profile->trangthai = 0;
-        	   
+        
     	// dd($profile);
     	$profile->save();
 
@@ -198,16 +287,13 @@ class NguoiTimViecController extends Controller
     }
 
     public function getUpdateProfile($profile_id){     
-        // Problem: chưa xử lý hình
+        // Problem: chưa xử lý hình, mục khác chưa hiện dc
         $hoso = NguoiTimViec::find($profile_id);
         // dd($hoso);
-        $exp_list = KinhNghiem::all();
-        $skill_list = KiNang::all();
 
-        $ds_job = NganhNghe::all();
-        $ds_bc = BangCap::all();
-        $ds_cb = CapBac::all();
-        return view('nguoitimviec.update-profile',compact('exp_list','skill_list','ds_job','ds_bc','ds_cb','hoso'));
+        if(!$hoso) return redirect('error')->with(['error' => 'Ko tìm thấy hồ sơ!']);
+    
+        return view('nguoitimviec.update-profile',compact('hoso'));
     }
 
     public function postUpdateProfile($profile_id,Request $rq){     
@@ -280,6 +366,55 @@ class NguoiTimViecController extends Controller
         $profile->bangcap = $rq->degree;
         $profile->capbac = $rq->rank;
         $profile->remember_token = $rq->_token;
+
+        $profile->muctieu = $rq->target;    
+        $profile->sotruong = $rq->talent;
+
+        if($rq->title != 'other') $profile->nganh = $rq->title;
+        else{            
+            if(empty($rq->other_title))
+             return redirect()->back()->with(['error' => 'Bạn chưa điền ngành nghề khác!'])->withInput();
+            else{
+                $profile->nganh = perfect_trim($rq->other_title);
+                // Bỏ vào table đóng góp ý kiến
+                $opinion = new YKien;
+                $opinion->ten = $profile->nganh;
+                $opinion->loai = "ngành";
+                $opinion->save();
+            }
+        }
+
+        if(!empty($rq->language)){
+            $languages = $rq->language;
+            if(in_array('other', $languages)){
+                // Bỏ mục other
+                array_pop($languages);
+                if(!empty($rq->other_language)){                
+                    $other_languages = explode(',',$rq->other_language);
+                    // Chuẩn hoá giá trị của mảng
+                    $other_languages = array_map('perfect_trim', $other_languages);
+                    
+                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages));
+                }
+                else $profile->ngoaingu = json_encode($languages);
+            }
+            else $profile->ngoaingu = json_encode($languages);
+        }        
+        
+        if(!empty($rq->itech)){
+            $itechs = $rq->itech;
+            if(in_array('other', $itechs)){
+                array_pop($itechs);
+                if(!empty($rq->other_itech)){                
+                    $other_itechs = explode(',',$rq->other_itech);
+                    $other_itechs = array_map('perfect_trim', $other_itechs);
+                   
+                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs));
+                }
+                else $profile->tinhoc = json_encode($itechs);
+            }
+            else $profile->tinhoc = json_encode($itechs);
+        }              
 
         // 0 là chưa công khai, 1 là công khai
         $profile->congkhai = $rq->public;
@@ -430,5 +565,19 @@ class NguoiTimViecController extends Controller
         $profile->update();
 
         return redirect()->back()->with(['success' => 'Đổi trạng thái thành công!']);
+    }
+
+    public function pdfProfile($profile_id){
+        $profile = NguoiTimViec::find($profile_id); 
+        // dd($profile);       
+        $pdf = PDF::loadView('nguoitimviec.pdf-profile',compact('profile'));
+        return $pdf->stream();
+        // download với tên file list_book với folder chỉ định
+        //return $pdf->download('list_book.pdf');
+
+        //Tự động download file với folder trong hàm save() và chuyển trang pdf với tên là download
+        // return PDF::loadView('admin.book.pdf',compact('data'))->save('C:/Users/Phat/Downloads/Compressed/myfile.pdf')->stream('download.pdf');
+
+        //PDF::loadView('admin.book.pdf',compact('data'))->setPaper('a2', 'landscape')->setWarnings(false)->save('C:/Users/Phat/Downloads/Compressed/myfile.pdf');
     }
 }

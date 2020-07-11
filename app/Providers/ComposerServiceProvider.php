@@ -27,6 +27,13 @@ class ComposerServiceProvider extends ServiceProvider
             'nhatuyendung.profile',
         ],
         'App\Http\ViewComposers\CityListComposer');
+
+        View::composer([         
+            'nguoitimviec.apply',  
+            'nguoitimviec.create-profile',
+            'nguoitimviec.update-profile',
+        ],
+        'App\Http\ViewComposers\BasicComposer');
     }
 
     /**

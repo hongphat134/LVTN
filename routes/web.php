@@ -60,6 +60,8 @@ Route::group(['middleware' => ['guest','isEmailVerified']], function() {
 		Route::get('/applied-job-list','NguoiTimViecController@getAppliedJob')->name('appliedJobs');
 
 		Route::get('/set-status/{hs_id}','NguoiTimViecController@setStatus')->where('hs_id','[0-9]+');
+
+		Route::get('/pdf/{hs_id}','NguoiTimViecController@pdfProfile')->where('hs_id','[0-9]+')->name('pdf-profile');
 	});
 });
 

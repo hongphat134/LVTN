@@ -31,13 +31,13 @@
           <div class="col-lg-4">
             <div class="row">
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</a>
+                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Xem trước</a>
               </div>
               <div class="col-6">
                 <a href="#" class="btn btn-block btn-primary btn-md"
                     onclick="event.preventDefault();
                            document.getElementById('profile').submit();">
-                Save Job
+                Lưu mẫu
               </a>
               </div>
             </div>
@@ -55,7 +55,12 @@
                {{ $error }}
               </div>
               @endforeach
-              
+              @if(session('error'))
+              <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+               {{ session('error') }}
+              </div>
+              @endif
               
               <div class="form-group">
                 <label for="company-website-tw d-block">Upload ảnh đại diện</label> <br>
@@ -89,15 +94,17 @@
                 <label for="job-title">Ngành nghề</label>
                 <select class="selectpicker border rounded" name="title" id="title" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngành nghề" required>                
                       @foreach($ds_job as $job)                      
-                      <option {{ strcasecmp(old('title'),$job->ten) == 0?'selected':'' }}>{{$job->ten}}</option>                      
+                      <option {{ strcasecmp(old('title'),$job) == 0?'selected':'' }}>{{$job}}</option>                      
                       @endforeach
                       <option value="other">Khác</option>
                 </select>
               </div>
 
-              <div class="form-group" id="other_title" style="display: none;">
+              <div class="form-group" id="other_title"
+              @if(!old('other_title')) style="display: none;"
+              @endif>
                 <label for="nae">Ngành nghề khác</label>
-                <input type="text" name="other_title" class="form-control" placeholder="Nhập tên ngành nghề..." required>
+                <input type="text" name="other_title" class="form-control" placeholder="Nhập tên ngành nghề..." value="{{old('other_title')}}" required>
               </div>
 
               <div class="form-group">
@@ -119,8 +126,8 @@
                 <label for="job-region">Số năm kinh nghiệm</label>
                 <select class="selectpicker border rounded" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" name="exp" title="Chọn kinh nghiệm...">
                       @foreach($exp_list as $exp)
-                      <option {{ old('exp') == $exp->ten ? 'selected':'' }}>
-                        {{$exp->ten}}
+                      <option {{ old('exp') == $exp ? 'selected':'' }}>
+                        {{$exp}}
                       </option>
                       @endforeach
                     </select>
@@ -130,7 +137,7 @@
                 <label for="job-title">Bằng cấp cao nhất</label>
                 <select class="selectpicker border rounded" name="degree" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn bằng cấp" required>                
                       @foreach($ds_bc as $bc)
-                   	<option {{ strcasecmp(old('degree'),$bc->ten) == 0?'selected':'' }}>{{$bc->ten}}</option>                      
+                   	<option {{ strcasecmp(old('degree'),$bc) == 0?'selected':'' }}>{{$bc}}</option>                      
                       @endforeach
                 </select>
               </div>
@@ -139,7 +146,7 @@
                 <label for="job-title">Cấp bậc cao nhất</label>
                 <select class="selectpicker border rounded" name="rank" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn cấp bậc" required>                
                       @foreach($ds_cb as $cb)                                          
-                      <option {{ strcasecmp(old('rank'),$cb->ten) == 0?'selected':'' }}>{{$cb->ten}}</option>                      
+                      <option {{ strcasecmp(old('rank'),$cb) == 0?'selected':'' }}>{{$cb}}</option>                      
                       @endforeach
                 </select>
               </div>
@@ -180,22 +187,30 @@
               <div class="form-group">
                 <label for="job-region">Ngoại ngữ</label>
                 <select class="selectpicker border rounded" name="language[]" id="language" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngoại ngữ" required multiple>
-                      <option>Tiếng Anh</option>
-                      <option>Tiếng Pháp</option>
-                      <option>Tiếng Trung</option>
-                      <option>Tiếng Nhật</option>
-                      <option>Tiếng Hàn</option>
-                      <option>Tiếng Nga</option>
-                      <option>Tiếng Đức</option>
-                      <option>Tiếng Ý</option>
-                      <option>Tiếng Ả-Rập</option>
-                      <option value="other">Ngôn ngữ khác</option>
+                      @foreach($ds_nn as $language)
+                      <option
+                      @if(is_array(old('language')))
+                      {{ in_array($language,old('language')) ? 'selected':'' }}
+                      @endif
+                      >
+                      {{$language}}
+                      </option>
+                      @endforeach
+                      <option value="other"
+                      @if(is_array(old('language')))
+                      {{ in_array('other',old('language')) ? 'selected':'' }}
+                      @endif
+                      >Ngôn ngữ khác
+                      </option>
                 </select>
               </div>
 
-              <div class="form-group" id="other_language" style="display: none;">
+              <div class="form-group" id="other_language" 
+              @if(old('other_language'))
+              @else style="display: none" 
+              @endif>
                 <label for="nae">Ngoại ngữ khác</label>
-                <input type="text" name="other_language" class="form-control" placeholder="Nếu nhập nhiều, hãy nhập (VD: Anh,Pháp,Đức,...)" required>
+                <input type="text" name="other_language" class="form-control" placeholder="Nếu nhập nhiều, hãy nhập (VD: Anh,Pháp,Đức,...)" value="{{old('other_language')}}" required>
               </div>
 <!-- 
               <div class="form-group">
@@ -205,28 +220,42 @@
                       <option>Trung cấp</option>
                       <option>Cao cấp</option>
                 </select>
-              </div> -->
-              
+              </div> -->              
               <h3 class="text-black my-5 border-bottom pb-2">Trình độ tin học</h3>
               <div class="form-group">
                 <label for="nae">Phần mềm</label>
                 <select class="selectpicker border rounded" name="itech[]" id="itech" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn phần mềm" required multiple>
-                      <option>MS Word</option>
-                      <option>MS Excel</option>
-                      <option>MS PowerPoint</option>
-                      <option>MS Outlook</option>
-                      <option value="other">Phần mềm khác</option>
+                      @foreach($ds_th as $itech)
+                      <option
+                      @if(is_array(old('itech')))
+                      {{ in_array($itech,old('itech')) ? 'selected':'' }}
+                      @endif
+                      >{{$itech}}</option>
+                      @endforeach
+                      <option value="other"
+                      @if(is_array(old('itech')))
+                      {{ in_array('other',old('itech')) ? 'selected':'' }}
+                      @endif
+                      >Phần mềm khác</option>
                 </select>
               </div>
 
-              <div class="form-group" id="other_itech" style="display: none;">
+              <div class="form-group" id="other_itech"
+              @if(old('other_itech'))
+              @else style="display: none" 
+              @endif>
                 <label for="nae">Phần mềm khác</label>
-                <input type="text" name="other_itech" class="form-control" id="name" placeholder="Nhập tên phần mềm...(Access,Visio,Github,...)" value="{{ old('name') }}" required>
+                <input type="text" name="other_itech" class="form-control" id="name" placeholder="Nhập tên phần mềm...(Access,Visio,Github,...)" value="{{ old('other_itech') }}" required>
               </div>
-              
+
+              <h3 class="text-black my-5 border-bottom pb-2">Mục tiêu nghề nghiệp</h3>
+              <div class="form-group">
+                  <textarea class="form-control" name="target" id="" cols="30" rows="10" placeholder="Nhập mục tiêu....">{{ old('target')}}</textarea>
+              </div>
+
               <h3 class="text-black my-5 border-bottom pb-2">Sở trường</h3>
               <div class="form-group">
-                  <textarea class="form-control" name="talent" id="" cols="30" rows="10" placeholder="Nhập sở trường...."></textarea>
+                  <textarea class="form-control" name="talent" id="" cols="30" rows="10" placeholder="Nhập sở trường....">{{old('talent')}}</textarea>
               </div>
               
             </form>

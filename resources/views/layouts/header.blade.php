@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{asset('fonts/line-icons/style.css')}}">
     <link rel="stylesheet" href="{{asset('css/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/animate.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/quill.snow.css')}}">
+    <!-- <link rel="stylesheet" href="{{asset('css/quill.snow.css')}}"> -->
   
     <!-- JS -->
     <script src="{{asset('js/jquery.min.js')}}"></script>
@@ -29,7 +29,7 @@
     <script src="{{asset('js/jquery.waypoints.min.js')}}"></script>
     <script src="{{asset('js/jquery.animateNumber.min.js')}}"></script>
     <script src="{{asset('js/owl.carousel.min.js')}}"></script>  
-    <script src="{{asset('js/quill.min.js')}}"></script>  
+    <!-- <script src="{{asset('js/quill.min.js')}}"></script>   -->
     <script src="{{asset('js/bootstrap-select.min.js')}}"></script>    
     <script src="{{asset('js/custom.js')}}"></script>
 

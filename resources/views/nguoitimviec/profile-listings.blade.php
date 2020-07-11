@@ -71,15 +71,25 @@
             </a>
 
             <div class="row">
-              <span class="col-4">
-              <button class="btn btn-outline-success" data-toggle="modal" data-target="#viewModal{{$key}}"><i class="icon-search"></i> XEM</button>
+              <span class="col-7">
+                <div class="dropdown">
+  <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="icon-th-large"></i> Quản lý mẫu hồ sơ
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" data-toggle="modal" data-target="#viewModal{{$key}}" href="javascript:void(0)">Xem mẫu</a>
+    <a class="dropdown-item" href="{{route('pdf-profile',$profile->id)}}">Xuất PDF</a>
+    <a class="dropdown-item call-delete" id="{{$profile->id}}" data-toggle="modal" data-target="#deleteModal" href="javascript:void(0)">Xoá</a>
+  </div>
+</div>
+              <!-- <button class="btn btn-outline-success" data-toggle="modal" data-target="#viewModal{{$key}}"><i class="icon-search"></i> XEM</button> -->
               </span>
-              <span class="col-4">                
-              <a href="{{url('/nguoitimviec/set-status',$profile->id)}}"><button class="btn btn-outline-info">{{$profile->congkhai == 0 ? 'Bật':'Tắt'}} Public</button></a>
+              <span class="col-5">                
+              <a href="{{url('/nguoitimviec/set-status',$profile->id)}}"><button class="btn btn-outline-info"><i class="icon-public"></i> {{$profile->congkhai == 0 ? 'Bật':'Tắt'}} Public</button></a>
               </span> 
-              <span class="col-4">              
+              <!-- <span class="col-4">              
               <button id="{{$profile->id}}" class="btn btn-outline-danger call-delete" data-toggle="modal" data-target="#deleteModal"><i class="icon-trash"></i> XOÁ</button>
-              </span>                 
+              </span>                  -->
             </div>
           </div>
           @endforeach
@@ -132,13 +142,34 @@
               <span class="icon-insert_drive_file display-1"></span>
             </span>
             <h2 class="mb-4">Mục tiêu</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam dolorum incidunt dolorem facere, officiis placeat consequuntur odit quasi, quam voluptates, deleniti! Neque tenetur in, omnis consectetur molestias expedita nostrum et.</p>           
+            <p>
+              {!! nl2br($profile->muctieu) !!}
+            </p>           
             <h2 class="mb-4">Trình độ ngoại ngữ</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam dolorum incidunt dolorem facere, officiis placeat consequuntur odit quasi, quam voluptates, deleniti! Neque tenetur in, omnis consectetur molestias expedita nostrum et.</p>           
+            <p>
+              @if($profile->ngoaingu)              
+              @foreach(json_decode($profile->ngoaingu) as $language)
+              {{$language}} <strong>&</strong>
+              @endforeach
+              @else
+                Chưa có ngoại ngữ!
+              @endif
+            </p>           
             <h2 class="mb-4">Trình độ tin học</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam dolorum incidunt dolorem facere, officiis placeat consequuntur odit quasi, quam voluptates, deleniti! Neque tenetur in, omnis consectetur molestias expedita nostrum et.</p>           
+            <p>
+              @if($profile->tinhoc)
+              @foreach(json_decode($profile->tinhoc) as $itech)
+              {{$itech}} <strong>&</strong>
+              @endforeach
+              @else
+                Không có!
+              @endif
+            </p>     
             <h2 class="mb-4">Sở trường</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam dolorum incidunt dolorem facere, officiis placeat consequuntur odit quasi, quam voluptates, deleniti! Neque tenetur in, omnis consectetur molestias expedita nostrum et.</p>           
+            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam dolorum incidunt dolorem facere, officiis placeat consequuntur odit quasi, quam voluptates, deleniti! Neque tenetur in, omnis consectetur molestias expedita nostrum et.</p> <-->
+            <p>
+              {!! nl2br($profile->sotruong) !!}
+            </p>            
             <p>
               <a href="#" class="btn btn-primary btn-md mt-4">{{$profile->created_at}}</a>
               <a href="#" class="btn btn-primary btn-md mt-4">{{$profile->updated_at}}</a>

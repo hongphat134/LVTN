@@ -179,6 +179,7 @@ return [
         App\Providers\ComposerServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Lunaweb\EmailVerification\Providers\EmailVerificationServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -229,6 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'provides' => App\Providers\ComposerServiceProvider::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

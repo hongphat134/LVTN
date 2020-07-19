@@ -3,7 +3,7 @@ jQuery(function($) {
 	'use strict';
 	
 	$(".loader").delay(1000).fadeOut("slow");
-  $("#overlayer").delay(1000).fadeOut("slow");	
+  	$("#overlayer").delay(1000).fadeOut("slow");	
 
 	var siteMenuClone = function() {
 
@@ -220,47 +220,47 @@ jQuery(function($) {
 	}
 	owlCarouselFunction();
 
-	var quillInit = function() {
+	// var quillInit = function() {
 
-		var toolbarOptions = [
-		  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-		  ['blockquote', 'code-block'],
+	// 	var toolbarOptions = [
+	// 	  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+	// 	  ['blockquote', 'code-block'],
 
-		  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-		  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-		  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-		  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-		  [{ 'direction': 'rtl' }],                         // text direction
+	// 	  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+	// 	  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+	// 	  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+	// 	  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+	// 	  [{ 'direction': 'rtl' }],                         // text direction
 
-		  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-		  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+	// 	  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+	// 	  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-		  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-		  [{ 'font': [] }],
-		  [{ 'align': [] }],
+	// 	  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+	// 	  [{ 'font': [] }],
+	// 	  [{ 'align': [] }],
 
-		  ['clean']                                         // remove formatting button
-		];
+	// 	  ['clean']                                         // remove formatting button
+	// 	];
 
-		if ( $('.editor').length > 0 ) {
-			var quill = new Quill('#editor-1', {
-			  modules: {
-			    toolbar: toolbarOptions,
-			  },
-			  placeholder: 'Compose an epic...',
-			  theme: 'snow'  // or 'bubble'
-			});
-			var quill = new Quill('#editor-2', {
-			  modules: {
-			    toolbar: toolbarOptions,
-			  },
-			  placeholder: 'Compose an epic...',
-			  theme: 'snow'  // or 'bubble'
-			});
-		}
+	// 	if ( $('.editor').length > 0 ) {
+	// 		var quill = new Quill('#editor-1', {
+	// 		  modules: {
+	// 		    toolbar: toolbarOptions,
+	// 		  },
+	// 		  placeholder: 'Compose an epic...',
+	// 		  theme: 'snow'  // or 'bubble'
+	// 		});
+	// 		var quill = new Quill('#editor-2', {
+	// 		  modules: {
+	// 		    toolbar: toolbarOptions,
+	// 		  },
+	// 		  placeholder: 'Compose an epic...',
+	// 		  theme: 'snow'  // or 'bubble'
+	// 		});
+	// 	}
 
-	}
-	quillInit();
+	// }
+	// quillInit();
   	
   	// Tìm kiếm theo Skill
   	$(".skill").click(function(){

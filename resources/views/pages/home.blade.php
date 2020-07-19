@@ -56,7 +56,7 @@
 
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">{{$job_listings->total()}} Job Listed</h2>
+            <h2 class="section-title mb-2">Có {{$job_listings->total()}} tin tuyển dụng</h2>
           </div>
         </div>
         

@@ -61,7 +61,7 @@
 		</div>
 		<div class="row">
 		<div class="col-md-12 popular-keywords">
-		<h3>Trending Keywords:</h3>
+		<h3>Từ khoá phổ biến:</h3>
 		<ul class="keywords list-unstyled m-0 p-0">
 		<li><a href="javascript:void(0)" class="skill">Database</a></li>
 		<li><a href="javascript:void(0)" class="skill">Python</a></li>

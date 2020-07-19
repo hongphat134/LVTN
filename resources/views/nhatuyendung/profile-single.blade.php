@@ -53,10 +53,16 @@
               <a href="#" class="btn btn-primary btn-md mt-4">
               Ngày cập nhật: {{ date('d/m/Y',strtotime($profile->updated_at))}}
               </a>
-              @if(in_array($profile->id,json_decode(Auth::user()->theodoi)))
-              <a id="{{$profile->id}}" href="javascript:void(0)" class="btn btn-danger btn-md mt-4 save-profile active">
-                Đã lưu hồ sơ
-              </a>
+              @if(Auth::user()->theodoi)
+                @if(in_array($profile->id,json_decode(Auth::user()->theodoi)))
+                <a id="{{$profile->id}}" href="javascript:void(0)" class="btn btn-danger btn-md mt-4 save-profile active">
+                  Đã lưu hồ sơ
+                </a>
+                @else
+                <a id="{{$profile->id}}" href="javascript:void(0)" class="btn btn-danger btn-md mt-4 save-profile">
+                  Lưu hồ sơ xin việc
+                </a>                
+                @endif
               @else
               <a id="{{$profile->id}}" href="javascript:void(0)" class="btn btn-danger btn-md mt-4 save-profile">
                 Lưu hồ sơ xin việc

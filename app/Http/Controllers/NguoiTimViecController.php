@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\NganhNghe;
-use App\BangCap;
-use App\CapBac;
-use App\KinhNghiem;
 use App\NguoiTimViec;
 use App\KiNang;
 use App\HoSoXinViec;
 use App\NhaTuyenDung;
-use App\User;
 use App\YKien;
 use Auth;
-use PDF;
+use Mail;
+
+use App\Mail\Applied;
 
 class NguoiTimViecController extends Controller
 {
@@ -114,11 +111,11 @@ class NguoiTimViecController extends Controller
                     // Chuẩn hoá giá trị của mảng
                     $other_languages = array_map('perfect_trim', $other_languages);
                     
-                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages));
+                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages),JSON_UNESCAPED_UNICODE);
                 }
-                else $profile->ngoaingu = json_encode($languages);
+                else $profile->ngoaingu = json_encode($languages,JSON_UNESCAPED_UNICODE);
             }
-            else $profile->ngoaingu = json_encode($languages);
+            else $profile->ngoaingu = json_encode($languages,JSON_UNESCAPED_UNICODE);
         }        
         
         if(!empty($rq->itech)){
@@ -129,11 +126,11 @@ class NguoiTimViecController extends Controller
                     $other_itechs = explode(',',$rq->other_itech);
                     $other_itechs = array_map('perfect_trim', $other_itechs);
                    
-                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs));
+                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs),JSON_UNESCAPED_UNICODE);
                 }
-                else $profile->tinhoc = json_encode($itechs);
+                else $profile->tinhoc = json_encode($itechs,JSON_UNESCAPED_UNICODE);
             }
-            else $profile->tinhoc = json_encode($itechs);
+            else $profile->tinhoc = json_encode($itechs,JSON_UNESCAPED_UNICODE);
         }
 
         // 0 là chưa phê duyệt, 1 là đã phê duyệt và gửi đến nhà tuyển dụng
@@ -540,6 +537,7 @@ class NguoiTimViecController extends Controller
         $apply_profile->idUser = $profile->idUser;
         $apply_profile->idTTD = (int)$rq->ttd_id;
 
+        $apply_profile->hoten = $profile->hoten;
         $apply_profile->emaillienhe = $profile->emaillienhe;
         $apply_profile->nganh = $profile->nganh;
         $apply_profile->kinang = $profile->kinang;
@@ -554,6 +552,12 @@ class NguoiTimViecController extends Controller
 
         $apply_profile->save();
 
+        // Mẫu hồ sơ đã được duyệt thì khi nộp sẽ đưa đến tay nhà tuyển dụng
+        if($profile->trangthai == 1){
+            // Gửi mail
+            Mail::send(new Applied());
+        }
+
         return redirect()->route('notification')->with(['alert' => 'Nộp đơn thành công!']);
     }
 
@@ -565,19 +569,5 @@ class NguoiTimViecController extends Controller
         $profile->update();
 
         return redirect()->back()->with(['success' => 'Đổi trạng thái thành công!']);
-    }
-
-    public function pdfProfile($profile_id){
-        $profile = NguoiTimViec::find($profile_id); 
-        // dd($profile);       
-        $pdf = PDF::loadView('nguoitimviec.pdf-profile',compact('profile'));
-        return $pdf->stream();
-        // download với tên file list_book với folder chỉ định
-        //return $pdf->download('list_book.pdf');
-
-        //Tự động download file với folder trong hàm save() và chuyển trang pdf với tên là download
-        // return PDF::loadView('admin.book.pdf',compact('data'))->save('C:/Users/Phat/Downloads/Compressed/myfile.pdf')->stream('download.pdf');
-
-        //PDF::loadView('admin.book.pdf',compact('data'))->setPaper('a2', 'landscape')->setWarnings(false)->save('C:/Users/Phat/Downloads/Compressed/myfile.pdf');
     }
 }

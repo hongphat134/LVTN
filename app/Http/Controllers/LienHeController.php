@@ -36,7 +36,7 @@ class LienHeController extends Controller
         $repond = $rq->message;
        
     	// Gửi Mail => Thành công hay thất bại cũng đéo bik :D (Hàm chả trả về cm gì cả?)
-        Mail::send('mail', 
+        Mail::send('emails.contact', 
             ['user' => $user, 'repond' => $repond], 
             function ($m) use ($user) {
             // $m->from('hello@app.com', 'Your Application');

@@ -67,7 +67,14 @@
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">             
             <a href="{{route('detailPf',$profile->id)}}"></a>
             <div class="job-listing-logo">
-              <img src="{{url('hinhdaidien/'.$profile->hinh)}}" alt="Free Website Template by Free-Template.co" class="img-fluid" style="width: 150px; height: 150px !important;">
+              <img 
+    @if($profile->hinh)
+    src="{{url('hinhdaidien/'.$profile->hinh)}}"
+    @else
+    src="{{url('hinhdaidien/1592215436_person_4.jpg')}}"
+    @endif
+     
+              alt="Free Website Template by Free-Template.co" class="img-fluid" style="width: 150px; height: 150px !important;">
             </div>
             <div class="ribbon-wrapper">
               <div class="ribbon red">Hot</div>

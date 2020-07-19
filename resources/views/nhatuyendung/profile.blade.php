@@ -95,39 +95,6 @@
                       @endforeach
                 </select>
               </div>
-              
-              
-
-              <div class="form-group">
-                <label for="job-description">Mục tiêu</label>
-                <div class="editor" name="ASSA" id="editor-1">
-                  <p>Write Job Description!</p>
-                </div>                
-              </div>
-
-              <h3 class="text-black my-5 border-bottom pb-2">Thông tin thêm</h3>              
-              <div class="form-group">
-                <label for="company-tagline">Trình độ ngoại ngữ</label>
-                <input type="text" class="form-control" id="company-tagline" placeholder="e.g. New York">
-              </div>
-
-              <div class="form-group">
-                <label for="job-description">Trình độ tin học</label>
-                <div class="editor" id="editor-2">
-                  <p>Description</p>
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label for="company-website">Sở trường</label>
-                <input type="text" class="form-control" id="company-website" placeholder="https://">
-              </div>
-              
-            </form>
-          </div>
-
-         
-        </div>
         <div class="row align-items-center mb-5">
           
           <div class="col-lg-4 ml-auto">

@@ -18,7 +18,7 @@ class CreateHosoxinviecTable extends Migration
             $table->integer('idUser')->unsigned();
             $table->foreign('idUser')->references('id')->on('users')->onUpdate('cascade');
             $table->integer('idTTD')->unsigned();
-            $table->foreign('idTTD')->references('id')->on('tintuyendung')->onUpdate('cascade');
+            $table->foreign('idTTD')->references('id')->on('tintuyendung')->onDelete('cascade')->onUpdate('cascade');
             $table->string('hoten')->nullable();
             $table->string('emaillienhe')->nullable();
             $table->string('nganh')->nullable();      
@@ -34,7 +34,8 @@ class CreateHosoxinviecTable extends Migration
             $table->longText('ngoaingu')->nullable();
             $table->longText('tinhoc')->nullable();
             $table->longText('sotruong')->nullable();
-
+            // 1 là chưa xem, 0 là xem rồi
+            $table->boolean('new')->default(1);
             // 0 là chưa dc admin phê duyệt và 1 thì ngược lại
             $table->tinyInteger('trangthai')->nullable();            
             // các trường mong muốn         

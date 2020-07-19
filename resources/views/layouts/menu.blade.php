@@ -7,32 +7,27 @@
       <nav class="mx-auto site-navigation">
         <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
           <li><a href="{{url('/')}}" class="nav-link active">Home</a></li>
-          <li><a href="about.html">About</a></li>
+          <li><a href="{{url('/about')}}">About</a></li>
+          <li><a href="{{route('jobListings')}}">Job listings</a></li>          
           <li class="has-children">
-            <a href="{{route('jobListings')}}">Job Listings</a>
+            <a href="{{url('/services')}}">Pages</a>
             <ul class="dropdown">
-              <li><a href="job-single.html">Job Single</a></li>
-              <li><a href="post-job.html">Post a Job</a></li>
+              <li><a href="{{url('/services')}}">Services</a></li>
+              <li><a href="{{url('/service-single')}}">Service Single</a></li>
+              <li><a href="{{url('/blog-single')}}">Blog Single</a></li>
+              <li><a href="{{url('/portfolio')}}">Portfolio</a></li>
+              <li><a href="{{url('/portfolio-single')}}">Portfolio Single</a></li>
+              <li><a href="{{url('/testimonials')}}">Testimonials</a></li>
+              <li><a href="{{url('/faq')}}">Frequently Ask Questions</a></li>
+              <li><a href="{{url('/gallery')}}">Gallery</a></li>
             </ul>
           </li>
-          <li class="has-children">
-            <a href="services.html">Pages</a>
-            <ul class="dropdown">
-              <li><a href="services.html">Services</a></li>
-              <li><a href="service-single.html">Service Single</a></li>
-              <li><a href="blog-single.html">Blog Single</a></li>
-              <li><a href="portfolio.html">Portfolio</a></li>
-              <li><a href="portfolio-single.html">Portfolio Single</a></li>
-              <li><a href="testimonials.html">Testimonials</a></li>
-              <li><a href="faq.html">Frequently Ask Questions</a></li>
-              <li><a href="gallery.html">Gallery</a></li>
-            </ul>
-          </li>
-          <li><a href="blog.html">Blog</a></li>
+          <li><a href="{{url('/blog')}}">Blog</a></li>
           <li><a href="{{url('/contact')}}">Liên hệ</a></li>
           
           <!-- FOR MOBILE -->
           @if(Auth::check())
+          <li class="d-lg-none"><a href="#">Thông báo</a></li>
           <li class="has-children">
             <a href="#" class="d-lg-none">Hi, {{Auth::user()->ten}}</a>
             <ul class="dropdown">
@@ -52,16 +47,19 @@
             </ul>
           </li>                                                     
           @else
+          <li class="d-lg-none"><a href="{{url('/nguoitimviec/create-profile')}}">Tạo hồ sơ</a></li>
           <li class="d-lg-none"><a href="{{ url('/login')}}">Đăng nhập</a></li>
           @endif
+          <!-- END FOR MOBILE -->
         </ul>
       </nav>
       
       <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
         <div class="ml-auto">          
-          @if(Auth::check())           
-          <div class="dropdown dropleft"> 
-            <button type="button" class="btn btn-primary border-width-2 d-none d-lg-inline-block dropdown-toggle" data-toggle="dropdown">
+          @if(Auth::check()) 
+          <a href="#" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-notifications_active"></span>Thông báo </a>             
+          <div class="dropdown dropleft border-width-2 d-none d-lg-inline-block"> 
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
               Hi, {{Auth::user()->ten}}
             </button>
             <div class="dropdown-menu">

@@ -11,7 +11,7 @@
             </button>
           </div>
           <div class="modal-body">
-            Bạn có chắc chắn muốn xoá mẫu hồ sơ không?
+            Bạn có chắc chắn muốn xoá mẫu hồ sơ này không?
           </div>
           <div class="modal-footer">
             <a id="delete" href="#"><button type="button" class="btn btn-primary">Đồng ý</button></a>
@@ -64,6 +64,7 @@
             @endif
               <span class="custom-icon mx-auto"><span class="icon-file-text d-block"></span></span>
               <h3>Mẫu hô sơ {{$key + 1}}</h3>
+              <span class="badge badge-pill badge-danger">Đang chờ duyệt</span>
               <p>Họ tên: {{ $profile->hoten }}</p>
               <p>Ngành nghề: {{ $profile->nganh }}</p>              
               <p>Khu vực: {{ $profile->khuvuc }}</p>  
@@ -78,7 +79,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <a class="dropdown-item" data-toggle="modal" data-target="#viewModal{{$key}}" href="javascript:void(0)">Xem mẫu</a>
-    <a class="dropdown-item" href="{{route('pdf-profile',$profile->id)}}">Xuất PDF</a>
+    <a class="dropdown-item" href="{{route('pdf-profile',$profile->id)}}" target="_blank">Xuất PDF</a>
     <a class="dropdown-item call-delete" id="{{$profile->id}}" data-toggle="modal" data-target="#deleteModal" href="javascript:void(0)">Xoá</a>
   </div>
 </div>
@@ -143,7 +144,7 @@
             </span>
             <h2 class="mb-4">Mục tiêu</h2>
             <p>
-              {!! nl2br($profile->muctieu) !!}
+              {!! $profile->muctieu ? nl2br($profile->muctieu) : 'Bạn để trống mục này!' !!}
             </p>           
             <h2 class="mb-4">Trình độ ngoại ngữ</h2>
             <p>
@@ -152,7 +153,7 @@
               {{$language}} <strong>&</strong>
               @endforeach
               @else
-                Chưa có ngoại ngữ!
+                Bạn để trống mục này!
               @endif
             </p>           
             <h2 class="mb-4">Trình độ tin học</h2>
@@ -162,13 +163,13 @@
               {{$itech}} <strong>&</strong>
               @endforeach
               @else
-                Không có!
+                Bạn để trống mục này!
               @endif
             </p>     
             <h2 class="mb-4">Sở trường</h2>
             <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam dolorum incidunt dolorem facere, officiis placeat consequuntur odit quasi, quam voluptates, deleniti! Neque tenetur in, omnis consectetur molestias expedita nostrum et.</p> <-->
             <p>
-              {!! nl2br($profile->sotruong) !!}
+              {!! $profile->sotruong ? nl2br($profile->sotruong) : 'Bạn để trống mục này!' !!}
             </p>            
             <p>
               <a href="#" class="btn btn-primary btn-md mt-4">{{$profile->created_at}}</a>

@@ -7,7 +7,13 @@
 
     <div class="">
         <div class="page-header-title">
-            <h4 class="page-title">Blank Page</h4>
+            <h4 class="page-title">Danh sách tin tuyển dụng</h4>
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                {{session('success')}} <a href="#" class="alert-link">Alert Link</a>.
+            </div>
+            @endif
         </div>
     </div>
 
@@ -18,7 +24,9 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="m-b-30 m-t-0">Danh sách tin tuyển dụng</h4>
+                            <h4 class="m-b-30 m-t-0">Danh sách tin tuyển dụng
+                                <a href="{{url('/administrators/tin-tuyen-dung/clear')}}"><button class="btn btn-danger float-right">Xoá tin đã hết hạn</button></a>
+                            </h4>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
@@ -57,7 +65,9 @@
                             </div>
                         </div>
                     </div>
+                    @include('admins.layouts.paginating',['job_listings' => $job_list])
                 </div>
+
             </div> <!-- End row -->
 
         </div><!-- container-fluid -->

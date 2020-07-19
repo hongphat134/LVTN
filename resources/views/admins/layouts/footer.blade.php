@@ -7,11 +7,7 @@
             <!-- End Right content here -->
 
         </div>
-        <!-- END wrapper -->
-
-
-        <!-- jQuery  -->
-        <script src="{{asset('admin\js\jquery.min.js')}}"></script>
+        
         <script src="{{asset('admin\js\popper.min.js')}}"></script>
         <script src="{{asset('admin\js\bootstrap.min.js')}}"></script>
         <script src="{{asset('admin\js\modernizr.min.js')}}"></script>
@@ -31,6 +27,6 @@
         <script src="{{asset('admin\pages\dashborad.js')}}"></script>
 
         <script src="{{asset('admin\js\app.js')}}"></script>
-
+        <!-- END wrapper -->        
     </body>
 </html>

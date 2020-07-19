@@ -32,6 +32,8 @@ class ComposerServiceProvider extends ServiceProvider
             'nguoitimviec.apply',  
             'nguoitimviec.create-profile',
             'nguoitimviec.update-profile',
+            'nhatuyendung.post-job',
+            'nhatuyendung.update-job',
         ],
         'App\Http\ViewComposers\BasicComposer');
     }

@@ -21,10 +21,12 @@
         <div class="row">
           @foreach($profile_list as $profile)
           <div class="col-6 col-md-6 col-lg-4 mb-4 mb-lg-5">            
-            <a href="service-single.html" class="block__16443 text-center d-block">
+            <a href="{{url('/nhatuyendung/view-profile',[$profile->idUser,$profile->idTTD])}}" class="block__16443 text-center d-block">
+              @if($profile->new == 1)
               <div class="ribbon-wrapper">
-                <div class="ribbon red">hot</div>
+                <div class="ribbon red">Mới</div>
               </div>
+              @endif
               <span class="custom-icon mx-auto"><span class="icon-file-text d-block"></span></span>
               <h3>{{$profile->hoten}}</h3>
               <p>{{$profile->nganh}}</p>

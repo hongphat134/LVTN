@@ -16,7 +16,7 @@ class UsersSeeder extends Seeder
         
         $data = [
         	['ten' => 'Phát', 'email' => 'phat@gmail.com', 'password' => '456789' ,'loaitk' => 1],
-            ['ten' => 'Tân', 'email' => 'tan@gmail.com', 'password' => '123456' ,'loaitk' => 1],
+            ['ten' => 'Tân', 'email' => 'tan@gmail.com', 'password' => '123456' ,'loaitk' => 2],
             ['ten' => 'Thành', 'email' => 'thanh@gmail.com', 'password' => '123789' ,'loaitk' => 0],
         
         ];

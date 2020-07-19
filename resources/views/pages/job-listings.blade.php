@@ -9,7 +9,7 @@
 
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">{{$job_listings->total()}} Job Listed</h2>
+            <h2 class="section-title mb-2">Có {{$job_listings->total()}} tin tuyển dụng</h2>
           </div>
         </div>
         
@@ -24,16 +24,7 @@
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
               <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
                 <h2>{{$news->nganh}}</h2>
-                <strong>{{$news->ten}}</strong>
-                <p>Ngày cập nhật:
-                  <span class="badge badge-info">
-                  {{date('d/m/Y',strtotime($news->updated_at))}}
-                  </span> &nbsp;
-                Hạn tuyển dụng:
-                  <span class="badge badge-dark">
-                  {{date('d/m/Y',strtotime($news->hantuyendung))}}
-                  </span>
-                </p>
+                <strong>{{$news->ten}}</strong>              
                 <div class="keywords">
                   @foreach($news->kinang as $skill)
                   <button class="btn btn-outline-info skill">{{$skill}}</button>
@@ -51,8 +42,14 @@
                 @else
                 <span class="badge badge-success">{{$news->trangthailv}}</span>
                 @endif
-               
-                
+                </br>
+                <span class="badge badge-dark">
+                Giờ đăng: {{ time_elapsed_string($news->updated_at) }}
+                </span>         
+                </br>
+                <span class="badge badge-info">
+                Hạn tuyển dụng: {{date('d/m/Y',strtotime($news->hantuyendung))}}
+                </span>
               </div>
             </div>            
           </li>

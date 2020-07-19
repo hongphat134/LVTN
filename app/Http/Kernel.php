@@ -58,5 +58,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'recruiter' => \App\Http\Middleware\RedirectIfNotRecruiter::class,
         'isEmailVerified' => \Lunaweb\EmailVerification\Middleware\IsEmailVerified::class,
+        'admin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
     ];
 }

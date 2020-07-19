@@ -12,9 +12,17 @@
 */
 Auth::routes();
 Route::get('/thongbao','HomeController@notification')->name('notification');
-Route::get('/error',function(){	
-	return view('pages.error');
-});
+Route::get('/error',function(){	return view('pages.error'); });
+Route::get('/about',function(){	return view('pages.about'); });
+Route::get('/blog-single',function(){	return view('samples.blog-single'); });
+Route::get('/blog',function(){	return view('samples.blog'); });
+Route::get('/gallery',function(){	return view('samples.gallery'); });
+Route::get('/portfolio-single',function(){	return view('samples.portfolio-single'); });
+Route::get('/portfolio',function(){	return view('samples.portfolio'); });
+Route::get('/testimonials',function(){	return view('samples.testimonials'); });
+Route::get('/faq',function(){	return view('samples.faq'); });
+Route::get('/service-single',function(){	return view('samples.service-single'); });
+Route::get('/services',function(){	return view('samples.services'); });
 
 Route::get('/contact','LienHeController@getContact');
 Route::post('/contact','LienHeController@sendMessage');
@@ -47,21 +55,20 @@ Route::group(['middleware' => ['guest','isEmailVerified']], function() {
 
 		Route::get('/update-profile/{profile_id}','NguoiTimViecController@getUpdateProfile')->where('profile_id', '[0-9]+');
 		Route::post('/update-profile/{profile_id}','NguoiTimViecController@postUpdateProfile');			
-
 		Route::get('/choose-apply/{ttd_id}','NguoiTimViecController@getSelectApply');
 
 		Route::get('/apply/{ttd_id}','NguoiTimViecController@getApply')->name('apply')->where('ttd_id', '[0-9]+');
 		Route::post('/apply/{ttd_id}','NguoiTimViecController@postApply');	
 
-		Route::get('/save-job/{news_id}','NguoiTimViecController@saveJob')->where('news_id','[0-9]+');
-		Route::get('/unsave-job/{news_id}','NguoiTimViecController@unsaveJob');
-
 		Route::get('/save-job-list','NguoiTimViecController@getSaveJob')->name('saveJobs');
 		Route::get('/applied-job-list','NguoiTimViecController@getAppliedJob')->name('appliedJobs');
 
 		Route::get('/set-status/{hs_id}','NguoiTimViecController@setStatus')->where('hs_id','[0-9]+');
-
-		Route::get('/pdf/{hs_id}','NguoiTimViecController@pdfProfile')->where('hs_id','[0-9]+')->name('pdf-profile');
+		// PDF
+		Route::get('/pdf/{hs_id}','PDFController@pdfProfile')->where('hs_id','[0-9]+')->name('pdf-profile');
+		// AJAX
+		Route::get('/save-job/{news_id}','NguoiTimViecController@saveJob')->where('news_id','[0-9]+');
+		Route::get('/unsave-job/{news_id}','NguoiTimViecController@unsaveJob');		
 	});
 });
 
@@ -91,6 +98,8 @@ Route::group(['prefix' => 'nhatuyendung','middleware' => ['auth','recruiter','is
 	Route::get('/unsave-profile/{hs_id}','NhaTuyenDungController@unsaveProfile');
 
 	Route::get('/tim-kiem','NhaTuyenDungController@search');
+
+	Route::get('/view-profile/{ntv_id}/{ttd_id}','NhaTuyenDungController@viewApplied')->where('ntv_id','[0-9]+')->where('ttd_id','[0-9]+');
 });
 
 Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
@@ -107,7 +116,8 @@ Route::group(['middleware' => ['web', 'auth', 'isEmailVerified']], function () {
 });
 
 // Admin
-Route::group(['prefix' => 'administrators'], function () {
+Route::get('/login-admin','AdminController@getLogin');
+Route::group(['prefix' => 'administrators','middleware' => ['admin']], function () {
 	Route::get('/','AdminController@home');
 	Route::get('/home','AdminController@home');
 
@@ -118,6 +128,10 @@ Route::group(['prefix' => 'administrators'], function () {
 		Route::get('/danh-sach','AdminController@getRecList');
 		Route::get('/phe-duyet','AdminController@getApprovedRecList');
 		Route::get('/phe-duyet/{ttd_id}','AdminController@approvedRec')->where('ttd_id', '[0-9]+');
+		Route::get('/view-pdf/{ttd_id}','PDFController@viewPDFJob')->where('ttd_id', '[0-9]+');
+		Route::get('/export-pdf/{ttd_id}','PDFController@exportPDFJob')->where('ttd_id', '[0-9]+');
+		Route::get('/export-all','PDFController@exportAll');
+		Route::get('/clear','AdminController@clear');
 	});
 	
 	Route::group(['prefix' => 'ho-so'], function () {

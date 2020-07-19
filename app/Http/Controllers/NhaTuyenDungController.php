@@ -11,8 +11,9 @@ use App\KinhNghiem;
 use App\TinTuyenDung;
 use App\NhaTuyenDung;
 use App\NguoiTimViec;
+use App\HoSoXinViec;
 use Auth;
-use Carbon\Carbon;
+// use Carbon\Carbon;
 // use Illuminate\Support\Facades\Input;
 
 class NhaTuyenDungController extends Controller
@@ -20,25 +21,18 @@ class NhaTuyenDungController extends Controller
     //
     public function index(){    	
         $profile_list = NguoiTimViec::where('congkhai','=','1')
-                ->where('trangthai','=',1)->paginate(2)->fragment('content');
+                ->where('trangthai','=',1)->paginate(2)->fragment('content');       
         // dd($profile_list);
     	return view('nhatuyendung.home',compact('profile_list'));
     }
 
     public function getPostJob(){
-    	$skill_list = KiNang::all();
-        $degree_list = BangCap::all();
-    	$job_list = NganhNghe::all();
-        $exp_list = KinhNghiem::all();
-        $salary_list = MucLuong::all();
-    	// dd($skill_list->toArray());
-
-    	return view('nhatuyendung.post-job',compact('skill_list','job_list','exp_list','salary_list','degree_list'));
+    	return view('nhatuyendung.post-job');
     }
 
     public function postPostJob(Request $rq){
     	// Problem: chưa xử lý phần KHÁC của các select
-        var_dump($rq->all());
+        var_dump($rq->all());        
     	$validator = $this->validate($rq, 
 			[
 				//Kiểm tra giá trị rỗng
@@ -47,9 +41,10 @@ class NhaTuyenDungController extends Controller
                 'skill' => 'required',
 				'job' => 'required',
 				'degree' => 'required',
+                'rank' => 'required',
                 'exp' => 'required',
 				'salary' => 'required',
-				'region' => 'required',
+				'region' => 'required',                
 			],			
 			[
 				//Tùy chỉnh hiển thị thông báo
@@ -57,6 +52,7 @@ class NhaTuyenDungController extends Controller
 				'job.required' => 'Bạn chưa chọn ngành nghề!',
 				'skill.required' => 'Bạn chưa chọn kĩ năng!',	
                 'degree.required' => 'Bạn chưa chọn yêu cầu bằng cấp!',   
+                'rank.required' => 'Bạn chưa chọn yêu cầu vị trí!',
 				'salary.required' => 'Bạn chưa chọn mức lương!',
 				'vacancy.required' => 'Bạn chưa nhập số lượng!',
 				'exp.required' => 'Bạn chưa chọn yêu cầu kinh nghiệm!',			
@@ -71,11 +67,18 @@ class NhaTuyenDungController extends Controller
                             ->withInput($rq);
             }    
         }
-    	// var_dump($rq->all());
+        // Hạn tuyển dụng phải sau ngày hiện tại?
+        if($rq->deadline <= date('Y-m-d')) return redirect()->back()->with(['error' => 'Hạn tuyển dụng phải sau ngày hiện tại!'])->withInput();
+        // Kiểm tra URL website có đúng định dạng ko?
+        if($rq->website){
+            $reg_url = '/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{1,5}(:[0-9]{1,5})?(\/.*)?$/';
+            if(!preg_match($reg_url,$rq->website))
+                return redirect()->back()->with(['error' => 'Đường dẫn website bạn nhập không hợp lệ!'])->withInput();                             
+        }
 
         // kĩ năng, khu vực chuyển thành JSON
     	$skill = json_encode($rq->skill);
-        $region = json_encode($rq->region);
+        $region = json_encode($rq->region,JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 
     	$news = new TinTuyenDung;
     	
@@ -84,6 +87,7 @@ class NhaTuyenDungController extends Controller
 
     	$news->nganh = $rq->job;
         $news->bangcap = $rq->degree;
+        $news->capbac = $rq->rank;
     	$news->mucluong = $rq->salary;
     	$news->soluong = $rq->vacancy;
     	$news->trangthailv = $rq->status;
@@ -91,33 +95,46 @@ class NhaTuyenDungController extends Controller
     	$news->kinhnghiem = $rq->exp;
     	$news->remember_token = $rq->_token;
     	$news->idNTD = Auth::user()->id;
-
+        
         $news->hantuyendung = $rq->deadline;
         // 0 là chưa duyệt. Ngc lại, 1 là đã duyệt. Default: 0
         $news->congkhai = 0;
+        // Các trường mới        
+        // array_filter(array) => lọc các giá trị null trong mảng nhưng giữ nguyên key        
+        // $result = array_filter($rq->des_job);
+        // array_values(input) => set key lại mặc định (0,1,2,3,...)
+        // $result = array_values($result);
+        // var_dump($result);
+        if(is_array($rq->language)) 
+            $news->ngoaingu = json_encode($rq->language,JSON_UNESCAPED_UNICODE);
+        if(is_array($rq->itech))
+            $news->tinhoc = json_encode($rq->itech,JSON_UNESCAPED_UNICODE);
 
+        if($rq->des_job = array_values(array_filter($rq->des_job))){         
+            $news->motacv = json_encode($rq->des_job,JSON_UNESCAPED_UNICODE);
+        }  
+        if($rq->benefit = array_values(array_filter($rq->benefit))){         
+            $news->quyenloi = json_encode($rq->benefit,JSON_UNESCAPED_UNICODE);
+        }
+        if($rq->info_contact = array_values(array_filter($rq->info_contact))){         
+            $news->ttlienhe = json_encode($rq->info_contact,JSON_UNESCAPED_UNICODE);
+        }      
+
+        $news->website = $rq->website;        
     	$news->save();
         // dd($news);
-
-    	// Chuyển đến trang quản lý hoặc tại trang đó 
     	return redirect()->route('updateJob',$news->id)->with(['success' => 'Lưu thành công!']);
     }
 
     public function getUpdateJob($news_id){
     	$news = TinTuyenDung::find($news_id);
 
-        if($news == null) return redirect('/error')->with(['error' => 'Lỗi tìm kiếm tin tuyển dụng!']);
-
-        $degree_list = BangCap::all();
-        $skill_list = KiNang::all();
-        $job_list = NganhNghe::all();
-        $exp_list = KinhNghiem::all();
-        $salary_list = MucLuong::all();              
+        if($news == null) return redirect('/error')->with(['error' => 'Lỗi tìm kiếm tin tuyển dụng!']);      
         
         // Biến chuỗi json kĩ năng thành mảng
         $news->kinang = json_decode($news->kinang);
         // dd($news);
-        return view('nhatuyendung.update-job',compact('skill_list','job_list','exp_list','salary_list','news','degree_list'));
+        return view('nhatuyendung.update-job',compact('news'));
     }
 
     public function postUpdateJob(Request $rq,$news_id){
@@ -136,6 +153,15 @@ class NhaTuyenDungController extends Controller
             ]
         );
 
+        // Hạn tuyển dụng phải sau ngày hiện tại?
+        if($rq->deadline <= date('Y-m-d')) return redirect()->back()->with(['error' => 'Hạn tuyển dụng phải sau ngày hiện tại!'])->withInput();
+        // Kiểm tra URL website có đúng định dạng ko?
+        if($rq->website){
+            $reg_url = '/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{1,5}(:[0-9]{1,5})?(\/.*)?$/';
+            if(!preg_match($reg_url,$rq->website))
+                return redirect()->back()->with(['error' => 'Đường dẫn website bạn nhập không hợp lệ!'])->withInput();                             
+        }
+
         $skill = json_encode($rq->skill);
         $region = json_encode($rq->region);
 
@@ -148,12 +174,30 @@ class NhaTuyenDungController extends Controller
         $news->mucluong = $rq->salary;
         $news->soluong = $rq->vacancy;
         $news->bangcap = $rq->degree;
+        $news->capbac = $rq->rank;
         $news->trangthailv = $rq->status;
         $news->gioitinh = $rq->gender;
         $news->kinhnghiem = $rq->exp;
         $news->remember_token = $rq->_token;  
 
         $news->hantuyendung = $rq->deadline;
+
+        if(is_array($rq->language)) 
+            $news->ngoaingu = json_encode($rq->language,JSON_UNESCAPED_UNICODE);
+        if(is_array($rq->itech))
+            $news->tinhoc = json_encode($rq->itech,JSON_UNESCAPED_UNICODE);
+
+        if($rq->des_job = array_values(array_filter($rq->des_job))){         
+            $news->motacv = json_encode($rq->des_job,JSON_UNESCAPED_UNICODE);
+        }  
+        if($rq->benefit = array_values(array_filter($rq->benefit))){         
+            $news->quyenloi = json_encode($rq->benefit,JSON_UNESCAPED_UNICODE);
+        }
+        if($rq->info_contact = array_values(array_filter($rq->info_contact))){         
+            $news->ttlienhe = json_encode($rq->info_contact,JSON_UNESCAPED_UNICODE);
+        }      
+
+        $news->website = $rq->website;
 
         $news->update();
         
@@ -163,7 +207,7 @@ class NhaTuyenDungController extends Controller
     public function getJobList(){    	
         $job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
                 ->where('tintuyendung.idNTD','=',Auth::user()->id)
-                ->paginate(3);
+                ->paginate(3)->fragment('next');
     	
         // Chuyển JSON kĩ năng thành mảng
         for ($i=0; $i < count($job_listings) ; $i++) { 
@@ -266,7 +310,7 @@ class NhaTuyenDungController extends Controller
                         ->select('hosoxinviec.*','tintuyendung.nganh as title') 
                         // ĐK để lọc hồ sơ thuộc nhà tuyển dụng nào quản lý
                         ->where('nhatuyendung.idUser','=',Auth::user()->id)
-                        ->paginate(1)->fragment('next-section');
+                        ->paginate(3)->fragment('next-section');
         // dd($profile_list);    
         return view('nhatuyendung.applied-profile-listings',compact('profile_list'));
     }
@@ -318,5 +362,12 @@ class NhaTuyenDungController extends Controller
                                 ]);
         // dd($profile_list);
         return view('nhatuyendung.home',compact('profile_list'));
+    }
+
+    public function viewApplied($user_id,$job_id){
+        $profile = HoSoXinViec::where('idUser',$user_id)
+                    ->where('idTTD',$job_id)->get()->first();
+        // dd($profile);
+        return view('nhatuyendung.applied-single',compact('profile'));
     }
 }

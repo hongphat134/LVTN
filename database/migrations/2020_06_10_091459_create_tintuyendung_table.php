@@ -28,16 +28,19 @@ class CreateTintuyendungTable extends Migration
             // Full time or Part time
             $table->string('trangthailv')->nullable();
             $table->string('tinhthanhpho')->nullable();
-
             $table->string('gioitinh')->nullable();            
-            $table->string('kinhnghiem')->nullable();  
+            $table->string('kinhnghiem')->nullable();
+            $table->string('ngoaingu')->nullable();
+            $table->string('tinhoc')->nullable();  
             //  3 tháng , 6 tháng or trao đổi trực tiếp khi phỏng vấn?
             // $table->string('tgthuviec')->nullable();
             $table->date('hantuyendung')->nullable();            
             $table->longText('motacv')->nullable();            
             $table->longText('quyenloi')->nullable();            
             // Thông tin liên hệ với cá nhân phụ trách đăng tin này
-            // $table->longText('ttlienhe')->nullable();            
+            $table->longText('ttlienhe')->nullable();
+            // Website công ty
+            $table->string('website')->nullable();
             $table->integer('idNTD')->unsigned();
             $table->foreign('idNTD')->references('idUser')->on('nhatuyendung')->onUpdate('cascade');
             $table->tinyInteger('congkhai')->nullable();

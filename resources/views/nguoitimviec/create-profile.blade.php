@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
     <!-- HOME -->
-    <section class="section-hero overlay inner-page bg-image" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
+    <section class="section-hero overlay inner-page bg-image home-section" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
@@ -14,6 +14,9 @@
           </div>
         </div>
       </div>
+      <a href="#footer" class="scroll-button smoothscroll">
+        <span class=" icon-keyboard_arrow_down"></span>
+      </a>
     </section>
 
     
@@ -21,23 +24,24 @@
       <div class="container">
 
         <div class="row align-items-center mb-5">
-          <div class="col-lg-8 mb-4 mb-lg-0">
+          <div class="col-lg-7 mb-4 mb-lg-0">
             <div class="d-flex align-items-center">
               <div>
                 <h2>Mẫu hồ sơ</h2>
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-5">
             <div class="row">
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Xem trước</a>
+                <a href="javascript:void(0)" class="btn btn-block btn-light btn-md preview" data-toggle="modal" data-target=".bd-example-modal-xl">
+                <span class="icon-open_in_new mr-2"></span>Xem trước</a>
               </div>
               <div class="col-6">
                 <a href="#" class="btn btn-block btn-primary btn-md"
                     onclick="event.preventDefault();
                            document.getElementById('profile').submit();">
-                Lưu mẫu
+                <span class="icon-list-alt mr-2"></span>Tạo mẫu hồ sơ
               </a>
               </div>
             </div>
@@ -93,7 +97,7 @@
               <div class="form-group">
                 <label for="job-title">Ngành nghề</label>
                 <select class="selectpicker border rounded" name="title" id="title" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngành nghề" required>                
-                      @foreach($ds_job as $job)                      
+                      @foreach($job_list as $job)                      
                       <option {{ strcasecmp(old('title'),$job) == 0?'selected':'' }}>{{$job}}</option>                      
                       @endforeach
                       <option value="other">Khác</option>
@@ -109,7 +113,7 @@
 
               <div class="form-group">
                 <label for="job-region">Kĩ năng cá nhân</label>
-                <select class="selectpicker border rounded" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" name="skill[]" title="Chọn kĩ năng..." multiple data-max-options="5">
+                <select class="selectpicker border rounded" id="skill-list" data-style="btn-black" data-width="100%" data-live-search="true" name="skill[]" title="Chọn kĩ năng..." multiple data-max-options="5">
                       @foreach($skill_list as $skill)
                       <option value="{{$skill->id}}"
 				@if(is_array(old('skill')))                        
@@ -136,8 +140,8 @@
               <div class="form-group">
                 <label for="job-title">Bằng cấp cao nhất</label>
                 <select class="selectpicker border rounded" name="degree" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn bằng cấp" required>                
-                      @foreach($ds_bc as $bc)
-                   	<option {{ strcasecmp(old('degree'),$bc) == 0?'selected':'' }}>{{$bc}}</option>                      
+                      @foreach($degree_list as $degree)
+                   	<option {{ strcasecmp(old('degree'),$degree) == 0?'selected':'' }}>{{$degree}}</option>                      
                       @endforeach
                 </select>
               </div>
@@ -145,8 +149,8 @@
               <div class="form-group">
                 <label for="job-title">Cấp bậc cao nhất</label>
                 <select class="selectpicker border rounded" name="rank" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn cấp bậc" required>                
-                      @foreach($ds_cb as $cb)                                          
-                      <option {{ strcasecmp(old('rank'),$cb) == 0?'selected':'' }}>{{$cb}}</option>                      
+                      @foreach($rank_list as $rank)                                          
+                      <option {{ strcasecmp(old('rank'),$rank) == 0?'selected':'' }}>{{$rank}}</option>                      
                       @endforeach
                 </select>
               </div>
@@ -186,8 +190,8 @@
               <h3 class="text-black my-5 border-bottom pb-2">Trình độ ngoại ngữ</h3>              
               <div class="form-group">
                 <label for="job-region">Ngoại ngữ</label>
-                <select class="selectpicker border rounded" name="language[]" id="language" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngoại ngữ" required multiple>
-                      @foreach($ds_nn as $language)
+                <select class="selectpicker border rounded" name="language[]" id="language" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngoại ngữ" required multiple value="">
+                      @foreach($language_list as $language)
                       <option
                       @if(is_array(old('language')))
                       {{ in_array($language,old('language')) ? 'selected':'' }}
@@ -225,7 +229,7 @@
               <div class="form-group">
                 <label for="nae">Phần mềm</label>
                 <select class="selectpicker border rounded" name="itech[]" id="itech" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn phần mềm" required multiple>
-                      @foreach($ds_th as $itech)
+                      @foreach($itech_list as $itech)
                       <option
                       @if(is_array(old('itech')))
                       {{ in_array($itech,old('itech')) ? 'selected':'' }}
@@ -250,12 +254,12 @@
 
               <h3 class="text-black my-5 border-bottom pb-2">Mục tiêu nghề nghiệp</h3>
               <div class="form-group">
-                  <textarea class="form-control" name="target" id="" cols="30" rows="10" placeholder="Nhập mục tiêu....">{{ old('target')}}</textarea>
+                  <textarea class="form-control" name="target" cols="30" rows="10" placeholder="Nhập mục tiêu....">{{ old('target')}}</textarea>
               </div>
 
               <h3 class="text-black my-5 border-bottom pb-2">Sở trường</h3>
               <div class="form-group">
-                  <textarea class="form-control" name="talent" id="" cols="30" rows="10" placeholder="Nhập sở trường....">{{old('talent')}}</textarea>
+                  <textarea class="form-control" name="talent" cols="30" rows="10" placeholder="Nhập sở trường....">{{old('talent')}}</textarea>
               </div>
               
             </form>
@@ -265,23 +269,106 @@
         </div>
         <div class="row align-items-center mb-5">
           
-          <div class="col-lg-4 ml-auto">
+          <div class="col-lg-5 ml-auto">
             <div class="row">
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</a>
+                <!-- <a href="javascript:void(0)" id="preview" class="btn btn-block btn-light btn-md" data-toggle="modal" data-target=".bd-example-modal-xl">
+                <span class="icon-open_in_new mr-2"></span>Xem trước</a> -->
+                <a href="javascript:void(0)" class="btn btn-block btn-light btn-md preview" data-toggle="modal" data-target=".bd-example-modal-xl">
+                <span class="icon-open_in_new mr-2"></span>Xem trước</a>
               </div>
               <div class="col-6">
                 <a href="#" class="btn btn-block btn-primary btn-md"
                       onclick="event.preventDefault();
                            document.getElementById('profile').submit();"
                 >
-              Save Job
-            </a>
+              <span class="icon-list-alt mr-2"></span>Tạo mẫu hồ sơ
+              </a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <script src="{{asset('js/profile.js')}}"></script>
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="previewProfile" aria-hidden="true" style="z-index: 1999">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="previewProfile">Xem trước</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">            
+        <section class="site-section" style="padding-top: 0">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 blog-content">
+            <h3 class="mb-4" id="title-preview"></h3>
+            <p class="lead" id="degree-preview"></p>        
+
+            <blockquote><p id="rank-preview"></p></blockquote>
+                      
+            <p id="region-preview"></p>
+
+            <h4 class="mt-5 mb-4" id="status-preview"></h4>
+
+            <p id="marital_stt-preview"></p>
+
+            <p id="exp-preview">I</p>
+            <p id="email-preview"></p>
+
+            <div class="pt-5">
+              <p id="target-preview"></p>
+            </div>
+
+          </div>
+          <div class="col-lg-4 sidebar pl-lg-5">
+            <div class="sidebar-box">
+              <img src="{{asset('images/person_1.jpg')}}" alt="Image placeholder" class="img-fluid mb-4 w-50 rounded-circle">
+              <h3 id="name-preview"></h3>
+              <p id="talent-preview"></p>
+              <p><a href="#" class="btn btn-primary btn-sm">Mô tả sơ lược</a></p>
+            </div>
+
+            <div class="sidebar-box">
+              <div class="categories">
+                <h3>Kỹ năng</h3>
+                <div id="skill-preview">
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-box">
+              <div class="categories">
+                <h3>Trình độ ngoại ngữ</h3>
+                <div id="language-preview">
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-box">
+              <div class="categories">
+                <h3>Trình độ tin học</h3>
+                <div id="itech-preview">
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <a href="javascript::void(0)"  onclick="event.preventDefault();
+                           document.getElementById('profile').submit();"
+                ><button type="button" class="btn btn-primary">Tạo mẫu hồ sơ</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+    <script src="{{asset('js/profile.js')}}"></script>    
 @endsection

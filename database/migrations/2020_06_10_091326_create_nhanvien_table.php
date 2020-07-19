@@ -13,17 +13,17 @@ class CreateNhanvienTable extends Migration
      */
     public function up()
     {
-        Schema::create('nhanvien', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('hoten')->nullable();
-            $table->string('email')->nullable();
-            $table->string('sdt')->nullable();
-            $table->string('cmnd')->nullable();
-            $table->string('diachi')->nullable();
-            $table->integer('idAdmin')->unsigned();
-            $table->foreign('idAdmin')->references('id')->on('admins')->onUpdate('cascade');
-            $table->timestamps();
-        });
+        // Schema::create('nhanvien', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('hoten')->nullable();
+        //     $table->string('email')->nullable();
+        //     $table->string('sdt')->nullable();
+        //     $table->string('cmnd')->nullable();
+        //     $table->string('diachi')->nullable();
+        //     $table->integer('idAdmin')->unsigned();
+        //     $table->foreign('idAdmin')->references('id')->on('admins')->onUpdate('cascade');
+        //     $table->timestamps();
+        // });
     }
 
     /**

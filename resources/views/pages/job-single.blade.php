@@ -86,41 +86,34 @@
               <figure class="mb-5"><img src="{{url('images/job_single_img_1.jpg')}}" alt="Image" class="img-fluid rounded"></figure>
               <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-align-left mr-3"></span>Mô tả công việc</h3>
                <ul class="list-unstyled m-0 p-0">
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>{!! $news->motacv !!}</span></li>
+              @if($news->motacv)
+                @foreach(json_decode($news->motacv) as $chitiet)
+                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>{!! $chitiet !!}</span></li>
+                @endforeach              
+              @endif                
               </ul>              
             </div>
             <div class="mb-5">
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Responsibilities</h3>
+              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Quyền lợi</h3>
               <ul class="list-unstyled m-0 p-0">
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Necessitatibus quibusdam facilis</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Velit unde aliquam et voluptas reiciendis n Velit unde aliquam et voluptas reiciendis non sapiente labore</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Commodi quae ipsum quas est itaque</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li>
+              @if($news->quyenloi)
+                @foreach(json_decode($news->quyenloi) as $quyenloi)
+                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>{!! $quyenloi !!}</span></li>
+                @endforeach
+              @endif               
               </ul>
             </div>
 
             <div class="mb-5">
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-book mr-3"></span>Education + Experience</h3>
+              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-book mr-3"></span>Thông tin liên hệ</h3>
               <ul class="list-unstyled m-0 p-0">
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Necessitatibus quibusdam facilis</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Velit unde aliquam et voluptas reiciendis non sapiente labore</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Commodi quae ipsum quas est itaque</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li>
+              @if($news->ttlienhe)
+                @foreach(json_decode($news->ttlienhe) as $chitiet)
+                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>{!! $chitiet !!}</span></li>
+                @endforeach
+              @endif               
               </ul>
-            </div>
-
-            <div class="mb-5">
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-turned_in mr-3"></span>Những quyền lợi khác</h3>
-              <ul class="list-unstyled m-0 p-0">
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>{{$news->quyenloi}}</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Velit unde aliquam et voluptas reiciendis non sapiente labore</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Commodi quae ipsum quas est itaque</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li>
-              </ul>
-            </div>
+            </div>           
 
             <div class="row mb-5">
               @if(Auth::check())
@@ -156,15 +149,30 @@
               <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Tổng quan</h3>
               <ul class="list-unstyled pl-3 mb-0">
                 <li class="mb-2"><strong class="text-black">Ngày đăng:</strong> {{date("d-m-Y", strtotime($news->created_at))}}</li>
-                <li class="mb-2"><strong class="text-black">Số lượng:</strong> {{$news->soluong}}</li>
+                <li class="mb-2"><strong class="text-black">Vị trí cần tuyển: <span class="badge badge-primary">{{$news->capbac}}</span></strong></li>
+                <li class="mb-2"><strong class="text-black">Số lượng:</strong> {{$news->soluong}} người</li>
                 <li class="mb-2"><strong class="text-black">Yêu cầu trình độ:</strong> {{$news->bangcap}}</li>
-                <li class="mb-2"><strong class="text-black">Yêu cầu kĩ năng:</strong> 
-                
+                <li class="mb-2"><strong class="text-black">Yêu cầu kĩ năng:</strong>                 
                 @foreach($news->kinang as $skill)
-                <span class="badge badge-info">{{$skill->ten}}</span>
+                  <span class="badge badge-info">{{$skill->ten}}</span>
                 @endforeach
-                
                 </li>
+                @if($news->ngoaingu)
+                <li class="mb-2"><strong class="text-black">Yêu cầu ngoại ngữ:</strong>                 
+                @foreach(json_decode($news->ngoaingu) as $language)
+                  <span class="badge badge-secondary">{{$language}}</span>
+                @endforeach
+                </li>
+                @endif
+                
+                @if($news->tinhoc)
+                <li class="mb-2"><strong class="text-black">Yêu cầu trình độ tin học:</strong>                 
+                @foreach(json_decode($news->tinhoc) as $itech)
+                  <span class="badge badge-primary">{{$itech}}</span>
+                @endforeach
+                </li>
+                @endif
+
                 <li class="mb-2"><strong class="text-black">Trạng thái làm việc:</strong> {{$news->trangthailv}}</li>
                 <li class="mb-2"><strong class="text-black">Kinh nghiệm:</strong> {{$news->kinhnghiem}}</li>
                 <li class="mb-2"><strong class="text-black">Khu vực làm việc:</strong> 
@@ -175,6 +183,9 @@
                 <li class="mb-2"><strong class="text-black">Mức lương:</strong> {!!$news->mucluong!!}</li>
                 <li class="mb-2"><strong class="text-black">Giới tính:</strong> {{$news->gioitinh}}</li>
                 <li class="mb-2"><strong class="text-black">Hạn tuyển dụng: </strong><span class="text-danger">{{date("d-m-Y", strtotime($news->hantuyendung))}}</span></li>
+                @if($news->website)
+                <li class="mb-2"><strong class="text-black">Website:</strong> {{$news->website}}</li>
+                @endif
               </ul>
             </div>
 
@@ -197,7 +208,7 @@
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">{{$related_jobs->count()}} Related Jobs</h2>
+            <h2 class="section-title mb-2">{{$related_jobs->count()}} tin tuyển dụng liên quan</h2>
           </div>
         </div>
         
@@ -230,7 +241,11 @@
                 @else
                 <span class="badge badge-success">{{$job->trangthailv}}</span>
                 @endif
-              </div>
+              </br>
+                <span class="badge badge-dark">Giờ đăng: {{time_elapsed_string($job->created_at)}}</span>
+              </br>
+              <span class="badge badge-info">Hạn tuyển dụng: {{date("d-m-Y", strtotime($job->hantuyendung))}}</span>
+              </div>              
             </div>            
           </li>
           @endforeach          

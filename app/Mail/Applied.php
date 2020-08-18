@@ -11,14 +11,16 @@ class Applied extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private $to_email;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($to_email = '')
     {
         //
+        $this->to_email = $to_email;
     }
 
     /**
@@ -30,6 +32,6 @@ class Applied extends Mailable
     {
         return $this->markdown('emails.applied')
                 ->subject('Hồ sơ xin việc')
-                ->to('conbaba999990@gmail.com');
+                ->to($to_email ? $to_email : 'conbaba999990@gmail.com');
     }
 }

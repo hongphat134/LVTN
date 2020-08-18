@@ -65,6 +65,7 @@
                             </div>
                         </div>
                     </div>
+                    @include('admins.layouts.paginating',['job_listings' => $user_list])
                 </div>
             </div> <!-- End row -->
 

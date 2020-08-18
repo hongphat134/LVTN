@@ -31,7 +31,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="m-b-30 m-t-0">
-                                Danh sách tin tuyển dụng 
+                                Danh sách tin tuyển dụng (Tổng cộng có {{$job_list->total()}} tin) 
                                 <button type="submit" id="export-all" class="btn btn-danger float-right">Export PDF</button>
                                 <form id="export-form" action="{{url('/administrators/tin-tuyen-dung/export-all')}}">
                                     <input type="hidden" name="path" id="path">

@@ -24,7 +24,7 @@ namespace App\Http\Controllers;
 	 function createUser($getInfo,$provider){	 	
 		$user = User::where('provider_id', $getInfo->id)->first();
 		if (!$user) {
-			if($provider == 'github') $getInfo->name = $getInfo->nickname;
+			// if($provider == 'github') $getInfo->name = $getInfo->nickname;
 		     $user = User::create([
 		        'ten'     => $getInfo->name,
 		        'email'    => $getInfo->email,
@@ -32,6 +32,7 @@ namespace App\Http\Controllers;
 		        'provider_id' => $getInfo->id,
 		        'provider_token' => $getInfo->token,
 		        'loaitk' => 0,
+		        'verified' => 1,
 		    ]);
 		  }
 	    return $user;

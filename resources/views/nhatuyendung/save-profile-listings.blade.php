@@ -1,4 +1,4 @@
-@extends('ntd_layouts.master')
+@extends('layouts.master')
 @section('content')
     <!-- HOME -->
     <section class="section-hero overlay inner-page bg-image" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
@@ -17,7 +17,8 @@
 
     <section class="site-section services-section bg-light block__62849" id="next-section">
       <div class="container">
-        @if(!empty($profile_list))
+        @if($profile_list->total() != 0)
+        <h2 class="section-title mb-2">Bạn đang theo dõi {{$profile_list->total()}} mẫu hồ sơ </h2>
         <div class="row">
           @foreach($profile_list as $profile)
           <div class="col-6 col-md-6 col-lg-4 mb-4 mb-lg-5">
@@ -35,25 +36,9 @@
         </div>    
         
         <!-- Phân trang chưa truyền biến dc :( -->
-        <!-- <div class="row pagination-wrap">
-          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-7 Of 43,167 Jobs</span>
-          </div>
-          <div class="col-md-6 text-center text-md-right">
-            <div class="custom-pagination ml-auto">
-              <a href="#" class="prev">Prev</a>
-              <div class="d-inline-block">
-              <a href="#" class="active">1</a>
-              <a href="#">2</a>
-              <a href="#">3</a>
-              <a href="#">4</a>
-              </div>
-              <a href="#" class="next">Next</a>
-            </div>
-          </div>
-        </div>   -->
+          @include('layouts.paginating',['job_listings' => $profile_list])  
         @else
-          Không có tin nào cả!
+          <h4 class="section-title mb-2">Bạn chưa theo dõi <a href="{{url('/nhatuyendung/danh-sach-ho-so')}}">hồ sơ</a> nào cả! Hãy xem <a href="{{url('/nhatuyendung/danh-sach-ho-so')}}">hồ sơ</a> công khai  của người tìm việc để tìm kiếm nhân lực phù hợp và nhanh chóng bạn nhé!</h4>
         @endif  
       </div>
     </section>

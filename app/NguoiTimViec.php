@@ -8,6 +8,7 @@ class NguoiTimViec extends Model
 {
     //
     protected $table = 'nguoitimviec';
+    public $timestamps = true;
 
     // protected $primaryKey = 'idUser';
 }

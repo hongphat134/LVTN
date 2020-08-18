@@ -7,6 +7,7 @@
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <meta name="author" content="Free-Template.co" />
+    <!-- <meta name="csrf-token" content="{{ csrf_token() }}" /> -->
     <link rel="shortcut icon" href="{{url('favicon.png')}}">
     
     <!-- CSS -->
@@ -33,7 +34,7 @@
     <script src="{{asset('js/custom.js')}}"></script>
 
     <!-- MAIN CSS -->
-        
+            
   </head>
   <body id="top">
 

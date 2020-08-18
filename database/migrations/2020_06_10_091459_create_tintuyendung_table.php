@@ -15,7 +15,7 @@ class CreateTintuyendungTable extends Migration
     {
         Schema::create('tintuyendung', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('kinang')->nullable();
+            $table->json('kinang')->nullable();
             $table->string('nganh')->nullable();
             $table->string('mucluong')->nullable();
             $table->integer('soluong')->nullable();
@@ -27,25 +27,27 @@ class CreateTintuyendungTable extends Migration
             // $table->string('hinhthuclv')->nullable();
             // Full time or Part time
             $table->string('trangthailv')->nullable();
-            $table->string('tinhthanhpho')->nullable();
+            $table->json('tinhthanhpho')->nullable();
             $table->string('gioitinh')->nullable();            
             $table->string('kinhnghiem')->nullable();
-            $table->string('ngoaingu')->nullable();
-            $table->string('tinhoc')->nullable();  
+            $table->json('ngoaingu')->nullable();
+            $table->json('tinhoc')->nullable();  
             //  3 tháng , 6 tháng or trao đổi trực tiếp khi phỏng vấn?
             // $table->string('tgthuviec')->nullable();
             $table->date('hantuyendung')->nullable();            
-            $table->longText('motacv')->nullable();            
-            $table->longText('quyenloi')->nullable();            
+            $table->json('motacv')->nullable();            
+            $table->json('quyenloi')->nullable();            
             // Thông tin liên hệ với cá nhân phụ trách đăng tin này
-            $table->longText('ttlienhe')->nullable();
-            // Website công ty
-            $table->string('website')->nullable();
+            $table->json('ttlienhe')->nullable();                        
+            // 0 là đã xem, 1 là mới
+            $table->integer('luotxem')->default(0);
+            // $table->boolean('new')->default(1);
             $table->integer('idNTD')->unsigned();
             $table->foreign('idNTD')->references('idUser')->on('nhatuyendung')->onUpdate('cascade');
-            $table->tinyInteger('congkhai')->nullable();
+            $table->tinyInteger('ad_pheduyet')->default(0);
             $table->rememberToken();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

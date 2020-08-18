@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\NguoiTimViec;
-use App\KiNang;
 use App\NhaTuyenDung;
 use App\TinTuyenDung;
+use App\HoSoXinViec;
 use PDF;
 
 class PDFController extends Controller
@@ -21,12 +21,7 @@ class PDFController extends Controller
     public function pdfProfile($profile_id){
         $profile = NguoiTimViec::find($profile_id);
         if(!$profile) return redirect('error')->with(['error' => 'Ko tìm thấy hồ sơ!']);
-        // dd($profile);
-        // Chuyển JSON kĩ năng thành mảng
-        $profile->kinang = KiNang::whereIn('id',json_decode($profile->kinang))
-                    ->select('ten')
-                    ->get();
-        
+        // dd($profile);      
         // $pdf = \App::make('dompdf.wrapper');
         return PDF::loadView('pdf.pdf-profile',compact('profile'))->stream();  
 
@@ -46,10 +41,7 @@ class PDFController extends Controller
     }
 
     public function viewPDFJob($job_id){
-    	$job = TinTuyenDung::find($job_id);
-    	$job->kinang = KiNang::whereIn('id',json_decode($job->kinang))
-                    ->select('ten')
-                    ->get();
+    	$job = TinTuyenDung::find($job_id);    	
               
     	return PDF::loadView('pdf.pdf-job',compact('job'))->setWarnings(false)->stream('ttd_'.$job_id.'.pdf');
     }
@@ -60,9 +52,6 @@ class PDFController extends Controller
     	// return PDF::loadFile($path)->stream();
 
     	$job = TinTuyenDung::find($job_id);
-    	$job->kinang = KiNang::whereIn('id',json_decode($job->kinang))
-                    ->select('ten')
-                    ->get();
               
     	return PDF::loadView('pdf.pdf-job',compact('job'))->download('ttd_'.$job_id.'.pdf');
     }
@@ -72,15 +61,19 @@ class PDFController extends Controller
     	$jobs = TinTuyenDung::where('congkhai','0')->get();
     	// dd($jobs);    	
     	//Tự động download file với folder trong hàm save() và chuyển trang pdf với tên là download
-    	foreach ($jobs as $job) {
-    		$job->kinang = KiNang::whereIn('id',json_decode($job->kinang))
-                    ->select('ten')
-                    ->get();
-                    
+    	foreach ($jobs as $job) {    	
     		$path = $rq->path.'/ttd_'.$job->id.'.pdf';
 
     		PDF::loadView('pdf.pdf-job',compact('job'))->setWarnings(false)->save($path);
     	}   
     	return redirect()->back()->with(['success' => 'Export All Job Success!']);        
+    }
+
+    public function viewPDFApplied($user_id,$job_id){
+        $profile = HoSoXinViec::where('idUser',$user_id)
+                        ->where('idTTD',$job_id)->get()->first();       
+        // dd($profile);
+        // return response()->json($profile);
+        return PDF::loadView('pdf.pdf-profile',compact('profile'))->stream();
     }
 }

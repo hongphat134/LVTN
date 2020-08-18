@@ -16,7 +16,8 @@
         <script src="{{asset('admin\js\jquery.slimscroll.js')}}"></script>
         <script src="{{asset('admin\js\jquery.blockUI.js')}}"></script>
         <script src="{{asset('admin\js\waves.js')}}"></script>
-        <script src="{{asset('admin\js\wow.min.js')}}"></script>
+        <!-- Plugin cấm F12 và click right :D -->
+        <!-- <script src="{{asset('admin\js\wow.min.js')}}"></script> -->
         <script src="{{asset('admin\js\jquery.nicescroll.js')}}"></script>
         <script src="{{asset('admin\js\jquery.scrollTo.min.js')}}"></script>
 

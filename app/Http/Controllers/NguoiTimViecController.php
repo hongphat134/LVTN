@@ -4,25 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\NguoiTimViec;
-use App\KiNang;
 use App\HoSoXinViec;
 use App\NhaTuyenDung;
+use App\TinTuyenDung;
 use App\YKien;
 use Auth;
 use Mail;
-
+use DB;
 use App\Mail\Applied;
+use App\User;
+// include base_path()."/app/Function/functions.php";
 
 class NguoiTimViecController extends Controller
 {
     //
     public function getProfiles(){        
-        $profile_list = NguoiTimViec::where('idUser','=',Auth::user()->id)->get();
-        // dd($profile_list->toArray());       
-
+        $profile_list = NguoiTimViec::where('idUser','=',Auth::user()->id)->paginate(6);
+        $profile_list->typeRecord = 0;
+        // dd($profile_list);       
         return view('nguoitimviec.profile-listings',compact('profile_list'));
     }
-
     public function getApply($ttd_id){
         $hoso = NguoiTimViec::where('idUser','=',Auth::user()->id)->first();
         // var_dump($hoso);
@@ -38,7 +39,6 @@ class NguoiTimViecController extends Controller
     }
 
     public function postApply(Request $rq,$ttd_id){
-        var_dump($rq->all());
         // Problem: chưa giải quyết withInput 
         $this->validate($rq, 
             [
@@ -83,6 +83,7 @@ class NguoiTimViecController extends Controller
         $profile->trangthailv = $rq->status;
         $profile->bangcap = $rq->degree;
         $profile->capbac = $rq->rank;
+        $profile->mucluongmm = $rq->salary;
         $profile->muctieu = $rq->target;    
         $profile->sotruong = $rq->talent;
         $profile->remember_token = $rq->_token;
@@ -132,11 +133,7 @@ class NguoiTimViecController extends Controller
             }
             else $profile->tinhoc = json_encode($itechs,JSON_UNESCAPED_UNICODE);
         }
-
-        // 0 là chưa phê duyệt, 1 là đã phê duyệt và gửi đến nhà tuyển dụng
-        $profile->trangthai = 0;
-                
-        // dd($profile);
+                        
         $profile->save();
 
         return redirect()->route('notification')->with(['alert' => 'Nộp đơn thành công!']);
@@ -145,10 +142,9 @@ class NguoiTimViecController extends Controller
     public function getCreateProfile(){    	
     	return view('nguoitimviec.create-profile');
     }
-
     
-    public function postCreateProfile(Request $rq){    	
-        var_dump($rq->all());       
+    public function postCreateProfile(Request $rq){    	        
+        // dd($rq->all());
         // Problem: chưa giải quyết withInput
     	$this->validate($rq, 
 			[
@@ -171,7 +167,7 @@ class NguoiTimViecController extends Controller
                 'skill.required' => 'Bạn chưa chọn kĩ năng!',
                 'exp.required' => 'Bạn chưa chọn số năm kinh nghiệm!',
 				'email.email' => 'Email không đúng định dạng!',
-				'title.required' => 'Bạn chưa nhập ngành nghề!',
+				'title.required' => 'Bạn chưa chọn ngành nghề!',
 				'degree.required' => 'Bạn chưa chọn bằng cấp!',
 				'rank.required' => 'Bạn chưa chọn cấp bậc!',			
 				'region.required' => 'Bạn chưa chọn khu vực!',
@@ -206,7 +202,7 @@ class NguoiTimViecController extends Controller
 			$profile->hinh = $gethinhthe;
     	}    	
 		// Nếu k có hình thì để hình mặc định
-        $skills = json_encode($rq->skill);
+        $skills = json_encode($rq->skill,JSON_UNESCAPED_UNICODE);
         // Chuẩn hoá chuỗi -> chuỗi thường -> đầu từ viết Hoa
         $profile->hoten = perfect_trim($rq->name);
     	$profile->kinang = $skills;
@@ -218,6 +214,7 @@ class NguoiTimViecController extends Controller
     	$profile->trangthailv = $rq->status;
     	$profile->bangcap = $rq->degree;
     	$profile->capbac = $rq->rank;
+        $profile->mucluongmm = $rq->salary;
         $profile->remember_token = $rq->_token;        
         
         $profile->muctieu = $rq->target;    
@@ -248,11 +245,11 @@ class NguoiTimViecController extends Controller
                     // Chuẩn hoá giá trị của mảng
                     $other_languages = array_map('perfect_trim', $other_languages);
                     
-                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages));
+                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages),JSON_UNESCAPED_UNICODE);
                 }
-                else $profile->ngoaingu = json_encode($languages);
+                else $profile->ngoaingu = json_encode($languages,JSON_UNESCAPED_UNICODE);
             }
-            else $profile->ngoaingu = json_encode($languages);
+            else $profile->ngoaingu = json_encode($languages,JSON_UNESCAPED_UNICODE);
         }        
         
         if(!empty($rq->itech)){
@@ -263,17 +260,17 @@ class NguoiTimViecController extends Controller
                     $other_itechs = explode(',',$rq->other_itech);
                     $other_itechs = array_map('perfect_trim', $other_itechs);
                    
-                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs));
+                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs),JSON_UNESCAPED_UNICODE);
                 }
-                else $profile->tinhoc = json_encode($itechs);
+                else $profile->tinhoc = json_encode($itechs,JSON_UNESCAPED_UNICODE);
             }
-            else $profile->tinhoc = json_encode($itechs);
+            else $profile->tinhoc = json_encode($itechs,JSON_UNESCAPED_UNICODE);
         }                        
 
     	// 0 là chưa công khai, 1 là công khai
         $profile->congkhai = $rq->public;
         // 0 là chưa dc quản trị viên phê duyệt và 1 thì ngược lại
-    	$profile->trangthai = 0;
+    	// $profile->trangthai = 0;
         
     	// dd($profile);
     	$profile->save();
@@ -287,14 +284,13 @@ class NguoiTimViecController extends Controller
         // Problem: chưa xử lý hình, mục khác chưa hiện dc
         $hoso = NguoiTimViec::find($profile_id);
         // dd($hoso);
-
-        if(!$hoso) return redirect('error')->with(['error' => 'Ko tìm thấy hồ sơ!']);
+        // Kiểm tra đề phòng        
+        if(!$hoso || $hoso->trangthai == 1) return response()->json(['error' => 'Deny Access!','URL' => 'Invalid URL!']);
     
         return view('nguoitimviec.update-profile',compact('hoso'));
     }
 
     public function postUpdateProfile($profile_id,Request $rq){     
-        // var_dump($rq->all());
         // Problem: chưa giải quyết withInput 
         $this->validate($rq, 
             [
@@ -323,8 +319,7 @@ class NguoiTimViecController extends Controller
                 'region.required' => 'Bạn chưa chọn khu vực!',
             ]
         );
-      
-        $profile = NguoiTimViec::find($profile_id);     
+        $profile = NguoiTimViec::find($profile_id);        
 
         // Xử lý file hình đại diện
         if($rq->hasFile('hinhthe')){
@@ -362,6 +357,7 @@ class NguoiTimViecController extends Controller
         $profile->trangthailv = $rq->status;
         $profile->bangcap = $rq->degree;
         $profile->capbac = $rq->rank;
+        $profile->mucluongmm = $rq->salary;
         $profile->remember_token = $rq->_token;
 
         $profile->muctieu = $rq->target;    
@@ -391,11 +387,11 @@ class NguoiTimViecController extends Controller
                     // Chuẩn hoá giá trị của mảng
                     $other_languages = array_map('perfect_trim', $other_languages);
                     
-                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages));
+                    $profile->ngoaingu = json_encode(array_merge($languages,$other_languages),JSON_UNESCAPED_UNICODE);
                 }
-                else $profile->ngoaingu = json_encode($languages);
+                else $profile->ngoaingu = json_encode($languages,JSON_UNESCAPED_UNICODE);
             }
-            else $profile->ngoaingu = json_encode($languages);
+            else $profile->ngoaingu = json_encode($languages,JSON_UNESCAPED_UNICODE);
         }        
         
         if(!empty($rq->itech)){
@@ -406,11 +402,11 @@ class NguoiTimViecController extends Controller
                     $other_itechs = explode(',',$rq->other_itech);
                     $other_itechs = array_map('perfect_trim', $other_itechs);
                    
-                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs));
+                    $profile->tinhoc = json_encode(array_merge($itechs,$other_itechs),JSON_UNESCAPED_UNICODE);
                 }
-                else $profile->tinhoc = json_encode($itechs);
+                else $profile->tinhoc = json_encode($itechs,JSON_UNESCAPED_UNICODE);
             }
-            else $profile->tinhoc = json_encode($itechs);
+            else $profile->tinhoc = json_encode($itechs,JSON_UNESCAPED_UNICODE);
         }              
 
         // 0 là chưa công khai, 1 là công khai
@@ -422,7 +418,7 @@ class NguoiTimViecController extends Controller
         return redirect()->action(
             'NguoiTimViecController@getUpdateProfile', $profile_id
         )
-        ->with(['success' => 'Lưu thành công!']);
+        ->with(['success' => 'Lưu thông tin hồ sơ thành công!']);
     }
 
     public function saveJob($news_id){        
@@ -464,17 +460,8 @@ class NguoiTimViecController extends Controller
         if(!empty($follow_list)){
             $job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
             ->whereIn('tintuyendung.id',$follow_list)->paginate(3);
-        
-            // Chuyển JSON kĩ năng thành mảng
-            for ($i=0; $i < count($job_listings) ; $i++) { 
-                $job_listings[$i]->kinang =  json_decode($job_listings[$i]->kinang);
-                $skills = array();
-                for ($j=0; $j < count($job_listings[$i]->kinang) ; $j++) {                 
-                    $skills[] = KiNang::find($job_listings[$i]->kinang[$j])->ten;            
-                }
-                $job_listings[$i]->kinang = $skills;
-            }                
-            // dd($job_listings);
+            
+            $job_listings->typeRecord = 1;
         }
         else $job_listings = null;
             
@@ -487,31 +474,19 @@ class NguoiTimViecController extends Controller
                     ->select('idTTD')->get()->toArray();
 
         $job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
-        ->whereIn('tintuyendung.id',$profiles)->paginate(3);
-    
-        // Chuyển JSON kĩ năng thành mảng
-        for ($i=0; $i < count($job_listings) ; $i++) { 
-            $job_listings[$i]->kinang =  json_decode($job_listings[$i]->kinang);
-            $skills = array();
-            for ($j=0; $j < count($job_listings[$i]->kinang) ; $j++) {                 
-                $skills[] = KiNang::find($job_listings[$i]->kinang[$j])->ten;            
-            }
-            $job_listings[$i]->kinang = $skills;
-        }                
+        ->whereIn('tintuyendung.id',$profiles)->paginate(3);                
         // dd($job_listings);
-            
+        $job_listings->typeRecord = 1;            
         return view('nguoitimviec.applied-job-listings',compact('job_listings'));
     }
 
     public function deleteProfile($profile_id){
-        // $profile = NguoiTimViec::find($profile_id);
-        // dd($profile);
         NguoiTimViec::destroy($profile_id);
 
         return redirect()->back()->with(['success' => 'Đã xoá mẫu hồ sơ!']);
     }
 
-    public function getSelectApply($news_id){
+    public function getSelectApply($news_id){        
         // Kiểm tra phòng thờ nếu đã nộp thì chuyển về Home
         $profile = HoSoXinViec::where([
                         ['idUser','=',Auth::user()->id],
@@ -519,19 +494,25 @@ class NguoiTimViecController extends Controller
                     ])    
                     ->first();
         if(!empty($profile)) return redirect('/');
-        $profiles = NguoiTimViec::where('idUser','=',Auth::user()->id)->get();        
-        return view('nguoitimviec.select-apply',compact('profiles','news_id'));
+        $news = TinTuyenDung::findOrFail($news_id);
+        // dd($news);
+        $profiles = NguoiTimViec::where('idUser','=',Auth::user()->id)->paginate(5);
+        $profiles->typeRecord = 0;        
+        return view('nguoitimviec.select-apply',compact('profiles','news'));
     }
 
     public function apply(Request $rq){
-        // var_dump($rq->all());
-        if(empty($rq->profile)) return redirect()->back()->with(['error' => 'Bạn chưa chọn hồ sơ!']);
+        
+        if(empty($rq->profile)) return redirect()->back()->with(['error' => 'Bạn chưa chọn hồ sơ để thao tác!']);
 
+        if(isset($rq->copy)){
+            $profile = NguoiTimViec::find($rq->profile);
+            return view('nguoitimviec.copy-apply',['ttd_id' => $rq->ttd_id,'hoso' => $profile]);  
+        } 
         $profile_id = $rq->profile;
         
         $profile = NguoiTimViec::find($profile_id);
         // dd($profile);
-
         $apply_profile = new HoSoXinViec;
 
         $apply_profile->idUser = $profile->idUser;
@@ -546,18 +527,26 @@ class NguoiTimViecController extends Controller
         $apply_profile->trangthailv = $profile->trangthailv;
         $apply_profile->bangcap = $profile->bangcap;
         $apply_profile->capbac = $profile->capbac;
-        $apply_profile->kinhnghiem = $profile->kinhnghiem;        
-        $apply_profile->trangthai = $profile->trangthai;
-        $apply_profile->remember_token = $profile->remember_token;     
+        $apply_profile->kinhnghiem = $profile->kinhnghiem;
+        $apply_profile->mucluongmm = $profile->mucluongmm;        
+        $apply_profile->ad_pheduyet = $profile->ad_pheduyet;
+        $apply_profile->ngoaingu = $profile->ngoaingu;
+        $apply_profile->tinhoc = $profile->tinhoc;
+        $apply_profile->sotruong = $profile->ngosotruongaingu;
+        $apply_profile->muctieu = $profile->muctieu;
 
+        $apply_profile->remember_token = $profile->remember_token;             
         $apply_profile->save();
-
         // Mẫu hồ sơ đã được duyệt thì khi nộp sẽ đưa đến tay nhà tuyển dụng
-        if($profile->trangthai == 1){
-            // Gửi mail
-            Mail::send(new Applied());
+        if($profile->ad_pheduyet == 1){
+            // Gửi mail => Pải xác định danh tính Nhà tuyển dụng
+            $ntd = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
+                ->select('nhatuyendung.idUser')
+                ->get()->first();
+            $to_email = User::find($ntd->idUser)->email; 
+            dd($to_email);
+            Mail::send(new Applied($to_email));
         }
-
         return redirect()->route('notification')->with(['alert' => 'Nộp đơn thành công!']);
     }
 
@@ -568,6 +557,75 @@ class NguoiTimViecController extends Controller
 
         $profile->update();
 
-        return redirect()->back()->with(['success' => 'Đổi trạng thái thành công!']);
+        return redirect()->back()->with(['success' => "Đổi trạng thái mẫu hồ sơ \"$profile->nganh\" thành công!"]);
+    }
+
+    public function getFollowRecruiter(){
+        $ntd_list = NhaTuyenDung::paginate(2)->fragment('next');
+        $ntd_list->typeRecord = 2;
+        // Xử lý follow
+        $follows = Auth::user()->theodoi_ntd;
+        if($follows){
+            $follows = json_decode($follows);
+            $f_ntd_list =  NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
+                ->where('tintuyendung.ad_pheduyet',1)
+                ->whereIn('idUser',$follows)
+                ->select('nhatuyendung.idUser','nhatuyendung.ten',DB::raw("COUNT(tintuyendung.id) as count"))
+                ->groupBy('nhatuyendung.idUser','nhatuyendung.ten')
+                ->get();
+            return view('nguoitimviec.follow-recruiters',compact('ntd_list','f_ntd_list'));
+        }
+        return view('nguoitimviec.follow-recruiters',compact('ntd_list'));
+    }
+
+    public function searchByRecruiter(Request $rq){
+        // dd($rq->all());
+        $key = $rq->key;
+        $ntd_list = NhaTuyenDung::where('ten','LIKE',"%$key%")->paginate(9);
+        $follows = Auth::user()->theodoi_ntd;
+        if($follows){
+            $follows = json_decode($follows);
+            $f_ntd_list =  NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
+                // ->where('tintuyendung.new',1)
+                ->where('tintuyendung.ad_pheduyet',1)
+                ->whereIn('idUser',$follows)
+                ->select('nhatuyendung.idUser','nhatuyendung.ten',DB::raw("COUNT(tintuyendung.id) as count"))
+                ->groupBy('nhatuyendung.idUser','nhatuyendung.ten')
+                ->get();
+            return view('nguoitimviec.follow-recruiters',compact('ntd_list','f_ntd_list','key'));
+        }        
+        return view('nguoitimviec.follow-recruiters',compact('ntd_list','key'));
+    }
+
+    public function saveRecuiter($rec_id){        
+        $follow = json_decode(Auth::user()->theodoi_ntd);
+
+        // Nếu chưa có follow nào cả thì tạo mảng mới
+        if(!is_array($follow)) $follow = array();
+        // Chèn vào đầu mảng
+        // Phòng trường hợp nếu có r thì k thêm nữa
+        if(!in_array($rec_id,$follow)) array_unshift($follow, $rec_id);
+
+        Auth::user()->theodoi_ntd = json_encode($follow);
+
+        Auth::user()->update();
+        // return  Auth::user()->theodoi_add;
+        echo "Đã theo dõi ntd";    
+    }
+
+    public function unsaveRecuiter($rec_id){        
+        $follow = json_decode(Auth::user()->theodoi_ntd);
+
+        $index = array_search($rec_id, $follow);
+        array_splice($follow, $index, 1);
+
+        Auth::user()->theodoi_ntd = !empty($follow) ? json_encode($follow) : null;
+
+        Auth::user()->update();
+        echo "Đã bỏ theo dõi ntd";
+    }
+
+    public function notifyJobs(){
+        return view('nguoitimviec.notify-jobs');
     }
 }

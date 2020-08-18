@@ -1,635 +1,260 @@
 {
-  "LtsItem": [
-    {
-      "Type": 1,
-      "SolrID": "/tien-giang",
-      "ID": 1,
-      "Title": "Tiền Giang",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 10977
-    },
-    {
-      "Type": 1,
-      "SolrID": "/hung-yen",
-      "ID": 2,
-      "Title": "Hưng Yên",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 12397
-    },
-    {
-      "Type": 1,
-      "SolrID": "/ha-noi",
-      "ID": 3,
-      "Title": "Hà Nội",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 287742
-    },
-    {
-      "Type": 1,
-      "SolrID": "/tp-ho-chi-minh",
-      "ID": 4,
-      "Title": "TP Hồ Chí Minh",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 474917
-    },
-    {
-      "Type": 1,
-      "SolrID": "/ca-mau",
-      "ID": 5,
-      "Title": "Cà Mau",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 10888
-    },
-    {
-      "Type": 1,
-      "SolrID": "/dac-lac",
-      "ID": 6,
-      "Title": "Đắc Lắc",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 11130
-    },
-    {
-      "Type": 1,
-      "SolrID": "/nam-dinh",
-      "ID": 7,
-      "Title": "Nam Định",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 12189
-    },
-    {
-      "Type": 1,
-      "SolrID": "/quang-ninh",
-      "ID": 8,
-      "Title": "Quảng Ninh",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 19983
-    },
-    {
-      "Type": 1,
-      "SolrID": "/dak-nong",
-      "ID": 9,
-      "Title": "Đắk Nông",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 5471
-    },
-    {
-      "Type": 1,
-      "SolrID": "/da-nang",
-      "ID": 10,
-      "Title": "Đà Nẵng",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 41693
-    },
-    {
-      "Type": 1,
-      "SolrID": "/hai-duong",
-      "ID": 11,
-      "Title": "Hải Dương",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 17278
-    },
-    {
-      "Type": 1,
-      "SolrID": "/long-an",
-      "ID": 12,
-      "Title": "Long An",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 19289
-    },
-    {
-      "Type": 1,
-      "SolrID": "/ben-tre",
-      "ID": 13,
-      "Title": "Bến Tre",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 8398
-    },
-    {
-      "Type": 1,
-      "SolrID": "/dong-thap",
-      "ID": 14,
-      "Title": "Đồng Tháp",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 10605
-    },
-    {
-      "Type": 1,
-      "SolrID": "/vinh-long",
-      "ID": 15,
-      "Title": "Vĩnh Long",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 7337
-    },
-    {
-      "Type": 1,
-      "SolrID": "/kien-giang",
-      "ID": 16,
-      "Title": "Kiên Giang",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 17639
-    },
-    {
-      "Type": 1,
-      "SolrID": "/tra-vinh",
-      "ID": 17,
-      "Title": "Trà Vinh",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 5717
-    },
-    {
-      "Type": 1,
-      "SolrID": "/soc-trang",
-      "ID": 18,
-      "Title": "Sóc Trăng",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 6503
-    },
-    {
-      "Type": 1,
-      "SolrID": "/bac-ninh",
-      "ID": 19,
-      "Title": "Bắc Ninh",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 17283
-    },
-    {
-      "Type": 1,
-      "SolrID": "/thanh-hoa",
-      "ID": 20,
-      "Title": "Thanh Hoá",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 25337
-    },
-    {
-      "Type": 1,
-      "SolrID": "/vung-tau",
-      "ID": 21,
-      "Title": "Vũng Tàu",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 18526
-    },
-    {
-      "Type": 1,
-      "SolrID": "/dong-nai",
-      "ID": 22,
-      "Title": "Đồng Nai",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 43108
-    },
-    {
-      "Type": 1,
-      "SolrID": "/binh-duong",
-      "ID": 23,
-      "Title": "Bình Dương",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 45490
-    },
-    {
-      "Type": 1,
-      "SolrID": "/thai-nguyen",
-      "ID": 24,
-      "Title": "Thái Nguyên",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 9784
-    },
-    {
-      "Type": 1,
-      "SolrID": "/thai-binh",
-      "ID": 25,
-      "Title": "Thái Bình",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 11089
-    },
-    {
-      "Type": 1,
-      "SolrID": "/can-tho",
-      "ID": 26,
-      "Title": "Cần Thơ",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 20061
-    },
-    {
-      "Type": 1,
-      "SolrID": "/nghe-an",
-      "ID": 27,
-      "Title": "Nghệ An",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 23418
-    },
-    {
-      "Type": 1,
-      "SolrID": "/hue",
-      "ID": 28,
-      "Title": "Huế",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 9899
-    },
-    {
-      "Type": 1,
-      "SolrID": "/binh-phuoc",
-      "ID": 29,
-      "Title": "Bình Phước",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 11260
-    },
-    {
-      "Type": 1,
-      "SolrID": "/quang-nam",
-      "ID": 30,
-      "Title": "Quảng Nam",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 14347
-    },
-    {
-      "Type": 1,
-      "SolrID": "/quang-ngai",
-      "ID": 31,
-      "Title": "Quảng Ngãi",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 10653
-    },
-    {
-      "Type": 1,
-      "SolrID": "/ninh-thuan",
-      "ID": 32,
-      "Title": "Ninh Thuận",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 5093
-    },
-    {
-      "Type": 1,
-      "SolrID": "/lao-cai",
-      "ID": 33,
-      "Title": "Lào Cai",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 6791
-    },
-    {
-      "Type": 1,
-      "SolrID": "/hai-phong",
-      "ID": 34,
-      "Title": "Hải Phòng",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 45215
-    },
-    {
-      "Type": 1,
-      "SolrID": "/an-giang",
-      "ID": 35,
-      "Title": "An Giang",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 13172
-    },
-    {
-      "Type": 1,
-      "SolrID": "/phu-tho",
-      "ID": 36,
-      "Title": "Phú Thọ",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 9945
-    },
-    {
-      "Type": 1,
-      "SolrID": "/tay-ninh",
-      "ID": 37,
-      "Title": "Tây Ninh",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 11420
-    },
-    {
-      "Type": 1,
-      "SolrID": "/khanh-hoa",
-      "ID": 38,
-      "Title": "Khánh Hòa",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 22894
-    },
-    {
-      "Type": 1,
-      "SolrID": "/phu-yen",
-      "ID": 39,
-      "Title": "Phú Yên",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 6672
-    },
-    {
-      "Type": 1,
-      "SolrID": "/hoa-binh",
-      "ID": 40,
-      "Title": "Hòa Bình",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 6467
-    },
-    {
-      "Type": 1,
-      "SolrID": "/tuyen-quang",
-      "ID": 41,
-      "Title": "Tuyên Quang",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 3781
-    },
-    {
-      "Type": 1,
-      "SolrID": "/lai-chau",
-      "ID": 42,
-      "Title": "Lai Châu",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 3127
-    },
-    {
-      "Type": 1,
-      "SolrID": "/hau-giang",
-      "ID": 43,
-      "Title": "Hậu Giang",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 5679
-    },
-    {
-      "Type": 1,
-      "SolrID": "/lam-dong",
-      "ID": 44,
-      "Title": "Lâm Đồng",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 15643
-    },
-    {
-      "Type": 1,
-      "SolrID": "/lang-son",
-      "ID": 45,
-      "Title": "Lạng Sơn",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 5846
-    },
-    {
-      "Type": 1,
-      "SolrID": "/ha-nam",
-      "ID": 46,
-      "Title": "Hà Nam",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 7324
-    },
-    {
-      "Type": 1,
-      "SolrID": "/bac-can",
-      "ID": 47,
-      "Title": "Bắc Cạn",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 2329
-    },
-    {
-      "Type": 1,
-      "SolrID": "/binh-dinh",
-      "ID": 48,
-      "Title": "Bình Định",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 14277
-    },
-    {
-      "Type": 1,
-      "SolrID": "/cao-bang",
-      "ID": 49,
-      "Title": "Cao Bằng",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 3618
-    },
-    {
-      "Type": 1,
-      "SolrID": "/son-la",
-      "ID": 50,
-      "Title": "Sơn La",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 5441
-    },
-    {
-      "Type": 1,
-      "SolrID": "/quang-binh",
-      "ID": 51,
-      "Title": "Quảng Bình",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 8594
-    },
-    {
-      "Type": 1,
-      "SolrID": "/quang-tri",
-      "ID": 52,
-      "Title": "Quảng Trị",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 7105
-    },
-    {
-      "Type": 1,
-      "SolrID": "/gia-lai",
-      "ID": 53,
-      "Title": "Gia Lai",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 9861
-    },
-    {
-      "Type": 1,
-      "SolrID": "/bac-giang",
-      "ID": 54,
-      "Title": "Bắc Giang",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 12094
-    },
-    {
-      "Type": 1,
-      "SolrID": "/ha-tinh",
-      "ID": 55,
-      "Title": "Hà Tĩnh",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 10911
-    },
-    {
-      "Type": 1,
-      "SolrID": "/ninh-binh",
-      "ID": 56,
-      "Title": "Ninh Bình",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 8170
-    },
-    {
-      "Type": 1,
-      "SolrID": "/binh-thuan",
-      "ID": 57,
-      "Title": "Bình Thuận",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 11550
-    },
-    {
-      "Type": 1,
-      "SolrID": "/kon-tum",
-      "ID": 58,
-      "Title": "Kon Tum",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 4858
-    },
-    {
-      "Type": 1,
-      "SolrID": "/vinh-phuc",
-      "ID": 59,
-      "Title": "Vĩnh Phúc",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 13261
-    },
-    {
-      "Type": 1,
-      "SolrID": "/bac-lieu",
-      "ID": 60,
-      "Title": "Bạc Liêu",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 5568
-    },
-    {
-      "Type": 1,
-      "SolrID": "/yen-bai",
-      "ID": 61,
-      "Title": "Yên Bái",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 4940
-    },
-    {
-      "Type": 1,
-      "SolrID": "/dien-bien",
-      "ID": 62,
-      "Title": "Điện Biên",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 3204
-    },
-    {
-      "Type": 1,
-      "SolrID": "/ha-giang",
-      "ID": 63,
-      "Title": "Hà Giang",
-      "STT": 0,
-      "Created": null,
-      "Updated": null,
-      "TotalDoanhNghiep": 4618
-    }
-  ],
-  "TotalDoanhNghiep": 1610089
+    "MienBac": [
+        {
+            "Ten": "Hưng Yên",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Hà Nội",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Nam Định",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Quảng Ninh",
+            "MaMien": "Đông Bắc Bộ"
+        },
+        {
+            "Ten": "Hải Dương",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Bắc Ninh",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Thái Nguyên",
+            "MaMien": "Đông Bắc Bộ"
+        },
+        {
+            "Ten": "Thái Bình",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Lào Cai",
+            "MaMien": "Tây Bắc Bộ"
+        },
+        {
+            "Ten": "Hải Phòng",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Phú Thọ",
+            "MaMien": "Đông Bắc Bộ"
+        },
+        {
+            "Ten": "Hòa Bình",
+            "MaMien": "Tây Bắc Bộ"
+        },
+        {
+            "Ten": "Tuyên Quang",
+            "MaMien": "Đông Bắc Bộ"
+        },
+        {
+            "Ten": "Lai Châu",
+            "MaMien": "Tây Bắc Bộ"
+        },
+        {
+            "Ten": "Lạng Sơn",
+            "MaMien": "Đông Bắc Bộ"
+        },
+        {
+            "Ten": "Hà Nam",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Bắc Kạn",
+            "MaMien": "Đông Bắc Bộ"
+        },
+        {
+            "Ten": "Cao Bằng",
+            "MaMien": "Đông Bắc Bộ"
+        },
+        {
+            "Ten": "Sơn La",
+            "MaMien": "Tây Bắc Bộ"
+        },
+        {
+            "Ten": "Bắc Giang",
+            "MaMien": "Đông Bắc Bộ"
+        },
+        {
+            "Ten": "Ninh Bình",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Vĩnh Phúc",
+            "MaMien": "Đồng Bằng Sông Hồng"
+        },
+        {
+            "Ten": "Yên Bái",
+            "MaMien": "Tây Bắc Bộ"
+        },
+        {
+            "Ten": "Điện Biên",
+            "MaMien": "Tây Bắc Bộ"
+        },
+        {
+            "Ten": "Hà Giang",
+            "MaMien": "Đông Bắc Bộ"
+        }
+    ],
+    "MienTrung": [
+        {
+            "Ten": "Đắk Lắk",
+            "MaMien": "Tây Nguyên"
+        },
+        {
+            "Ten": "Đắk Nông",
+            "MaMien": "Tây Nguyên"
+        },
+        {
+            "Ten": "Đà Nẵng",
+            "MaMien": "Duyên Hải Nam Trung Bộ"
+        },
+        {
+            "Ten": "Thanh Hoá",
+            "MaMien": "Bắc Trung Bộ"
+        },
+        {
+            "Ten": "Nghệ An",
+            "MaMien": "Bắc Trung Bộ"
+        },
+        {
+            "Ten": "Huế",
+            "MaMien": "Bắc Trung Bộ"
+        },
+        {
+            "Ten": "Quảng Nam",
+            "MaMien": "Duyên Hải Nam Trung Bộ"
+        },
+        {
+            "Ten": "Quảng Ngãi",
+            "MaMien": "Duyên Hải Nam Trung Bộ"
+        },
+        {
+            "Ten": "Ninh Thuận",
+            "MaMien": "Duyên Hải Nam Trung Bộ"
+        },
+        {
+            "Ten": "Khánh Hòa",
+            "MaMien": "Duyên Hải Nam Trung Bộ"
+        },
+        {
+            "Ten": "Phú Yên",
+            "MaMien": "Duyên Hải Nam Trung Bộ"
+        },
+        {
+            "Ten": "Lâm Đồng",
+            "MaMien": "Tây Nguyên"
+        },
+        {
+            "Ten": "Bình Định",
+            "MaMien": "Duyên Hải Nam Trung Bộ"
+        },
+        {
+            "Ten": "Quảng Bình",
+            "MaMien": "Bắc Trung Bộ"
+        },
+        {
+            "Ten": "Quảng Trị",
+            "MaMien": "Bắc Trung Bộ"
+        },
+        {
+            "Ten": "Gia Lai",
+            "MaMien": "Tây Nguyên"
+        },
+        {
+            "Ten": "Hà Tĩnh",
+            "MaMien": "Bắc Trung Bộ"
+        },
+        {
+            "Ten": "Bình Thuận",
+            "MaMien": "Duyên Hải Nam Trung Bộ"
+        },
+        {
+            "Ten": "Kon Tum",
+            "MaMien": "Tây Nguyên"
+        }
+    ],
+    "MienNam": [
+        {
+            "Ten": "Tiền Giang",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "TP Hồ Chí Minh",
+            "MaMien": "Đông Nam Bộ"
+        },
+        {
+            "Ten": "Cà Mau",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Long An",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Bến Tre",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Đồng Tháp",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Vĩnh Long",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Kiên Giang",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Trà Vinh",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Sóc Trăng",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Vũng Tàu",
+            "MaMien": "Đông Nam Bộ"
+        },
+        {
+            "Ten": "Đồng Nai",
+            "MaMien": "Đông Nam Bộ"
+        },
+        {
+            "Ten": "Bình Dương",
+            "MaMien": "Đông Nam Bộ"
+        },
+        {
+            "Ten": "Cần Thơ",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Bình Phước",
+            "MaMien": "Đông Nam Bộ"
+        },
+        {
+            "Ten": "An Giang",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Tây Ninh",
+            "MaMien": "Đông Nam Bộ"
+        },
+        {
+            "Ten": "Hậu Giang",
+            "MaMien": "Tây Nam Bộ"
+        },
+        {
+            "Ten": "Bạc Liêu",
+            "MaMien": "Tây Nam Bộ"
+        }
+    ]
 }

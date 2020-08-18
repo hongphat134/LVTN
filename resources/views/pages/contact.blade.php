@@ -24,11 +24,11 @@
               <div class="row form-group">
                 <div class="col-md-6 mb-3 mb-md-0">
                   <label class="text-black" for="fname">Họ</label>
-                  <input type="text" id="fname" class="form-control" name="fname" required autofocus>
+                  <input type="text" id="fname" class="form-control" name="fname" placeholder="Nhập họ..." required autofocus>
                 </div>
                 <div class="col-md-6">
                   <label class="text-black" for="lname">Tên</label>
-                  <input type="text" id="lname" class="form-control" name="lname" required>
+                  <input type="text" id="lname" class="form-control" name="lname" placeholder="Nhập tên..." required>
                 </div>
               </div>
 
@@ -37,7 +37,7 @@
                 <div class="col-md-12">
                   <label class="text-black" for="email">Email</label> 
                   <input type="email" id="email" class="form-control" name="email"
-                   value="{{ Auth::check() ? Auth::user()->email : '' }}" required>
+                   value="{{ Auth::check() ? Auth::user()->email : '' }}" placeholder="Nhập Email liên hệ..." required>
                 </div>
               </div>
 
@@ -45,7 +45,7 @@
                 
                 <div class="col-md-12">
                   <label class="text-black" for="subject">Tiêu đề</label>( tối thiểu 5 kí tự)
-                  <input type="subject" id="subject" class="form-control" minlength="5" name="subject" required>
+                  <input type="subject" id="subject" class="form-control" minlength="5" name="subject" placeholder="Nhập tiêu đề..." required>
                 </div>
               </div>
 
@@ -58,7 +58,7 @@
 
               <div class="row form-group">
                 <div class="col-md-12">
-                  <input type="submit" value="Send Message" class="btn btn-primary btn-md text-white">
+                  <input type="submit" value="Gửi lời nhắn" class="btn btn-primary btn-md text-white">
                 </div>
               </div>
 
@@ -68,7 +68,7 @@
           <div class="col-lg-5 ml-auto">
             <div class="p-4 mb-3 bg-white">
               <p class="mb-0 font-weight-bold">Địa chỉ</p>
-              <p class="mb-4">203 Fake St. Mountain View, San Francisco, California, USA</p>
+              <p class="mb-4">180 Cao Lỗ, Phường 14, Quận 8</p>
 
               <p class="mb-0 font-weight-bold">Số điện thoại</p>
               <p class="mb-4"><a href="#">+0938 229 513</a></p>
@@ -97,20 +97,20 @@
       <div class="container">
         <div class="row mb-5">
           <div class="col-12 text-center" data-aos="fade">
-            <h2 class="section-title mb-3">Happy Candidates Says</h2>
+            <h2 class="section-title mb-3">Ứng viên vui vẻ nói</h2>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-6">
             <div class="block__87154 bg-white rounded">
               <blockquote>
-                <p>&ldquo;Ipsum harum assumenda in eum vel eveniet numquam cumque vero vitae enim cupiditate deserunt eligendi officia modi consectetur. Expedita tempora quos nobis earum hic ex asperiores quisquam optio nostrum sit&rdquo;</p>
+                <p>&ldquo;Website nhìn sơ thì cũng tạm mà nhìn thì thấy củ chuối vl&rdquo;</p>
               </blockquote>
               <div class="block__91147 d-flex align-items-center">
                 <figure class="mr-4"><img src="images/person_1.jpg" alt="Image" class="img-fluid"></figure>
                 <div>
-                  <h3>Elisabeth Smith</h3>
-                  <span class="position">Creative Director</span>
+                  <h3>HTP</h3>
+                  <span class="position">Nhà sáng tạo</span>
                 </div>
               </div>
             </div>
@@ -119,13 +119,13 @@
           <div class="col-lg-6">
             <div class="block__87154 bg-white rounded">
               <blockquote>
-                <p>&ldquo;Ipsum harum assumenda in eum vel eveniet numquam, cumque vero vitae enim cupiditate deserunt eligendi officia modi consectetur. Expedita tempora quos nobis earum hic ex asperiores quisquam optio nostrum sit&rdquo;</p>
+                <p>&ldquo;Template khó cắt với nghiệp vụ khó phân tích quá&rdquo;</p>
               </blockquote>
               <div class="block__91147 d-flex align-items-center">
                 <figure class="mr-4"><img src="images/person_2.jpg" alt="Image" class="img-fluid"></figure>
                 <div>
-                  <h3>Chris Peter</h3>
-                  <span class="position">Web Designer</span>
+                  <h3>Lại là HTP</h3>
+                  <span class="position">Nhà thiết kế</span>
                 </div>
               </div>
             </div>

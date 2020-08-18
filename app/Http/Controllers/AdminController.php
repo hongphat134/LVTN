@@ -5,8 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\TinTuyenDung;
 use App\NguoiTimViec;
+use App\NhaTuyenDung;
+use App\HoSoXinViec;
 use App\LienHe;
 use App\User;
+use App\Blog;
+use App\Comment;
+use Mail;
+use App\Mail\NewJob;
+use DB;
 
 class AdminController extends Controller
 {
@@ -21,50 +28,95 @@ class AdminController extends Controller
 
     // Tin Tuyển dụng
     public function getRecList(){
-    	$job_list = TinTuyenDung::paginate(3);
+    	$job_list = TinTuyenDung::paginate(15);
+        // dd($job_list);            
     	return view('admins.tintuyendung.list',compact('job_list'));
     }
 
     public function getApprovedRecList(){
-    	$job_list = TinTuyenDung::where('congkhai',0)->paginate(3);
+    	$job_list = TinTuyenDung::where('ad_pheduyet',0)->paginate(15);
     	return view('admins.tintuyendung.approved',compact('job_list'));
     }
 
     public function approvedRec($ttd_id){
-    	$post = TinTuyenDung::where('id',$ttd_id)
-    				->update(['congkhai' => 1]);
+    	// $post = TinTuyenDung::where('id',$ttd_id)
+    	// 			->update(['ad_pheduyet' => 1]);
+        
+        // Thông báo cho nh~ NTV đang theo dõi NTD sở hữu TTD này
+        $post = TinTuyenDung::where('id',$ttd_id)->select('idNTD')->get()->first();
+        // dd($post);
+        $ntd = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
+            ->select('nhatuyendung.ten',DB::raw('COUNT(*) as count'))
+            ->where('tintuyendung.idNTD',$post->idNTD)
+            ->groupBy('nhatuyendung.ten')
+            ->get()->first()->toArray();
+        // dd($ntd);
+        $f_user_list = User::where('theodoi_add','LIKE',"%\"$post->idNTD\"%")
+                    ->select('email')
+                    ->get()->first()->toArray();        
+        // dd($f_user_list);
+        // Example
+        // $f_user_list = ['email' => 'conbaba999990@gmail.com' , 'email' => 'hongphat701@gmail.com'];
+        // $f_user_list = array_values($f_user_list);   
+        if(count($f_user_list) != 0) Mail::send(new NewJob($f_user_list,$ntd));
 
+        $post->ad_pheduyet = 1;
+        $post->update();
     	return redirect()->back()->with(['success' => 'hoàn tất phê duyệt tin tuyển dụng '.$ttd_id.'!']);
     }
 
     public function clear(){
         $date = date('Y-m-d');
-        // $date = '2020-07-31';
         $jobs = TinTuyenDung::whereDate('hantuyendung','<', $date)
                     ->delete();
         // dd($jobs);
         return redirect()->back()->with(['success' => "Đã xoá $jobs tin tuyển dụng đã hết hạn!"]);
         // Xoá tin tuyển dụng thì pải đối mật vs vấn đề:
-        // Tin tuyển dụng có hồ sơ xin việc
-        
+        // Tin tuyển dụng có hồ sơ xin việc => Tạm thời xoá sách lun hồ sơ :D        
     }
 
     // Hồ sơ
     public function getProfileList(){
-    	$profile_list = NguoiTimViec::all();
+    	$profile_list = NguoiTimViec::paginate(15);
     	return view('admins.hoso.list',compact('profile_list'));
     }
 
     public function getApprovedPrfList(){
-    	$profile_list = NguoiTimViec::where('trangthai',0)->get();
+    	$profile_list = NguoiTimViec::where('ad_pheduyet',0)->paginate(15);
     	return view('admins.hoso.approved',compact('profile_list'));
     }
-
+    // Hàm này chỉ xét mẫu hồ sơ
     public function approvedPrf($hs_id){
-    	$profile = NguoiTimViec::where('id',$hs_id)
-    				->update(['trangthai' => 1]);
+    	// $profile = NguoiTimViec::where('id',$hs_id)
+    	// 			->update(['ad_pheduyet' => 1]);
 
-    	return redirect()->back()->with(['success' => 'hoàn tất phê duyệt hồ sơ '.$hs_id.'!']);
+        $ntv = NguoiTimViec::where('id',$hs_id)
+                    ->get()->first();
+        // Thông báo đến người tìm việc là mẫu dc duyệt hay từ chối?
+        NguoiTimViec::where('id',$hs_id)->update(['ad_pheduyet' => 1]);
+
+    	return redirect()->back()->with(['success' => 'hoàn tất phê duyệt hồ sơ '.$hs_id.', đã gửi thông báo đến người tìm việc!']);
+    }
+
+    public function getAppliedPrfList(){
+        $profile_list = HoSoXinViec::where('ad_pheduyet',0)->paginate(15);
+        // dd($profile_list);
+        return view('admins.hoso.applied_list',compact('profile_list'));
+    }
+
+    public function approvedAppliedPrf($ttd_id,$usr_id){
+
+        $ntd = NhaTuyenDung::where('idUser',TinTuyenDung::find($ttd_id)->idNTD)
+                    ->get()->first();
+        // Thông báo đến nhà tuyển dụng
+       
+        // $to_email = User::find($ntd->idUser)->email; 
+        // dd($to_email);
+        // Mail::send(new Applied($to_email));
+
+        $hs = HoSoXinViec::where('idTTD',$ttd_id)->where('idUser',$usr_id)->get()->first()->update(['ad_pheduyet' => 1]);
+        
+        return redirect()->back()->with(['success' => 'hoàn tất phê duyệt hồ sơ, đã gửi thông báo đến nhà tuyển dụng!']);
     }
 
     // Liên hệ
@@ -75,16 +127,38 @@ class AdminController extends Controller
 
     // Tài khoản
     public function getJobSeekerList(){
-    	$user_list = User::where('loaitk',0)->get();
+    	$user_list = User::where('loaitk',0)->paginate(15);
     	return view('admins.nguoidung.job-seeker-list',compact('user_list'));
     }
 
     public function getBusinessList(){
-    	$user_list = User::where('loaitk',1)->get();
+    	$user_list = User::where('loaitk',1)->paginate(15);
     	return view('admins.nguoidung.business-list',compact('user_list'));
     }
 
     public function getAdminList(){
-    	return view('admins.quantrivien.list');
+        $user_list = User::where('loaitk',2)->paginate(15);
+    	return view('admins.nguoidung.admin-list',compact('user_list'));
+    }
+
+    // Blog
+    public function getBlogList(){
+        $blog_list = Blog::paginate(15);
+        return view('admins.baiviet.list',compact('blog_list'));   
+    }
+
+    public function ApprovedBlog($blog_id){        
+        Blog::where('id',$blog_id)->update(['ad_pheduyet' => 1]);
+        return redirect()->back()->with(['success' => 'Đã phê duyệt bài viết ID '.$blog_id.' ,Success!']);
+    }
+
+    public function getCommentList($blog_id){
+        $cmt_list = Comment::where('idBlog',$blog_id)->paginate(20);
+        return view('admins.baiviet.comment-list',compact('cmt_list'));
+    }
+
+    public function deleteCmt($cmt_id){
+        Comment::where('id',$cmt_id)->delete();
+        return redirect()->back()->with(['success' => 'Đã xoá bình luận ID '.$cmt_id.' ,Success!']);
     }
 }

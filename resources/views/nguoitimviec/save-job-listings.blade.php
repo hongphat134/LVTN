@@ -1,6 +1,6 @@
 @include('layouts.header')
     <!-- MENU -->
-    @include('layouts.menu')
+    @include('ntv_layouts.menu')
     <!-- HOME -->
     @include('layouts.search')
 
@@ -29,7 +29,7 @@
                 <h2>{{$news->nganh}}</h2>
                 <strong>{{$news->ten}}</strong>
                 <div class="keywords">
-                  @foreach($news->kinang as $skill)
+                  @foreach(json_decode($news->kinang) as $skill)
                   <button class="btn btn-outline-info">{{$skill}}</button>
                   @endforeach                 
                 </div>      
@@ -59,7 +59,7 @@
         </div>
 
         @else 
-        <p>Bạn chưa theo dõi tin nào cả!</p>
+        <p>Bạn chưa theo dõi <a href="{{url('/job-list')}}">tin tuyển dụng</a> nào cả! Hãy xem <a href="{{url('/job-list')}}">tin tuyển dụng</a> phù hợp và ứng tuyển để có cơ hội tìm được việc làm mình mong muốn bạn nhé!</p>
         @endif  
       </div>
     </section>

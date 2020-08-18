@@ -23,20 +23,34 @@
             <div class="d-flex align-items-center">
               <div class="border p-2 d-inline-block mr-3 rounded">
                 <!-- <img src="images/job_logo_5.jpg" alt="Image"> -->
-                <img src="{{asset('logo/'.$news->hinh)}}" alt="Image">
+                <a href="{{url('/thong-tin-ntd',$owner->idUser)}}"><img src="{{asset('logo/'.$owner->hinh)}}" alt="Image"></a>
               </div>
               <div>
-                <h2>{{$news->nganh}}</h2>
+                <h2>
+                  {{$news->nganh}}
+                @if(Auth::check())
+                  @if(Auth::user()->theodoi_add)
+                    @if(in_array($owner->idUser,json_decode(Auth::user()->theodoi_add)))
+                    <a href="javascript:void(0)" id="{{$owner->idUser}}" class="btn btn-danger theo-doi">ĐANG THEO DÕI</a>  
+                    @else
+                    <a href="javascript:void(0)" id="{{$owner->idUser}}" class="btn btn-outline-danger theo-doi follow-rec">THEO DÕI</a>
+                    @endif
+                  @else
+                  <a href="javascript:void(0)" id="{{$owner->idUser}}" class="btn btn-outline-danger theo-doi follow-rec">THEO DÕI</a>
+                  @endif
+                <script src="{{url('ajax/follow-recruiters.js')}}"></script>
+                @endif
+                </h2>
                 <div>
-                  <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span>{{$news->ten}}</span>
+                  <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span>Nhà tuyển dụng {{$owner->ten}}</span>
                   <span class="m-2"><span class="icon-clock-o mr-2"></span><span class="text-primary">{{$news->trangthailv}}</span></span></br>
                   @foreach(json_decode($news->tinhthanhpho) as $city)
                   <span class="ml-0 mr-2 mb-2"><span class="icon-room mr-2"></span>{{$city}}</span>
                   @endforeach                         
                   <hr class="hr-text" data-content="Yêu cầu kĩ năng">
                   <div class="keywords">
-                  @foreach($news->kinang as $skill)
-                  <button class="btn btn-outline-info btn-sm">{{$skill->ten}}</button>
+                  @foreach(json_decode($news->kinang) as $skill)
+                  <button class="btn btn-outline-info btn-sm">{{$skill}}</button>
                   @endforeach                  
                   </div>   
                 </div>
@@ -150,13 +164,7 @@
               <ul class="list-unstyled pl-3 mb-0">
                 <li class="mb-2"><strong class="text-black">Ngày đăng:</strong> {{date("d-m-Y", strtotime($news->created_at))}}</li>
                 <li class="mb-2"><strong class="text-black">Vị trí cần tuyển: <span class="badge badge-primary">{{$news->capbac}}</span></strong></li>
-                <li class="mb-2"><strong class="text-black">Số lượng:</strong> {{$news->soluong}} người</li>
-                <li class="mb-2"><strong class="text-black">Yêu cầu trình độ:</strong> {{$news->bangcap}}</li>
-                <li class="mb-2"><strong class="text-black">Yêu cầu kĩ năng:</strong>                 
-                @foreach($news->kinang as $skill)
-                  <span class="badge badge-info">{{$skill->ten}}</span>
-                @endforeach
-                </li>
+                <li class="mb-2"><strong class="text-black">Số lượng:</strong> {{$news->soluong}} người</li>               
                 @if($news->ngoaingu)
                 <li class="mb-2"><strong class="text-black">Yêu cầu ngoại ngữ:</strong>                 
                 @foreach(json_decode($news->ngoaingu) as $language)
@@ -173,8 +181,7 @@
                 </li>
                 @endif
 
-                <li class="mb-2"><strong class="text-black">Trạng thái làm việc:</strong> {{$news->trangthailv}}</li>
-                <li class="mb-2"><strong class="text-black">Kinh nghiệm:</strong> {{$news->kinhnghiem}}</li>
+                <li class="mb-2"><strong class="text-black">Trạng thái làm việc:</strong> {{$news->trangthailv}}</li>                
                 <li class="mb-2"><strong class="text-black">Khu vực làm việc:</strong> 
                   @foreach(json_decode($news->tinhthanhpho) as $tp)
                   <span class="badge badge-dark">{{$tp}}</span>
@@ -186,17 +193,28 @@
                 @if($news->website)
                 <li class="mb-2"><strong class="text-black">Website:</strong> {{$news->website}}</li>
                 @endif
+                <li class="mb-2"><strong class="text-black">Lượt xem: </strong><span class="text-danger">{{$news->luotxem}}</span></li>
               </ul>
             </div>
 
             <div class="bg-light p-3 border rounded">
-              <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Share</h3>
-              <div class="px-3">
-                <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-facebook"></span></a>
-                <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter"></span></a>
-                <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-linkedin"></span></a>
-                <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-pinterest"></span></a>
-              </div>
+              <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Yêu cầu</h3>
+              <ul class="list-unstyled pl-3 mb-0">
+                <li class="mb-2">
+                  <strong class="text-black">Kĩ năng: </strong>
+                  @foreach(json_decode($news->kinang) as $skill)
+                  <span class="badge badge-info">{{$skill}}</span>
+                @endforeach
+                </li>
+                <li class="mb-2">
+                  <strong class="text-black">Trình độ: </strong>
+                  {{$news->bangcap}}
+                </li>
+                <li class="mb-2">
+                  <strong class="text-black">Kinh nghiệm: </strong>
+                  {{$news->kinhnghiem}}
+                </li>
+              </ul>               
             </div>
 
           </div>
@@ -225,8 +243,8 @@
                 <h2>{{$job->nganh}}</h2>
                 <strong>{{$job->ten}}</strong>
                 <div class="keywords">
-                  @foreach($job->kinang as $skill)
-                  <button class="btn btn-outline-info skill">{{$skill->ten}}</button>
+                  @foreach(json_decode($job->kinang) as $skill)
+                  <button class="btn btn-outline-info skill">{{$skill}}</button>
                   @endforeach                 
                 </div>      
               </div>

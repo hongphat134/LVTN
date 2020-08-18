@@ -19,7 +19,7 @@ class CreateNguoitimviecTable extends Migration
             $table->string('hoten')->nullable();
             $table->string('emaillienhe')->nullable();
             $table->string('nganh')->nullable();      
-            $table->string('kinang')->nullable();
+            $table->json('kinang')->nullable();
             $table->string('khuvuc')->nullable();            
 
             $table->string('honnhan')->nullable();      
@@ -27,13 +27,15 @@ class CreateNguoitimviecTable extends Migration
             $table->string('bangcap')->nullable();      
             $table->string('capbac')->nullable();      
             $table->string('kinhnghiem')->nullable();     
+            $table->string('mucluongmm')->nullable();
             $table->longText('muctieu')->nullable();      
-            $table->longText('ngoaingu')->nullable();
-            $table->longText('tinhoc')->nullable();
+            $table->json('ngoaingu')->nullable();
+            $table->json('tinhoc')->nullable();
             $table->longText('sotruong')->nullable();
 
+            $table->integer('luotxem')->default(0);
             // 0 là chưa dc admin phê duyệt và 1 thì ngược lại
-            $table->tinyInteger('trangthai')->nullable();
+            $table->tinyInteger('ad_pheduyet')->nullable();
             // 0 là chưa công khai, 1 là công khai => Người tìm việc tự quyết định
             $table->tinyInteger('congkhai')->nullable();
 
@@ -42,6 +44,7 @@ class CreateNguoitimviecTable extends Migration
 
             $table->rememberToken();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

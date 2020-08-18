@@ -23,6 +23,7 @@ class CreateLienheTable extends Migration
             $table->boolean('trangthai')->default(false);
             $table->rememberToken();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

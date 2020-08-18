@@ -8,36 +8,42 @@
           <div class="col-6 col-md-3 mb-4 mb-md-0">
             <h3>Tìm kiếm phổ biến</h3>
             <ul class="list-unstyled">
-              <li><a href="#">Java</a></li>
-              <li><a href="#">React Native</a></li>
-              <li><a href="#">Javascript</a></li>
-              <li><a href="#">Python</a></li>
-              <li><a href="#">Database</a></li>
-              <li><a href="#">C language</a></li>
+              <li><a href="{{url('/tim-kiem-skill/Java')}}">Java</a></li>
+              <li><a href="{{url('/tim-kiem-skill/React%20Native')}}">React Native</a></li>
+              <li><a href="{{url('/tim-kiem-skill/Javascript')}}">Javascript</a></li>
+              <li><a href="{{url('/tim-kiem-skill/Python')}}">Python</a></li>
+              <li><a href="{{url('/tim-kiem-skill/Database')}}">Database</a></li>
+              <li><a href="{{url('/tim-kiem-skill/C%20language')}}">C language</a></li>
             </ul>
           </div>
           <div class="col-6 col-md-3 mb-4 mb-md-0">
-            <h3>Company</h3>
+            <h3>Nhà tuyển dụng</h3>
             <ul class="list-unstyled">
               <li><a href="#">Microsoft</a></li>
               <li><a href="#">Adidas</a></li>             
+              <li><a href="#">Amazon</a></li>             
+              <li><a href="#">Puma</a></li>             
+              <li><a href="#">Sprint</a></li>             
             </ul>
           </div>
           <div class="col-6 col-md-3 mb-4 mb-md-0">
             <h3>Support</h3>
             <ul class="list-unstyled">
-              <li><a href="#">Liên hệ</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Terms of Service</a></li>
+              <li><a href="{{url('/contact')}}">Liên hệ</a></li>
+              <li><a href="{{url('/blog')}}">Blog</a></li>
+              <li><a href="#">Điều khoản & chính sách</a></li>
+              <li><a href="{{url('/tim-kiem-nganh-it')}}">Danh sách ngành nghề</a></li>
+              <li><a href="{{url('/tim-kiem-ki-nang-it')}}">Danh sách kĩ năng</a></li>
+              <li><a href="{{url('/tim-kiem-tinh-tp')}}">Danh sách tỉnh thành phố</a></li>
             </ul>
           </div>
           <div class="col-6 col-md-3 mb-4 mb-md-0">
-            <h3>Contact Us</h3>
+            <h3>Liên hệ với chúng tôi</h3>
             <div class="footer-social">
-              <a href="#"><span class="icon-facebook"></span></a>
-              <a href="#"><span class="icon-twitter"></span></a>
-              <a href="#"><span class="icon-instagram"></span></a>
-              <a href="#"><span class="icon-linkedin"></span></a>
+              <a href="https://www.facebook.com/duongphat1234/"><span class="icon-facebook"></span></a>
+              <a href="https://twitter.com/Call_Me_ZeroOne"><span class="icon-twitter"></span></a>
+              <a href="https://www.instagram.com/hohongnguoihoa/"><span class="icon-instagram"></span></a>
+              <a href="https://www.linkedin.com/in/hong-phat-81ba94184/"><span class="icon-linkedin"></span></a>
             </div>
           </div>
         </div>

@@ -1,105 +1,87 @@
-@include('layouts.header')
-    <!-- MENU -->
-    @include('ntd_layouts.menu')
-    <!-- SEARCH -->
-    @include('ntd_layouts.search')
-
-    <!-- HOME -->
-    <section class="site-section" id="next">
-      <div class="container">
-
-        <div class="row mb-5 justify-content-center">
-          <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">{{$job_listings->total()}} tin tuyển dụng đã đăng</h2>
-          </div>
+@extends('layouts.master')
+@section('content')
+<!-- HOME -->
+<section class="section-hero overlay inner-page bg-image" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <h1 class="text-white font-weight-bold">Danh sách hồ sơ xin việc</h1>
+        <div class="custom-breadcrumbs">
+          <a href="#">Home</a> <span class="mx-2 slash">/</span>
+          <span class="text-white"><strong>Hồ sơ xin việc</strong></span>
         </div>
-        
-        <ul class="job-listings mb-5">
-          @foreach($job_listings as $news)
-          <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-            @if($news->congkhai == 1)
-            <div class="ribbon-wrapper">
-                <div class="ribbon green">Duyệt</div>  
-            </div>
-            <!-- Duyệt r` thì k dc sửa -->
-            <a href="javascript:void(0)"></a>
-            @else
-            <a href="#"></a>                       
-            @endif
-            
-            <div class="job-listing-logo">
-              <img src="{{url('logo/'.$news->hinh)}}" alt="Free Website Template by Free-Template.co" class="img-fluid">
-            </div>
-
-            <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-              <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                <h2>
-                  {{$news->nganh}}
-                  <span class="badge badge-danger">Loại tin: tin miễn phí</span>
-                </h2>
-                <strong>Ngày cập nhật: {{date('d/m/Y',strtotime($news->updated_at))}}</strong>
-                <div class="keywords">
-                  @foreach($news->kinang as $skill)
-                  <button class="btn btn-outline-info">{{$skill}}</button>
-                  @endforeach                 
-                  
-                </div>                
-              </div>
-              <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                @foreach(json_decode($news->tinhthanhpho) as $city)
-                <span class="icon-room"></span>{{$city}}</br>
-                @endforeach
-              </div>
-              <div class="job-listing-meta">
-                @if($news->trangthailv == 'Part Time')
-                <span class="badge badge-danger">{{$news->trangthailv}}</span>
-                @else
-                <span class="badge badge-success">{{$news->trangthailv}}</span>
-                <span class="badge badge-pill badge-light text-dark">
-                  {{$news->congkhai == 1 ? 'Công khai' : 'Đã ẩn'}}
-                </span>
-                @endif
-                </br>
-                <span class="badge badge-info">Hạn tuyển dụng</span>
-                <span class="badge badge-danger">
-                  {{date('d/m/Y',strtotime($news->hantuyendung))}}
-                </span>                              
-                </br>
-                <span class="badge badge-dark">Lượt nộp: 0</span>
-                <span class="badge badge-warning text-dark">Lượt xem: 0</span>
-              </div>               
-            </div>  
-
-          </li>
-          <div class="form-row">
-            <div class="col">
-            <form action="{{url('nhatuyendung/delete-job/'.$news->id)}}" method="post">
-              <button type="submit" class="btn btn-outline-danger form-control">
-              <i class="icon-trash"></i>  XOÁ
-              </button>
-              {!! method_field('delete') !!}
-              {!! csrf_field() !!}
-            </form>
-            </div>
-            <div class="col">
-              <a href="{{route('updateJob',$news->id)}}"><button class="btn btn-outline-success form-control"><i class="icon-search"></i> CẬP NHẬT</button></a>
-            </div>            
-          </div>
-          <!-- <button class="btn btn-outline-danger form-control">XOÁ</button>           -->
-          @endforeach
-          
-        </ul>
-
-        <div class="row pagination-wrap">
-          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-{{$job_listings->perPage()}} trong {{$job_listings->total()}} công việc</span>
-          </div>
-          @include('layouts.paginating')
-        </div>
-
       </div>
-    </section>
-
-    @include('layouts.looking-job')
+    </div>
+  </div>
+</section>
     
-@include('layouts.footer')
+<section class="site-section services-section bg-light block__62849" id="next-section">
+  <div class="container">            
+      <div class="row mb-5 justify-content-center">
+          <div class="col-md-7 text-center">
+            <h2 class="section-title mb-2">
+             <span class="icon-group_add mr-2"></span>Danh sách hồ sơ chờ phê duyệt <span class="icon-group_add">
+            </h2>
+          </div>
+        </div>      
+      @if($job_listings->total() != 0)
+      <form action="{{route('recruit')}}">
+      <table class="table table-hover table-responsive">
+        <thead style="font-weight: bold">
+        <tr>
+          <td>Vị trí tuyển dụng</td>
+          <td>Số lượng cần tuyển</td>                                  
+          <td>Chờ duyệt</td>         
+          <td>Đã xử lý</td>         
+          <td>Ngày đăng</td>
+          <td>Hạn tuyển dụng</td>
+          <td>Trạng thái</td>
+          <td>Thao tác</td>          
+        </tr>
+        </thead>          
+        <tbody>
+        @foreach($job_listings as $job)
+        <tr>
+          <td>{{$job->nganh}}</td>
+          <td>{{$job->soluong}} người</td>          
+          <td>{{$job->hschoduyet}} hồ sơ</td> 
+          <td>{{$job->hsdaxuly}} hồ sơ</td> 
+          <td>{{date('d/m/Y',strtotime($job->updated_at))}}</td>
+          <td>{{date('d/m/Y',strtotime($job->hantuyendung))}}</td>          
+          <td>
+            @if($job->congkhai == 0) <span class="badge badge-danger">Chờ duyệt</span>
+            @else <span class="badge badge-success">Đã duyệt</span>
+            @endif
+          </td>
+          <td>
+            <!-- Example split danger button -->
+  <div class="btn-group">
+    <button type="button" class="btn btn-info">Quản lý</button>
+    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu">
+    @if($job->congkhai == 1)
+    <a class="dropdown-item" target="_blank" href="{{url('/nhatuyendung/ho-so-cho-duyet',$job->id)}}">Xem hồ sơ chờ duyệt</a>
+    <a class="dropdown-item" target="_blank" href="{{url('/nhatuyendung/ho-so-da-xu-ly',$job->id)}}">Xem hồ sơ đã xử lý</a>        
+    @else
+    <a class="dropdown-item" target="_blank" href="{{route('updateJob',$job->id)}}">Cập nhật</a>
+    <a class="dropdown-item" target="_blank" href="{{url('/delete-job',$job->id)}}">Xoá</a>
+    @endif
+  </div>
+  </div>             
+          </td>               
+        </tr>          
+        @endforeach
+        </tbody>        
+      </table>
+              
+      @include('layouts.paginating')
+      @else
+      Bạn chưa <a href="{{url('/nhatuyendung/post-job')}}">đăng tin</a> tuyển dụng nào cả! <a href="{{url('/nhatuyendung/post-job')}}">Đăng tin tuyển dụng</a> để nhanh chóng tìm kiếm được nhân lực bạn nhé!
+      @endif 
+    </div>   
+  </div>
+</section>
+
+@endsection

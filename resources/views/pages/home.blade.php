@@ -1,10 +1,11 @@
 @include('layouts.header')
     <!-- MENU -->
-    @include('layouts.menu')
+    @if(Auth::check()) @include('ntv_layouts.menu')     
+    @else @include('layouts.menu')
+    @endif
 
     <!-- SEARCH -->
     @include('layouts.search')
-
     <!-- HOME -->
     <section class="py-5 bg-image overlay-primary fixed overlay" id="next" style="background-image: url({{ url('images/hero_1.jpg')}})">
       <div class="container">
@@ -53,10 +54,13 @@
 
     <section class="site-section" id="content">
       <div class="container">
-
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">Có {{$job_listings->total()}} tin tuyển dụng</h2>
+            <h2 class="section-title mb-2">
+              @if($job_listings->count() == 0) Rất tiếc! Hiện tại không có tin tuyển dụng nào cả!
+              @else 10 công việc <sup><span class="badge badge-danger">HOT</span></sup> dành cho bạn!             
+              @endif
+            </h2>
           </div>
         </div>
         
@@ -65,15 +69,15 @@
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
             <a href="{{route('news',$news->id)}}"></a>
             <div class="job-listing-logo">
-              <img src="{{url('logo/'.$news->hinh)}}" alt="Free Website Template by Free-Template.co" class="img-fluid">
+              <img src="{{url('logo/'.$news->hinh)}}" alt="{{$news->hinh}}" class="img-fluid">
             </div>
 
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
               <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
                 <h2>{{$news->nganh}}</h2>
-                <strong>{{$news->ten}}</strong>
+                <strong>Nhà tuyển dụng {{$news->ten}}</strong>
                 <div class="keywords">
-                  @foreach($news->kinang as $skill)
+                  @foreach(json_decode($news->kinang) as $skill)
                   <button class="btn btn-outline-info skill">{{$skill}}</button>
                   @endforeach                 
                 </div>      
@@ -95,22 +99,29 @@
           @endforeach       
     
         </ul>
-
-        <div class="row pagination-wrap">
-          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-{{$job_listings->perPage()}} trong {{$job_listings->total()}} công việc</span>
-          </div>
-          
-          
-          @include('layouts.paginating')
-        </div>
-
+                 
       </div>
     </section>
-    
+
+<!--     <section>
+      <div class="container">
+        <div class="row">
+           <div class="col-lg-8">
+             
+           </div>
+
+            <div class="col-lg-4">
+              <div class="sidebar-box">
+                <h3>Nhà tuyển dụng nổi bật</h3>
+                <p>FShop</p> 
+                <p>Samsung</p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section> -->  
     @include('layouts.looking-job')
 
-    
     <section class="site-section py-4">
       <div class="container">
   
@@ -118,8 +129,8 @@
           <div class="col-12 text-center mt-4 mb-5">
             <div class="row justify-content-center">
               <div class="col-md-7">
-                <h2 class="section-title mb-2">Company We've Helped</h2>
-                <p class="lead">Porro error reiciendis commodi beatae omnis similique voluptate rerum ipsam fugit mollitia ipsum facilis expedita tempora suscipit iste</p>
+                <h2 class="section-title mb-2">Hãy đến với chúng tôi!</h2>
+                <p class="lead">Tìm việc phù hợp & tuyển dụng nhân lực nhanh chóng </p>
               </div>
             </div>
             
@@ -153,18 +164,14 @@
       </div>
     </section>
 
-
     <section class="bg-light pt-5 testimony-full">
-        
         <div class="owl-carousel single-carousel">
-
-        
           <div class="container">
             <div class="row">
               <div class="col-lg-6 align-self-center text-center text-lg-left">
                 <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
+                  <p>&ldquo;Hãy đăng ký để trở thành hội viên của Website để sử dụng những dịch vụ tiện ích nhất&rdquo;</p>
+                  <p><cite> &mdash; Hồng Phát, @HTP</cite></p>
                 </blockquote>
               </div>
               <div class="col-lg-6 align-self-end text-center text-lg-right">
@@ -172,13 +179,12 @@
               </div>
             </div>
           </div>
-
           <div class="container">
             <div class="row">
               <div class="col-lg-6 align-self-center text-center text-lg-left">
                 <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Chris Peters, @Google</cite></p>
+                  <p>&ldquo;Tìm việc phù hợp & tuyển dụng nhân lực nhanh chóng.&rdquo;</p>
+                  <p><cite> &mdash; Hồng Phát, @HTP</cite></p>
                 </blockquote>
               </div>
               <div class="col-lg-6 align-self-end text-center text-lg-right">
@@ -186,20 +192,18 @@
               </div>
             </div>
           </div>
-
       </div>
-
     </section>
 
-    <section class="pt-5 bg-image overlay-primary fixed overlay" style="background-image: url({{ url('images/hero_1.jpg')}})">
+    <section class="pt-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
       <div class="container">
         <div class="row">
           <div class="col-md-6 align-self-center text-center text-md-left mb-5 mb-md-0">
-            <h2 class="text-white">Get The Mobile Apps</h2>
-            <p class="mb-5 lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora adipisci impedit.</p>
+            <h2 class="text-white">Mobile</h2>
+            <p class="mb-5 lead text-white">Giao diện tương thích, tiện ích và dễ sử dụng.</p>
             <p class="mb-0">
-              <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-apple mr-3"></span>App Store</a>
-              <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-android mr-3"></span>Play Store</a>
+              <a href="javascript:void(0)" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-apple mr-3"></span>IOS</a>
+              <a href="javascript:void(0)" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-android mr-3"></span>Android</a>
             </p>
           </div>
           <div class="col-md-6 ml-auto align-self-end">

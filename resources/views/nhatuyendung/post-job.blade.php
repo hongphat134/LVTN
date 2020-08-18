@@ -1,4 +1,4 @@
-@extends('ntd_layouts.master')
+@extends('layouts.master')
 @section('content')
     
     <!-- HOME -->
@@ -40,7 +40,7 @@
                   <span class="icon-open_in_new mr-2"></span>Xem trước</a>
               </div>
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md"
+                <a href="#" class="btn btn-block btn-info btn-md"
                         onclick="event.preventDefault();
                            document.getElementById('post-job').submit();">
                 <span class="icon-newspaper-o mr-2"></span>Đăng tin
@@ -53,88 +53,119 @@
           <div class="col-lg-12">
             <form id="post-job" action="{{route('postJob')}}" class="p-4 p-md-5 border rounded" method="post">
               {{csrf_field()}}
-              <h3 class="text-black mb-5 border-bottom pb-2">Thông tin tuyển dụng</h3>@foreach($errors->all() as $error)
-              <div class="alert alert-danger alert-dismissible fade show">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-               {{ $error }}
-              </div>
-              @endforeach                     
-              
-              @if(session('error'))
-              <div class="alert alert-danger alert-dismissible fade show">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ session('error') }}
-              </div>
-              @endif
-
-              <div class="form-group">
+              <h3 class="text-black mb-5 border-bottom pb-2">Thông tin tuyển dụng</h3>
+              <div class="form-group{{ $errors->has('deadline')||session('error') ? ' has-error' : '' }}">
                 <label for="job-title">Hạn tuyển dụng</label>
                 <input type="date" class="form-control" name="deadline" placeholder="Chọn hạn...." value="{{ old('deadline')}}">
+                @if ($errors->has('deadline'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('deadline') }}</strong>
+                    </span>                
+                @elseif (session('error'))
+                    <span class="help-block">
+                        <strong>{{ session('error') }}</strong>
+                    </span>
+                @endif
               </div>
 
-              <div class="form-group">
+              <div class="form-group{{ $errors->has('vacancy') ? ' has-error' : '' }}">
                 <label for="job-title">Số lượng tuyển dụng</label>
-                <input type="number" class="form-control" id="job-title" name="vacancy" min="1" max="99" placeholder="Nhập số lượng...." value="{{old('vacancy')}}" autofocus>
+                <input type="number" class="form-control" id="job-title" name="vacancy" min="1" max="99" placeholder="Nhập số lượng...." value="{{old('vacancy')}}">
+                @if ($errors->has('vacancy'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('vacancy') }}</strong>
+                    </span>
+                @endif
               </div>
 
-              <div class="form-group">
+              <div class="form-group{{ $errors->has('skill') ? ' has-error' : '' }}">
                 <label for="job-region">Kĩ năng cần thiết</label>
                 <select class="selectpicker border rounded" id="skill-list" data-style="btn-black" data-width="100%" data-live-search="true" name="skill[]" title="Chọn kĩ năng..." multiple data-max-options="5">
-                      @foreach($skill_list as $skill)
-                      <option value="{{$skill->id}}" 
-      {{ !empty(old('skill'))?(in_array($skill->id,old('skill')) ? 'selected':''):'' }}>
-                        {{$skill->ten}}
-                      </option>
-                      @endforeach
-                    </select>
+                  @foreach($skill_list as $skill)
+                  <option
+    {{ !empty(old('skill'))?(in_array($skill,old('skill')) ? 'selected':''):'' }}>
+                        {{$skill}}
+                  </option>
+                  @endforeach
+                </select>
+                @if ($errors->has('skill'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('skill') }}</strong>
+                    </span>
+                @endif
               </div>
 
-              <div class="form-group">
+              <div class="form-group{{ $errors->has('job') ? ' has-error' : '' }}">
                 <label for="job-region">Ngành nghề cần tuyển</label>
                 <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="job" title="Chọn ngành nghề...">
-                      @foreach($job_list as $job)
-                      <option
-                          {{ $job == old('job') ? 'selected' : ''}}>
-                        {{$job}}
-                      </option>
-                      @endforeach
-                    </select>
+                  @foreach($job_list as $job)
+                  <option
+                      {{ $job == old('job') ? 'selected' : ''}}>
+                    {{$job}}
+                  </option>
+                  @endforeach
+                </select>
+                @if ($errors->has('job'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('job') }}</strong>
+                    </span>
+                @endif
               </div>
               
-              <div class="form-group">
+              <div class="form-group{{ $errors->has('degree') ? ' has-error' : '' }}">
                 <label for="job-type">Yêu cầu trình độ</label>
                 <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="degree" title="Chọn yêu cầu...">
                 @foreach($degree_list as $degree)                      
                   <option {{ $degree == old('degree') ?'selected':''}}>{{$degree}}</option>
                 @endforeach
                 </select>
+                @if ($errors->has('degree'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('degree') }}</strong>
+                    </span>
+                @endif
               </div>
 
-              <div class="form-group">
+              <div class="form-group{{ $errors->has('rank') ? ' has-error' : '' }}">
                 <label for="job-type">Vị trí tuyển dụng</label>
                 <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="rank" title="Chọn vị trí...">
                 @foreach($rank_list as $rank)                      
                   <option {{ $rank == old('rank') ?'selected':''}}>{{$rank}}</option>
                 @endforeach
                 </select>
+                @if ($errors->has('rank'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('rank') }}</strong>
+                    </span>
+                @endif
               </div>
 
-              <div class="form-group">
+              <div class="form-group{{ $errors->has('exp') ? ' has-error' : '' }}">
                 <label for="job-type">Yêu cầu kinh nghiệm</label>
                 <select class="selectpicker border rounded" id="job-type" data-style="btn-black" data-width="100%" data-live-search="true" name="exp" title="Chọn yêu cầu...">
                 @foreach($exp_list as $exp)                      
                   <option {{ $exp == old('exp') ?'selected':''}}>{{$exp}}</option>
                 @endforeach
                 </select>
+                @if ($errors->has('exp'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('exp') }}</strong>
+                    </span>
+                @endif
               </div>
 
-              <div class="form-group">
+              <div class="form-group{{ $errors->has('salary') ? ' has-error' : '' }}">
                 <label for="job-type">Mức lương</label>
                 <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="salary" title="Chọn mức lương...">
                 @foreach($salary_list as $salary)                      
                   <option {{ $salary == old('salary') ?'selected':''}}>{{$salary}}</option>
                 @endforeach
                 </select>
+                @if ($errors->has('salary'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('salary') }}</strong>
+                    </span>
+                @endif
               </div>
 
               <div class="form-group">
@@ -143,7 +174,7 @@
                   <option selected>Bất kì</option>
                   <option {{old('gender') == 'Nam' ? 'selected':''}}>Nam</option>
                   <option {{old('gender') == 'Nữ' ? 'selected':''}}>Nữ</option>
-                </select>
+                </select>                
               </div>
 
               <div class="form-group">
@@ -154,17 +185,26 @@
                 </select>
               </div>
               
-              <div class="form-group">
+              <div class="form-group{{ $errors->has('region') ? ' has-error' : '' }}">
                 <label for="job-region">Nơi làm việc</label>
-                <select class="selectpicker border rounded" id="region-list" data-style="btn-black" data-width="100%" data-live-search="true" name="region[]" title="Chọn khu vực..." multiple data-max-options="3">
-                      @foreach($city_list as $city)
-                      <option
+                <select class="selectpicker border rounded" id="region-list" data-style="btn-black" data-width="100%" data-live-search="true" name="region[]" title="Chọn khu vực..." multiple data-max-options="3">                     
+                      @foreach($region_list as $region => $city_list)  
+                      <optgroup label="{{$region == 'MienNam' ? 'Miền Nam' : ($region == 'MienBac' ? 'Miền Bắc' : 'Miền Trung')}}">
+                        @foreach($city_list as $city)
+                        <option
                     @if(old('region'))
-                 {{ in_array($city->Title,old('region')) ? 'selected':'' }}     
+                 {{ in_array($city->Ten,old('region')) ? 'selected':'' }}     
                     @endif>
-                        {{$city->Title}}</option>
+                        {{$city->Ten}}</option>
+                        @endforeach
+                      </optgroup>
                       @endforeach
-                  </select>                    
+                  </select> 
+                  @if ($errors->has('region'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('region') }}</strong>
+                    </span>
+                @endif                   
               </div>
              
 
@@ -237,15 +277,13 @@
                 <input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin..." value="{{$info}}">
                 @endforeach
               @else
-                <input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin...">
+                <input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin..." value="Email liên hệ: {{$user->email}}">
+                <input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin..." value="SDT liên hệ: {{$user->sdt}}">
+                <input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin..." value="Tên: {{$user->tenlh}}">
+                <input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin..." value="Địa chỉ: {{$user->diachi}}, {{$user->tinhthanhpho}}">
               @endif
-                <button type="button" id="info-contact" class="btn btn-primary form-control">Thêm <span class="icon-plus"></span></button>
-              </div>
-
-              <div class="form-group">
-                <label for="company-website">Website công ty</label>
-                <input type="text" name="website" class="form-control" id="company-website" placeholder="https://" value="{{old('website')}}">
-              </div>
+                <button type="button" id="info-contact" class="btn btn-info form-control">Thêm <span class="icon-plus"></span></button>
+              </div>              
             </form>
           </div>
 
@@ -259,7 +297,7 @@
                 <a href="#" class="btn btn-block btn-light btn-md preview" data-toggle="modal" data-target=".bd-example-modal-xl"><span class="icon-open_in_new mr-2"></span>Xem trước</a>
               </div>
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md"
+                <a href="#" class="btn btn-block btn-info btn-md"
                         onclick="event.preventDefault();
                            document.getElementById('post-job').submit();">                  
                   <span class="icon-newspaper-o mr-2"></span>Đăng tin
@@ -287,18 +325,18 @@
           <div class="col-lg-7">
             <div class="mb-5">
               <figure class="mb-5"><img src="{{asset('images/job_single_img_1.jpg')}}" alt="Image" class="img-fluid rounded"></figure>
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-align-left mr-3"></span>Mô tả công việc</h3>
+              <h3 class="h5 d-flex align-items-center mb-4 text-info"><span class="icon-align-left mr-3"></span>Mô tả công việc</h3>
               <span id="des-preview">              
               </span>
             </div>
             <div class="mb-5">
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Quyền lợi</h3>
+              <h3 class="h5 d-flex align-items-center mb-4 text-info"><span class="icon-rocket mr-3"></span>Quyền lợi</h3>
               <ul class="list-unstyled m-0 p-0" id="benefit-preview">                
               </ul>
             </div>
 
             <div class="mb-5">
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-book mr-3"></span>Thông tin liên hệ</h3>
+              <h3 class="h5 d-flex align-items-center mb-4 text-info"><span class="icon-book mr-3"></span>Thông tin liên hệ</h3>
               <ul class="list-unstyled m-0 p-0" id="contact-preview">                
               </ul>
             </div>         
@@ -306,7 +344,7 @@
           </div>
           <div class="col-lg-5">
             <div class="bg-light p-3 border rounded mb-4">
-              <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Tổng quan</h3>
+              <h3 class="text-info  mt-3 h5 pl-3 mb-3 ">Tổng quan</h3>
               <ul class="list-unstyled pl-3 mb-0">
                 <!-- <li class="mb-2"><strong class="text-black">Published on:</strong> April 14, 2019</li> -->
                 <li class="mb-2" id="job-preview"></li>
@@ -327,7 +365,7 @@
             </div>
 
             <div class="bg-light p-3 border rounded">
-              <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Share</h3>
+              <h3 class="text-info  mt-3 h5 pl-3 mb-3 ">Share</h3>
               <div class="px-3">
                 <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-facebook"></span></a>
                 <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter"></span></a>
@@ -344,7 +382,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" onclick="event.preventDefault();
+        <button type="button" class="btn btn-info" onclick="event.preventDefault();
                            document.getElementById('post-job').submit();">          
           <span class="icon-newspaper-o mr-2"></span>Đăng tin
         </button>

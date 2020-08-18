@@ -1,4 +1,16 @@
 <!-- NAVBAR -->
+<style>
+  .bg-image.overlay-primary:before {
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #17a2b8;      
+      opacity: 0.7;
+      z-index: 1; }
+</style>
 <header class="site-navbar mt-3">
   <div class="container-fluid">
     <div class="row align-items-center">
@@ -6,33 +18,24 @@
 
       <nav class="mx-auto site-navigation">
         <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-          <li><a href="{{url('/')}}" class="nav-link active">Home</a></li>
-          <li><a href="{{url('/about')}}">About</a></li>
-          <li><a href="{{url('/')}}">Job listings</a></li>          
-          <li class="has-children">
-            <a href="{{url('/services')}}">Pages</a>
-            <ul class="dropdown">
-              <li><a href="{{url('/services')}}">Services</a></li>
-              <li><a href="{{url('/service-single')}}">Service Single</a></li>
-              <li><a href="{{url('/blog-single')}}">Blog Single</a></li>
-              <li><a href="{{url('/portfolio')}}">Portfolio</a></li>
-              <li><a href="{{url('/portfolio-single')}}">Portfolio Single</a></li>
-              <li><a href="{{url('/testimonials')}}">Testimonials</a></li>
-              <li><a href="{{url('/faq')}}">Frequently Ask Questions</a></li>
-              <li><a href="{{url('/gallery')}}">Gallery</a></li>
-            </ul>
+          <li><a href="{{url('/')}}" class="nav-link active">Trang chủ</a></li>
+          <li><a href="{{url('/about')}}">Về chúng tôi</a></li>
+          <li><a href="{{url('/nhatuyendung/danh-sach-ho-so')}}">DS hồ sơ</a></li>                   
           </li>
           <li><a href="{{url('/blog')}}">Blog</a></li>
           <li><a href="{{url('/contact')}}">Liên hệ</a></li>
-                    
+            
+          <li class="d-lg-none"><a href="#">Thông báo</a></li>          
           <li class="has-children">
+
             <a href="#" class="d-lg-none">Hi, {{Auth::user()->ten}}</a>
             <ul class="dropdown">
               <li><a href="{{route('postJob')}}"><span class="mr-2">+</span> Đăng tin tuyển dụng</a></li>
               <li><a href="{{url('/nhatuyendung/jobs-list')}}">Danh sách tin</a></li>
               <li><a href="{{route('savePf')}}">Hồ sơ đã lưu</a></li>
-              <li><a href="{{route('appliedPf')}}">Hồ sơ đã ứng tuyển</a></li>
               <li><a href="#">Thông báo hồ sơ phù hợp</a></li>
+              <li><a href="{{url('/create-blog')}}">Tạo Blog</a></li>
+              <li><a href="{{url('/blog-listings')}}">Quản lý Blog</a></li>
               <li><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" href="javascript:void(0)" id="open">Cập nhật tài khoản</a></li>
               <li><a href="{{url('nhatuyendung/profile')}}">Chỉnh sửa hồ sơ</a></li>              
               <li>
@@ -48,20 +51,24 @@
       </nav>
       
       <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
-        <div class="ml-auto">                           
-          <div class="dropdown dropleft"> 
-            <button type="button" class="btn btn-primary border-width-2 d-none d-lg-inline-block dropdown-toggle" data-toggle="dropdown">
+        <div class="ml-auto">             
+          <a href="#" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-notifications_active"></span>Thông báo </a>               
+          <div class="dropdown dropleft border-width-2 d-none d-lg-inline-block"> 
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
               Hi, {{Auth::user()->ten}}
             </button>
+
             <div class="dropdown-menu">
               <h5 class="dropdown-header">TIN TUYỂN DỤNG</h5>
               <a class="dropdown-item" href="{{route('postJob')}}">Đăng tin</a>
               <a class="dropdown-item" href="{{url('/nhatuyendung/jobs-list')}}">Danh sách tin</a>
 
               <h5 class="dropdown-header">QUẢN LÝ ỨNG VIÊN</h5>
-              <a class="dropdown-item" href="{{route('savePf')}}">Hồ sơ đã lưu</a>
-              <a class="dropdown-item" href="{{route('appliedPf')}}">Hồ sơ đã ứng tuyển</a>
+              <a class="dropdown-item" href="{{route('savePf')}}">Mẫu hồ sơ đã lưu</a>
               <a class="dropdown-item" href="#">Thông báo hồ sơ phù hợp</a>
+              <h5 class="dropdown-header">BLOG</h5>
+              <a class="dropdown-item" href="{{url('/create-blog')}}">Tạo Blog</a>
+              <a class="dropdown-item" href="{{url('/blog-listings')}}">Quản lý Blog</a>
               <h5 class="dropdown-header">TÀI KHOẢN</h5>
               <a class="dropdown-item" data-toggle="modal" data-target="#myModal" href="javascript:void(0)" id="open">Cập nhật tài khoản</a>
               <a class="dropdown-item" href="{{url('nhatuyendung/profile')}}">Chỉnh sửa hồ sơ</a>
@@ -72,7 +79,20 @@
               </a>
             </div>
           </div>                
-
+           <style>
+              .dropdown-menu{
+                background-color: #000033;
+                
+              }
+              .dropdown-menu a{
+                color: #FFFFCC;
+              }
+              .dropdown-header{
+                font-weight: bold;
+                font-size: 120%;
+                color: #BB0000;
+              }
+            </style>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
               {{ csrf_field() }}
           </form>                      

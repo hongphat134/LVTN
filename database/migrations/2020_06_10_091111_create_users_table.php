@@ -14,12 +14,14 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+
             $table->increments('id');
             $table->string('ten');
             $table->string('email')->nullable();
             $table->string('password')->nullable();
             $table->tinyInteger('loaitk')->nullable();
             $table->string('theodoi')->nullable();
+            $table->string('theodoi_ntd')->nullable();
             $table->rememberToken();
             $table->string('provider')->nullable();
             $table->string('provider_id')->nullable();
@@ -27,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->boolean('verified')->default(false);
             // $table->tinyInteger('verified')->default(0);
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

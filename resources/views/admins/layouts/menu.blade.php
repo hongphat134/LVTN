@@ -1,10 +1,7 @@
 <!-- ========== Left Sidebar Start ========== -->
-
             <div class="left side-menu">
                 <div class="sidebar-inner slimscrollleft">                    
                     <!--- Divider -->
-
-
                     <div id="sidebar-menu">
                         <ul>
                             <li class="has_sub">
@@ -19,7 +16,8 @@
                                 <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-file-account"></i> <span> Hồ sơ </span> <span class="float-right"><i class="mdi mdi-plus"></i></span></a>
                                 <ul class="list-unstyled">
                                     <li><a href="{{url('/administrators/ho-so/danh-sach')}}">Danh sách</a></li>
-                                    <li><a href="{{url('/administrators/ho-so/phe-duyet')}}">Phê duyệt</a></li>                                    
+                                    <li><a href="{{url('/administrators/ho-so/phe-duyet')}}">Phê duyệt</a></li>
+                                    <li><a href="{{url('/administrators/ho-so/ung-tuyen')}}">Phê duyệt HSXV</a></li>                                    
                                 </ul>
                             </li>
                             
@@ -28,17 +26,19 @@
                             </li>
 
                             <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i> <span> Người dùng </span> <span class="float-right"><i class="mdi mdi-plus"></i></span></a>
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i> <span> Bài viết </span> <span class="float-right"><i class="mdi mdi-plus"></i></span></a>
                                 <ul class="list-unstyled">
-                                    <li><a href="{{url('/administrators/nguoi-dung/nguoi-tim-viec')}}">Người tìm việc</a></li>
-                                    <li><a href="{{url('/administrators/nguoi-dung/nha-tuyen-dung')}}">Nhà tuyển dụng</a></li>                                    
+                                    <li><a href="{{url('/administrators/bai-viet/danh-sach')}}">Danh sách</a></li>                                    
                                 </ul>
                             </li>
 
                             <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-group"></i> <span> Quản trị viên </span> <span class="float-right"><i class="mdi mdi-plus"></i></span></a>
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i> <span> Người dùng </span> <span class="float-right"><i class="mdi mdi-plus"></i></span></a>
                                 <ul class="list-unstyled">
-                                    <li><a href="{{url('/administrators/quan-tri-vien/danh-sach')}}">Danh sách</a></li>                                    
+                                    <li><a href="{{url('/administrators/nguoi-dung/nguoi-tim-viec')}}">Người tìm việc</a></li>
+                                    <li><a href="{{url('/administrators/nguoi-dung/nha-tuyen-dung')}}">Nhà tuyển dụng</a></li>   
+                                    <li><a href="{{url('/administrators/nguoi-dung/quan-tri-vien')}}">Quản trị viên</a></li>
+                                    <li><a href="{{url('/administrators/nguoi-dung/quan-tri-vien')}}">Thêm nhân viên</a></li>                                
                                 </ul>
                             </li>
                         </ul>

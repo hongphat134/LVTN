@@ -1,7 +1,6 @@
-﻿@extends('admins.layouts.master')
+@extends('admins.layouts.master')
 @section('content')
             <!-- Start right Content here -->
-
             <div class="content-page">
                 <!-- Start content -->
                 <div class="content">

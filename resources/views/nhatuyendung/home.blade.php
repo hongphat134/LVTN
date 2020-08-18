@@ -5,12 +5,12 @@
     @include('ntd_layouts.search')          
 
     <!-- HOME -->
-   <!--  <section class="py-5 bg-image overlay-primary fixed overlay" id="next" style="background-image: url('images/hero_1.jpg');">
+    <section class="py-5 bg-image overlay-primary fixed overlay" id="next" style="background-image: url('images/hero_1.jpg');">
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2 text-white">JobBoard Site Stats</h2>
-            <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde officiis recusandae sequi excepturi corrupti.</p>
+            <h2 class="section-title mb-2 text-white">THỐNG KÊ</h2>
+            <!-- <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde officiis recusandae sequi excepturi corrupti.</p> -->
           </div>
         </div>
         <div class="row pb-0 block__19738 section-counter">
@@ -19,45 +19,43 @@
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="1930">0</strong>
             </div>
-            <span class="caption">Candidates</span>
+            <span class="caption">Ứng viên</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="54">0</strong>
             </div>
-            <span class="caption">Jobs Posted</span>
+            <span class="caption">Công việc</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="120">0</strong>
             </div>
-            <span class="caption">Jobs Filled</span>
+            <span class="caption">Công việc đã đầy</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="550">0</strong>
             </div>
-            <span class="caption">Companies</span>
-          </div>
-
-            
+            <span class="caption">Công ty</span>
+          </div>            
         </div>
       </div>
     </section>
 
-     -->
+    
     <section class="site-section" id="content">
       <div class="container">
 
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            @if(empty($profile_list))
+            @if($profile_list->count() == 0)
             <h2 class="section-title mb-2">Hiện tại không có hồ sơ tìm việc nào cả!</h2>
             @else
-            <h2 class="section-title mb-2">Có {{$profile_list->total()}} hồ sơ tìm việc công khai</h2>
+            <h2 class="section-title mb-2"><span class="icon-person_add mr-2"></span>Hồ sơ tìm việc của những ứng viên <span class="icon-person_add"></span></h2>
             @endif
           </div>
         </div>
@@ -71,7 +69,7 @@
     @if($profile->hinh)
     src="{{url('hinhdaidien/'.$profile->hinh)}}"
     @else
-    src="{{url('hinhdaidien/1592215436_person_4.jpg')}}"
+    src="{{url('hinhdaidien/person_6.jpg')}}"
     @endif
      
               alt="Free Website Template by Free-Template.co" class="img-fluid" style="width: 150px; height: 150px !important;">
@@ -96,15 +94,7 @@
             </div>            
           </li>    
           @endforeach      
-        </ul>
-
-        <div class="row pagination-wrap">
-          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-7 Of 43,167 Jobs</span>
-          </div>
-          @include('layouts.paginating',['job_listings' => $profile_list])
-        </div>
-
+        </ul>      
       </div>
     </section>
 
@@ -118,8 +108,8 @@
           <div class="col-12 text-center mt-4 mb-5">
             <div class="row justify-content-center">
               <div class="col-md-7">
-                <h2 class="section-title mb-2">Company We've Helped</h2>
-                <p class="lead">Porro error reiciendis commodi beatae omnis similique voluptate rerum ipsam fugit mollitia ipsum facilis expedita tempora suscipit iste</p>
+                <h2 class="section-title mb-2">Hãy đến với chúng tôi!</h2>
+                <p class="lead">Tìm việc phù hợp & tuyển dụng nhân lực nhanh chóng </p>
               </div>
             </div>
             
@@ -155,16 +145,13 @@
 
 
     <section class="bg-light pt-5 testimony-full">
-        
         <div class="owl-carousel single-carousel">
-
-        
           <div class="container">
             <div class="row">
               <div class="col-lg-6 align-self-center text-center text-lg-left">
                 <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
+                  <p>&ldquo;Hãy đăng ký để trở thành hội viên của Website để sử dụng những dịch vụ tiện ích nhất&rdquo;</p>
+                  <p><cite> &mdash; Hồng Phát, @HTP</cite></p>
                 </blockquote>
               </div>
               <div class="col-lg-6 align-self-end text-center text-lg-right">
@@ -172,13 +159,12 @@
               </div>
             </div>
           </div>
-
           <div class="container">
             <div class="row">
               <div class="col-lg-6 align-self-center text-center text-lg-left">
                 <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Chris Peters, @Google</cite></p>
+                  <p>&ldquo;Tìm việc phù hợp & tuyển dụng nhân lực nhanh chóng.&rdquo;</p>
+                  <p><cite> &mdash; Hồng Phát, @HTP</cite></p>
                 </blockquote>
               </div>
               <div class="col-lg-6 align-self-end text-center text-lg-right">
@@ -186,20 +172,18 @@
               </div>
             </div>
           </div>
-
       </div>
-
     </section>
 
     <section class="pt-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
       <div class="container">
         <div class="row">
           <div class="col-md-6 align-self-center text-center text-md-left mb-5 mb-md-0">
-            <h2 class="text-white">Get The Mobile Apps</h2>
-            <p class="mb-5 lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora adipisci impedit.</p>
+            <h2 class="text-white">Mobile</h2>
+            <p class="mb-5 lead text-white">Giao diện tương thích, tiện ích và dễ sử dụng.</p>
             <p class="mb-0">
-              <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-apple mr-3"></span>App Store</a>
-              <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-android mr-3"></span>Play Store</a>
+              <a href="javascript:void(0)" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-apple mr-3"></span>IOS</a>
+              <a href="javascript:void(0)" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-android mr-3"></span>Android</a>
             </p>
           </div>
           <div class="col-md-6 ml-auto align-self-end">

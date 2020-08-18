@@ -111,7 +111,7 @@
                   <input type="submit" value="Đăng nhập" class="btn px-4 btn-primary text-white">
                   
                   <a href="{{url('/auth/redirect/google')}}"><button type="button" class="btn btn-danger"><i class="icon-google-plus"></i> Google</button></a>
-                  <!-- <a href="{{url('/auth/redirect/facebook')}}"><button type="button" class="btn btn-danger"><i class="icon-facebook-square"></i> Facebook</button></a> -->
+                  <a href="{{url('/auth/redirect/facebook')}}"><button type="button" class="btn btn-danger"><i class="icon-facebook-square"></i> Facebook</button></a>
 
                 </div>
               </div>

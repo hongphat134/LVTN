@@ -22,28 +22,31 @@ class CreateHosoxinviecTable extends Migration
             $table->string('hoten')->nullable();
             $table->string('emaillienhe')->nullable();
             $table->string('nganh')->nullable();      
-            $table->string('kinang')->nullable();
+            $table->json('kinang')->nullable();
             $table->string('khuvuc')->nullable();            
 
             $table->string('honnhan')->nullable();      
             $table->string('trangthailv')->nullable();      
             $table->string('bangcap')->nullable();      
             $table->string('capbac')->nullable();      
-            $table->string('kinhnghiem')->nullable();     
+            $table->string('kinhnghiem')->nullable();
+            $table->string('mucluongmm')->nullable();     
             $table->longText('muctieu')->nullable();      
-            $table->longText('ngoaingu')->nullable();
-            $table->longText('tinhoc')->nullable();
+            $table->json('ngoaingu')->nullable();
+            $table->json('tinhoc')->nullable();
             $table->longText('sotruong')->nullable();
+            $table->longText('noidung_ungtuyen')->nullable();
             // 1 là chưa xem, 0 là xem rồi
             $table->boolean('new')->default(1);
-            // 0 là chưa dc admin phê duyệt và 1 thì ngược lại
-            $table->tinyInteger('trangthai')->nullable();            
+            // 0 là chưa xét tuyển, 1 là đã xử lý
+            $table->tinyInteger('ntd_ungtuyen')->default(0);  
+            // 0 là chưa dc admin phê duyệt và 1 thì ngược lại          
+            $table->tinyInteger('ad_pheduyet')->default(0);            
             // các trường mong muốn         
 
             $table->rememberToken();            
-            $table->timestamp('created_at');
-                
-            
+            $table->timestamps();
+            $table->engine = 'InnoDB';            
         });
     }
 

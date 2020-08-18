@@ -20,20 +20,24 @@ class ComposerServiceProvider extends ServiceProvider
             'ntd_layouts.search',
             'pages.rec-register',
             'nguoitimviec.apply',
+            'nguoitimviec.copy-apply',
             'nguoitimviec.create-profile',
             'nguoitimviec.update-profile',
             'nhatuyendung.post-job',
             'nhatuyendung.update-job',
             'nhatuyendung.profile',
+            'pages.advance-search',
         ],
         'App\Http\ViewComposers\CityListComposer');
 
         View::composer([         
             'nguoitimviec.apply',  
+            'nguoitimviec.copy-apply',
             'nguoitimviec.create-profile',
             'nguoitimviec.update-profile',
             'nhatuyendung.post-job',
             'nhatuyendung.update-job',
+            'pages.advance-search',
         ],
         'App\Http\ViewComposers\BasicComposer');
     }

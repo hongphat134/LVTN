@@ -40,11 +40,15 @@
               
               <div class="form-group">
                 <label class="text-black" for="job-region">Khu vực làm việc</label>
-                <select class="selectpicker form-control border rounded" name="region" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn khu vực..." required>
-                      @foreach($city_list as $city)
-                      <option {{ old('region') == $city->Title ? 'selected':'' }}>
-                        {{$city->Title}}
+                <select class="selectpicker form-control border rounded" name="region" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn khu vực..." required>                     
+                      @foreach($region_list as $region => $city_list) 
+                      <optgroup label="{{$region == 'MienNam' ? 'Miền Nam' : ($region == 'MienBac' ? 'Miền Bắc' : 'Miền Trung')}}">
+                        @foreach($city_list as $city)
+                        <option {{ old('region') == $city->Ten ? 'selected':'' }}>
+                        {{$city->Ten}}
                       </option>
+                        @endforeach
+                      </optgroup>
                       @endforeach
                 </select>
               </div>
@@ -59,61 +63,53 @@
                       @endforeach
                 </select>
               </div>
-<!-- 
-              <div class="form-group">
-                <label for="company-website-tw d-block">Upload ảnh đại diện</label> <br>
-                <label class="btn btn-primary btn-md btn-file">
-                  Browse File<input type="file" name="hinhthe" hidden>
-                </label>
-              </div> -->
 
               <div class="row form-group">
                 <div class="col-md-12">
                   <input type="submit" value="Đăng ký" class="btn px-4 btn-primary text-white">                                    
                 </div>
-              </div>
-            
+              </div>     
           </div>
-          <div class="col-lg-6">
-            <h2 class="mb-4">Thông tin tài khoản</h2>
-                        
-              <div class="row form-group">
-                <div class="col-md-12 mb-3 mb-md-0  {{ $errors->has('usrname') ? ' has-error' : '' }}">
-                  <label class="text-black" for="fname">Tên tài khoản</label>
-                  <input type="text" id="usrname"  name="usrname" class="form-control" placeholder="Nhập tên tài khoản...." value="{{ old('usrname') }}" required autofocus>
-                  @if ($errors->has('usrname'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('usrname') }}</strong>
-                      </span>
-                  @endif
-                </div>
-                <div class="col-md-12 mb-3 mb-md-0{{ $errors->has('email') ? ' has-error' : '' }}">
-                  <label class="text-black" for="fname">Email</label>
-                  <input type="email" name="email" id="fname" class="form-control" placeholder="Email address" value="{{ old('email') }}" required>
 
-                  @if ($errors->has('email'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('email') }}</strong>
-                      </span>
-                  @endif
-                </div>
+          <div class="col-lg-6 mb-5">
+            <h2 class="mb-4">Thông tin tài khoản</h2>                      
+            <div class="row form-group">
+              <div class="col-md-12 mb-3 mb-md-0  {{ $errors->has('usrname') ? ' has-error' : '' }}">
+                <label class="text-black" for="fname">Tên tài khoản</label>
+                <input type="text" id="usrname"  name="usrname" class="form-control" placeholder="Nhập tên tài khoản...." value="{{ old('usrname') }}" required autofocus>
+                @if ($errors->has('usrname'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('usrname') }}</strong>
+                    </span>
+                @endif
               </div>
-              <div class="row form-group mb-4">
-                <div class="col-md-12 mb-3 mb-md-0{{ $errors->has('password') ? ' has-error' : '' }}">
-                  <label class="text-black" for="fname">Password</label>
-                  <input type="password" name="password" id="fname" class="form-control" placeholder="Nhập Password..." required>
-                  @if ($errors->has('password'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('password') }}</strong>
-                      </span>
-                  @endif
-                </div>            
-              </div>  
-              <div class="row form-group mb-4">
-                <div class="col-md-12 mb-3 mb-md-0">
-                  <label class="text-black" for="fname">Nhập lại password</label>
-                  <input type="password" name="password_confirmation" id="fname" class="form-control" placeholder="Nhập lại Password..." required>                 
-                </div>            
+              <div class="col-md-12 mb-3 mb-md-0{{ $errors->has('email') ? ' has-error' : '' }}">
+                <label class="text-black" for="fname">Email</label>
+                <input type="email" name="email" id="fname" class="form-control" placeholder="Email address" value="{{ old('email') }}" required>
+
+                @if ($errors->has('email'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                @endif
+              </div>
+            </div>
+            <div class="row form-group mb-4">
+              <div class="col-md-12 mb-3 mb-md-0{{ $errors->has('password') ? ' has-error' : '' }}">
+                <label class="text-black" for="fname">Password</label>
+                <input type="password" name="password" id="fname" class="form-control" placeholder="Nhập Password..." required>
+                @if ($errors->has('password'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </span>
+                @endif
+              </div>            
+            </div>  
+            <div class="row form-group mb-4">
+              <div class="col-md-12 mb-3 mb-md-0">
+                <label class="text-black" for="fname">Nhập lại password</label>
+                <input type="password" name="password_confirmation" id="fname" class="form-control" placeholder="Nhập lại Password..." required>                 
+              </div>            
             </form>
           </div>
         </div>

@@ -36,8 +36,8 @@ class BasicComposer
 		if(file_exists( public_path()."/resources/itechs.json")){
 			$this->itech_list = json_decode(file_get_contents(url("resources/itechs.json")));
 		}
-		if(file_exists( public_path()."/resources/salarys.json")){
-			$this->salary_list = json_decode(file_get_contents(url("resources/salarys.json")));
+		if(file_exists( public_path()."/resources/salaries.json")){
+			$this->salary_list = json_decode(file_get_contents(url("resources/salaries.json")));
 		}
 	}
 

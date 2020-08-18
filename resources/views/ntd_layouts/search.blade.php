@@ -11,16 +11,22 @@
               <div class="row mb-5">
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                   <input id="search" name="key" type="text" class="form-control form-control-lg" placeholder="ngành, kĩ năng..." 
-                  value="@isset($_GET['key']){{$_GET['key']}}@endisset">                                
+                  value="@isset($_GET['key']){{$_GET['key']}}@endisset"> 
+
+                  <ul class="list-group" id="job-skill-autocomplete">       
+                  </ul>                               
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                   <!-- Multi -->
                   <select name="region" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Chọn khu vực..." data-size="10">
-                  <option value=''>Tất cả</option>
-                  @foreach($city_list as $city)   
-                    <option @isset($_GET['region']) {{$_GET['region'] == $city->Title ? 'selected' : ''}} @endisset>
-                      {{$city->Title}}
+                  @foreach($region_list as $region => $city_list) 
+                  <optgroup label="{{$region == 'MienNam' ? 'Miền Nam' : ($region == 'MienBac' ? 'Miền Bắc' : 'Miền Trung')}}">
+                    @foreach($city_list as $city)
+                    <option @isset($_GET['region']) {{$_GET['region'] == $city->Ten ? 'selected' : ''}} @endisset>
+                      {{$city->Ten}}
                     </option>
+                    @endforeach
+                  </optgroup>
                   @endforeach
                   </select>
                 </div>
@@ -32,7 +38,7 @@
                   </select>
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <button type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search"><span class="icon-search mr-2"></span>Tìm kiếm hồ sơ</button>
+                  <button type="submit" class="btn btn-info btn-lg btn-block text-white btn-search"><span class="icon-find_in_page mr-1"></span>Tìm kiếm hồ sơ</button>
                 </div>
               </div>
               <div class="row">
@@ -54,3 +60,4 @@
         <span class=" icon-keyboard_arrow_down"></span>
       </a>
     </section>
+<script src="{{url('ajax/autocomplete.js')}}"></script>

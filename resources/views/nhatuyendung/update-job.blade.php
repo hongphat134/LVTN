@@ -1,4 +1,4 @@
-@extends('ntd_layouts.master')
+@extends('layouts.master')
 @section('content')
     <!-- HOME -->
     <section class="section-hero overlay inner-page bg-image home-section" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
@@ -86,9 +86,8 @@
                 <label for="job-region">Kĩ năng cần thiết</label>
                 <select class="selectpicker border rounded" id="skill-list" data-style="btn-black" data-width="100%" data-live-search="true" name="skill[]" title="Chọn kĩ năng..." multiple data-max-options="5">
                       @foreach($skill_list as $skill)                      
-                      <option value="{{$skill->id}}"
-                          {{in_array($skill->id,$news->kinang)?'selected':''}}>
-                        {{$skill->ten}}
+                      <option {{in_array($skill,$news->kinang)?'selected':''}}>
+                        {{$skill}}
                       </option>
                       @endforeach
                     </select>
@@ -165,12 +164,16 @@
               
               <div class="form-group">
                 <label for="job-region">Nơi làm việc</label>
-                <select class="selectpicker border rounded" id="region-list" data-style="btn-black" data-width="100%" data-live-search="true" name="region[]" title="Chọn khu vực..." multiple data-max-options="3">
-                      @foreach($city_list as $city)
-                      <option value="{{$city->Title}}"
-      {{ in_array($city->Title,json_decode($news->tinhthanhpho)) ? 'selected' : ''}}>
-                        {{$city->Title}}
+                <select class="selectpicker border rounded" id="region-list" data-style="btn-black" data-width="100%" data-live-search="true" name="region[]" title="Chọn khu vực..." multiple data-max-options="3">                     
+                      @foreach($region_list as $region => $city_list) 
+                      <optgroup label="{{$region == 'MienNam' ? 'Miền Nam' : ($region == 'MienBac' ? 'Miền Bắc' : 'Miền Trung')}}">
+                        @foreach($city_list as $city)
+                        <option
+      {{ in_array($city->Ten,json_decode($news->tinhthanhpho)) ? 'selected' : ''}}>
+                        {{$city->Ten}}
                       </option>
+                        @endforeach
+                      </optgroup>
                       @endforeach
                     </select>
               </div>
@@ -244,11 +247,6 @@
               @endif
                 <input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin...">
                 <button type="button" id="info-contact" class="btn btn-primary form-control">Thêm <span class="icon-plus"></span></button>
-              </div>
-
-              <div class="form-group">
-                <label for="company-website">Website công ty</label>
-                <input type="text" name="website" class="form-control" id="company-website" placeholder="https://" value="{{ $news->website ? $news->website : old('website') }}">
               </div>
             </form>
           </div>

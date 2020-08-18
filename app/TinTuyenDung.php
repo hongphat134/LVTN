@@ -10,4 +10,5 @@ class TinTuyenDung extends Model
     protected $table = 'tintuyendung';
 
 	public $timestamps = true;
+
 }

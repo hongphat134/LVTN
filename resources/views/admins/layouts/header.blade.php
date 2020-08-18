@@ -34,8 +34,8 @@
                 <!-- LOGO -->
                 <div class="topbar-left">
                     <div class="text-center">
-                        <a href="index.html" class="logo"><img src="{{asset('admin\images\logo.png')}}" alt="logo-img"></a>
-                        <a href="index.html" class="logo-sm"><img src="{{asset('admin\images\logo_sm.png')}}" alt="logo-img"></a>
+                        <a href="{{url('/administrators')}}" class="logo"><img src="{{asset('admin\images\logo.png')}}" alt="logo-img"></a>
+                        <a href="{{url('/administrators')}}" class="logo-sm"><img src="{{asset('admin\images\logo_sm.png')}}" alt="logo-img"></a>
                     </div>
                 </div>
                 <!-- Button mobile view to collapse sidebar menu -->

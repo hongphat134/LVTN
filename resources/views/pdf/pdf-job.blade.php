@@ -16,8 +16,8 @@
 	<div class="container">
 		<div>
 			Kĩ năng:
-			@foreach($job->kinang as $skill)
-			{{$skill->ten}} &
+			@foreach(json_decode($job->kinang) as $skill)
+			{{$skill}} &
 			@endforeach
 		</div>
 		<div>

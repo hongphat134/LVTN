@@ -15,9 +15,9 @@ $(document).on('input','#search',function(e){
 		type: "get",
 		dataType: "json",
 		success: function(data){
-			// console.log(data);
+			console.log(data);
 			$.each(data,function(key,value){
-				$("#job-skill-autocomplete").append('<li class="list-group-item">' + value.ten + '</li>');
+				$("#job-skill-autocomplete").append('<li class="list-group-item">' + value + '</li>');
 			});
 
 			$("#job-skill-autocomplete li").click(function(){

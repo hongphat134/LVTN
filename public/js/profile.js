@@ -65,6 +65,8 @@ function transPreview(name){
 			return 'sở trường';			
 		case 'exp':
 			return 'số năm kinh nghiệm'; 
+		case 'salary':
+			return 'mức lương mong muốn';
 		case 'title':
 			return 'ngành nghề'; 
 		default:
@@ -123,8 +125,20 @@ $(".preview").click(function(){
 				v.name = 'title';	
 			} 							
 			if(v.value == 'other') v.value = '';
+
+			if(v.name == 'target' || v.name == 'talent')
+			$('#' + v.name + '-preview').html(
+				v.value? jsUcfirst('<strong>' + transPreview(v.name) + ':</strong></br> <pre>' + v.value + '</pre>') : '<div class="alert alert-dark">Chưa có ' + transPreview(v.name) + '!</div>');					
+			else
 			$('#' + v.name + '-preview').html(
 				v.value? jsUcfirst(transPreview(v.name) + ': ' + v.value) : '<div class="alert alert-danger">Chưa có ' + transPreview(v.name) + '!</div>');	
 		}		
 	});
+});
+
+$(".has-error").click(function(){
+	$(this).removeClass('has-error');
+	$(this).unbind('click');
+	// console.log($(this).children(":last-child"));
+	$(this).children(":last-child").remove();
 });

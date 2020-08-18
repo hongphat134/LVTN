@@ -18,8 +18,10 @@ return [
         'submit' => 'Gửi lại'
     ],
     'email' => [
+        'greeting' => 'Xin chào quý khách!',
         'welcome' => 'Cảm ơn quý khách đã đăng ký dịch vụ của chúng tôi!',
         'instructions' => 'Quý khách sắp hoàn tất việc đăng ký! Vui lòng nhấn vào nút bên dưới để hoàn tất:',
         'action' => 'Đăng ký hoàn tất',
+        'salutation' => 'Chúc quý khách một ngày vui vẻ!',
     ],
 ];

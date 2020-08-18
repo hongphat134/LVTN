@@ -18,7 +18,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            if(Auth::user()->loaitk == 1) return redirect('/nhatuyendung');
+            if(Auth::user()->loaitk != 0) return redirect('/nhatuyendung');
         }
 
         return $next($request);

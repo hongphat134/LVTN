@@ -1,6 +1,8 @@
 @include('layouts.header')
     <!-- MENU -->
-    @include('layouts.menu')
+    @if(Auth::check()) @include('ntv_layouts.menu')     
+    @else @include('layouts.menu')
+    @endif     
     <!-- HOME -->
     @include('layouts.search')
 
@@ -9,7 +11,11 @@
 
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">Có {{$job_listings->total()}} tin tuyển dụng</h2>
+            <h2 class="section-title mb-2">
+              @if($job_listings->total() == 0) Rất tiếc! Hiện tại không có tin tuyển dụng nào cả!
+              @else Có {{$job_listings->total()}} tin tuyển dụng
+              @endif
+            </h2>
           </div>
         </div>
         
@@ -24,9 +30,9 @@
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
               <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
                 <h2>{{$news->nganh}}</h2>
-                <strong>{{$news->ten}}</strong>              
+                <strong>Nhà tuyển dụng {{$news->ten}}</strong>              
                 <div class="keywords">
-                  @foreach($news->kinang as $skill)
+                  @foreach(json_decode($news->kinang) as $skill)
                   <button class="btn btn-outline-info skill">{{$skill}}</button>
                   @endforeach                 
                 </div>      
@@ -54,18 +60,27 @@
             </div>            
           </li>
           @endforeach       
-        </ul>
-
-        <div class="row pagination-wrap">
-          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-{{$job_listings->perPage()}} trong {{$job_listings->total()}} công việc</span>
-          </div>
-          @include('layouts.paginating')
-        </div>
+        </ul>       
+        @include('layouts.paginating')
+       
 
       </div>
     </section>
-
+    <!-- TÔ ĐẬM Search Result => Cần cải tiến-->
+    <script>      
+        var search = $("#search").val();
+        // console.log(search);
+        var s = $("body .job-listing-position h2");
+        
+        $.each(s,function(k,v){
+          var regex = new RegExp(search, "i");
+          var str = v.innerText;
+          if (str.search(regex) != -1) {  
+             v.innerHTML = str.replace(regex, "<b style='background-color:red'>$&</b>");
+          }
+          // console.log(v);
+        });          
+    </script>
     @include('layouts.looking-job')
     
 @include('layouts.footer')

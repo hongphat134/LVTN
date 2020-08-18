@@ -1,13 +1,13 @@
 @include('layouts.header')
     <!-- MENU -->
-    @include('layouts.menu')
+    @include('ntv_layouts.menu')
     <!-- HOME -->
     @include('layouts.search')
 
     <section class="site-section" id="next">
       <div class="container">
       
-        @if($job_listings)
+        @if($job_listings->total() != 0)
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
             <h2 class="section-title mb-2">
@@ -29,7 +29,7 @@
                 <h2>{{$news->nganh}}</h2>
                 <strong>{{$news->ten}}</strong>
                 <div class="keywords">
-                  @foreach($news->kinang as $skill)
+                  @foreach(json_decode($news->kinang) as $skill)
                   <button class="btn btn-outline-info">{{$skill}}</button>
                   @endforeach                 
                 </div>      
@@ -51,15 +51,10 @@
           @endforeach     
         </ul>
 
-        <div class="row pagination-wrap">
-          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-{{$job_listings->perPage()}} trong {{$job_listings->total()}} Jobs</span>
-          </div>
-          @include('layouts.paginating')
-        </div>
+        @include('layouts.paginating',['job_listings' => $job_listings])
 
         @else 
-        <p>Bạn chưa theo dõi tin nào cả!</p>
+        <p>Bạn chưa ứng tuyển <a href="{{url('/job-list')}}">tin tuyển dụng</a> nào cả! Hãy tìm <a href="{{url('/job-list')}}">tin tuyển dụng</a> phù hợp và ứng tuyển để có cơ hội tìm được việc làm mình mong muốn bạn nhé!</p>
         @endif  
       </div>
     </section>

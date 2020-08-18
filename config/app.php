@@ -51,7 +51,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://lvtn.laravel.info/'),
+    'url' => env('APP_URL', 'http://lvtn.laravel.info'),
 
     /*
     |--------------------------------------------------------------------------

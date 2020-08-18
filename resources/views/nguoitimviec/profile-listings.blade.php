@@ -47,30 +47,29 @@
         
         <div class="row">
           @foreach($profile_list as $key => $profile)
-          <div class="col-6 col-md-6 col-lg-4 mb-4 mb-lg-5">
-            @if($profile->trangthai == 0)
-            <a href="{{url('/nguoitimviec/update-profile',$profile->id)}}" class="block__16443 text-center d-block">              
-            @else
-            <a href="javascript:void(0)" class="block__16443 text-center d-block">
-              <div class="ribbon-wrapper">
-                <div class="ribbon red">Duyệt</div>  
-              </div>              
-            @endif
-
+          <div class="col-6 col-md-6 col-lg-4 mb-4 mb-lg-5">           
+            <a class="block__16443 text-center d-block" data-toggle="modal" data-target="#viewModal{{$key}}" href="javascript:void(0)">
             @if($profile->congkhai == 1)
             <div class="ribbon-right-wrapper">
-                <div class="ribbon-right blue">public</div>  
-              </div>
+              <div class="ribbon-right blue">Public</div>  
+            </div>
+            @endif
+            @if($profile->trangthai == 1)
+            <div class="ribbon-wrapper">
+              <div class="ribbon red">Duyệt</div>  
+            </div>
             @endif
               <span class="custom-icon mx-auto"><span class="icon-file-text d-block"></span></span>
-              <h3>Mẫu hô sơ {{$key + 1}}</h3>
-              <span class="badge badge-pill badge-danger">Đang chờ duyệt</span>
-              <p>Họ tên: {{ $profile->hoten }}</p>
-              <p>Ngành nghề: {{ $profile->nganh }}</p>              
-              <p>Khu vực: {{ $profile->khuvuc }}</p>  
+              <h3>{{$profile->nganh}} </h3>
+              <p>Họ & tên: {{ $profile->hoten }}</p>
+              @if($profile->trangthai == 1)              
+              <p>Lượt xem: {{ $profile->luotxem }}</p>  
+              @else
+              <p><span class="badge badge-pill badge-danger">Đang chờ duyệt</span></p>
+              @endif
               <p>Ngày cập nhật: {{ date('d/m/Y',strtotime($profile->updated_at)) }}</p>            
             </a>
-
+            
             <div class="row">
               <span class="col-7">
                 <div class="dropdown">
@@ -78,19 +77,17 @@
     <i class="icon-th-large"></i> Quản lý mẫu hồ sơ
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" data-toggle="modal" data-target="#viewModal{{$key}}" href="javascript:void(0)">Xem mẫu</a>
+    @if($profile->trangthai == 0)
+    <a class="dropdown-item" href="{{url('nguoitimviec/update-profile',$profile->id)}}" target="_blank">Cập nhật mẫu</a>
+    @endif
     <a class="dropdown-item" href="{{route('pdf-profile',$profile->id)}}" target="_blank">Xuất PDF</a>
     <a class="dropdown-item call-delete" id="{{$profile->id}}" data-toggle="modal" data-target="#deleteModal" href="javascript:void(0)">Xoá</a>
   </div>
-</div>
-              <!-- <button class="btn btn-outline-success" data-toggle="modal" data-target="#viewModal{{$key}}"><i class="icon-search"></i> XEM</button> -->
+</div>             
               </span>
               <span class="col-5">                
               <a href="{{url('/nguoitimviec/set-status',$profile->id)}}"><button class="btn btn-outline-info"><i class="icon-public"></i> {{$profile->congkhai == 0 ? 'Bật':'Tắt'}} Public</button></a>
               </span> 
-              <!-- <span class="col-4">              
-              <button id="{{$profile->id}}" class="btn btn-outline-danger call-delete" data-toggle="modal" data-target="#deleteModal"><i class="icon-trash"></i> XOÁ</button>
-              </span>                  -->
             </div>
           </div>
           @endforeach
@@ -104,8 +101,10 @@
           </script>    
         </div>
         <!-- ROW -->
+         @include('layouts.paginating',['job_listings' => $profile_list])
       </div>
       <!-- CONTAINER -->
+
     </section>
   
   <!-- VIEW PROFILE -->
@@ -121,13 +120,13 @@
                 <li><span class="active"><h3>{{$profile->nganh}}</h3></span></li>
                 <li>Họ & tên: <a href="#">{{$profile->hoten}}</a></li>
                 <li>Email: <a href="#">{{$profile->emaillienhe}}</a></li>
-                <li>Khu vực: <a href="#">{{$profile->khuvuc}}</a></li>
+                <li>Nơi sinh sống: <a href="#">{{$profile->khuvuc}}</a></li>
                 <li>Hôn nhân: <a href="#">{{$profile->honnhan}}</a></li>
-                <li>Hình thức: <a href="#">{{$profile->trangthailv}}</a></li>
-                <li>Bằng cấp: <a href="#">{{$profile->bangcap}}</a></li>
-                <li>Cấp bậc: <a href="#">{{$profile->capbac}}</a></li>
+                <li>Thời gian làm việc: <a href="#">{{$profile->trangthailv}}</a></li>
+                <li>Bằng cấp cao nhất: <a href="#">{{$profile->bangcap}}</a></li>
+                <li>Cấp bậc cao nhất: <a href="#">{{$profile->capbac}}</a></li>
                 <li>Kinh Nghiệm: <a href="#">{{$profile->kinhnghiem}}</a></li>              
-                <li>Trạng thái: <a href="#">{{$profile->trangthai == 1 ? 'Công khai': 'Chưa công khai'}}</a></li>              
+                <li>Trạng thái: <a href="#">{{$profile->trangthai == 1 ? 'Công khai': 'Chưa công khai'}} mẫu hồ sơ</a></li>              
               </ul>
             </div>
           </div>
@@ -145,6 +144,12 @@
             <h2 class="mb-4">Mục tiêu</h2>
             <p>
               {!! $profile->muctieu ? nl2br($profile->muctieu) : 'Bạn để trống mục này!' !!}
+            </p>
+            <h2 class="mb-4">Kỹ năng</h2>
+            <p>              
+              @foreach(json_decode($profile->kinang) as $skill)
+              {{$skill}} &
+              @endforeach
             </p>           
             <h2 class="mb-4">Trình độ ngoại ngữ</h2>
             <p>
@@ -172,8 +177,8 @@
               {!! $profile->sotruong ? nl2br($profile->sotruong) : 'Bạn để trống mục này!' !!}
             </p>            
             <p>
-              <a href="#" class="btn btn-primary btn-md mt-4">{{$profile->created_at}}</a>
-              <a href="#" class="btn btn-primary btn-md mt-4">{{$profile->updated_at}}</a>
+              <a href="#" class="btn btn-primary btn-md mt-4">Ngày đăng: {{time_elapsed_string($profile->created_at)}}</a>
+              <a href="#" class="btn btn-primary btn-md mt-4">Ngày cập nhật: {{time_elapsed_string($profile->updated_at)}}</a>
             </p>
 
           </div>

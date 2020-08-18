@@ -5,10 +5,10 @@
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            <h1 class="text-white font-weight-bold">About Us</h1>
+            <h1 class="text-white font-weight-bold">Về chúng tôi</h1>
             <div class="custom-breadcrumbs">
-              <a href="#">Home</a> <span class="mx-2 slash">/</span>
-              <span class="text-white"><strong>About Us</strong></span>
+              <a href="{{url('/')}}">Home</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>Về chúng tôi</strong></span>
             </div>
           </div>
         </div>
@@ -19,8 +19,8 @@
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2 text-white">JobBoard Site Stats</h2>
-            <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde officiis recusandae sequi excepturi corrupti.</p>
+            <h2 class="section-title mb-2 text-white">THỐNG KÊ</h2>
+            <!-- <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde officiis recusandae sequi excepturi corrupti.</p> -->
           </div>
         </div>
         <div class="row pb-0 block__19738 section-counter">
@@ -29,28 +29,28 @@
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="1930">0</strong>
             </div>
-            <span class="caption">Candidates</span>
+            <span class="caption">Ứng viên</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="54">0</strong>
             </div>
-            <span class="caption">Jobs Posted</span>
+            <span class="caption">Công việc</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="120">0</strong>
             </div>
-            <span class="caption">Jobs Filled</span>
+            <span class="caption">Công việc đã đầy</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="550">0</strong>
             </div>
-            <span class="caption">Companies</span>
+            <span class="caption">Công ty</span>
           </div>
 
             
@@ -69,9 +69,10 @@
             </a>
           </div>
           <div class="col-lg-5 ml-auto">
-            <h2 class="section-title mb-3">JobBoard For Freelancers, Web Developers</h2>
-            <p class="lead">Eveniet voluptatibus voluptates suscipit minima, cum voluptatum ut dolor, sed facere corporis qui, ea quisquam quis odit minus nulla vitae. Sit, voluptatem.</p>
-            <p>Ipsum harum assumenda in eum vel eveniet numquam, cumque vero vitae enim cupiditate deserunt eligendi officia modi consectetur. Expedita tempora quos nobis earum hic ex asperiores quisquam optio nostrum sit!</p>
+            <h2 class="section-title mb-3">Website dành riêng cho nhà tuyển dụng</h2>
+            <p class="lead">Bạn đang tìm kiếm nhân lực nhanh chóng, hãy đến với chúng tôi!</p>
+            <p>Chắc hẳn bạn đang gặp khó khăn về vấn đề tuyển dụng nhân lực phù hợp theo nhiều tiêu chí? đáp ứng đủ số lượng? tiết kiệm thời gian?</p>
+            <p>Đừng lo, chúng tôi đã giải quyết được hầu hết những vấn đề bạn gặp phải. Bạn chi cần <a href="{{route('recRegister')}}">đăng ký</a> và sử dụng các dịch vụ và tất cả đều miễn phí!</p>
           </div>
         </div>
       </div>
@@ -87,9 +88,9 @@
             </a>
           </div>
           <div class="col-lg-5 mr-auto order-md-1  mb-5 mb-lg-0">
-            <h2 class="section-title mb-3">JobBoard For Workers</h2>
-            <p class="lead">Eveniet voluptatibus voluptates suscipit minima, cum voluptatum ut dolor, sed facere corporis qui, ea quisquam quis odit minus nulla vitae. Sit, voluptatem.</p>
-            <p>Ipsum harum assumenda in eum vel eveniet numquam, cumque vero vitae enim cupiditate deserunt eligendi officia modi consectetur. Expedita tempora quos nobis earum hic ex asperiores quisquam optio nostrum sit!</p>
+            <h2 class="section-title mb-3">Website dành riêng cho người tìm việc</h2>
+            <p class="lead">Bạn đang tìm kiếm việc làm phù hợp, hãy đến với chúng tôi!</p>
+            <p>Hãy <a href="{{route('login')}}">đăng ký</a> để nộp hồ sơ trực tuyến đến tay các nhà tuyển dụng, bạn sẽ có nhiều cơ hội để tìm được công việc phù hợp!</p>
           </div>
         </div>
       </div>
@@ -100,41 +101,25 @@
       <div class="container">
         <div class="row mb-5">
           <div class="col-12 text-center" data-aos="fade">
-            <h2 class="section-title mb-3">Our Team</h2>
+            <h2 class="section-title mb-3">Our Team(only 1 member)</h2>
           </div>
         </div>
 
         <div class="row align-items-center block__69944">
 
           <div class="col-md-6">
-            <img src="images/person_6.jpg" alt="Image" class="img-fluid mb-4 rounded">
-          </div>
-
-          <div class="col-md-6">
-            <h3>Elisabeth Smith</h3>
-            <p class="text-muted">Creative Director</p>
-            <p>Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae voluptatibus ut? Ex vel  ad explicabo iure ipsa possimus consectetur neque rem molestiae eligendi velit?.</p>
-            <div class="social mt-4">
-              <a href="#"><span class="icon-facebook"></span></a>
-              <a href="#"><span class="icon-twitter"></span></a>
-              <a href="#"><span class="icon-instagram"></span></a>
-              <a href="#"><span class="icon-linkedin"></span></a>
-            </div>
-          </div>
-
-          <div class="col-md-6 order-md-2 ml-md-auto">
             <img src="images/person_5.jpg" alt="Image" class="img-fluid mb-4 rounded">
           </div>
 
           <div class="col-md-6">
-            <h3>Chintan Patel</h3>
-            <p class="text-muted">Creative Director</p>
-            <p>Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae voluptatibus ut? Ex vel  ad explicabo iure ipsa possimus consectetur neque rem molestiae eligendi velit?.</p>
+            <h3>HTP is Mine</h3>
+            <p class="text-muted">Full stack</p>
+            <p>DH51603902 - CNTT - Khoá D16</p>
             <div class="social mt-4">
-              <a href="#"><span class="icon-facebook"></span></a>
-              <a href="#"><span class="icon-twitter"></span></a>
-              <a href="#"><span class="icon-instagram"></span></a>
-              <a href="#"><span class="icon-linkedin"></span></a>
+              <a href="https://www.facebook.com/duongphat1234/"><span class="icon-facebook"></span></a>
+              <a href="https://twitter.com/Call_Me_ZeroOne"><span class="icon-twitter"></span></a>
+              <a href="https://www.instagram.com/hohongnguoihoa/"><span class="icon-instagram"></span></a>
+              <a href="https://www.linkedin.com/in/hong-phat-81ba94184/"><span class="icon-linkedin"></span></a>
             </div>
           </div>
       </div>

@@ -8,4 +8,5 @@ class LienHe extends Model
 {
     //
     protected $table = 'lienhe';
+    public $timestamps = true;
 }

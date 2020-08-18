@@ -38,8 +38,8 @@
 			<tr>
 				<td>Kĩ năng</td>
 				<td>
-					@foreach($profile->kinang as $skill)
-						{{$skill->ten}} /
+					@foreach(json_decode($profile->kinang) as $skill)
+						{{$skill}} /
 					@endforeach					
 				</td>
 			</tr>

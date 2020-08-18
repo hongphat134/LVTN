@@ -7,7 +7,7 @@
 
     <div class="">
         <div class="page-header-title">
-            <h4 class="page-title">Phê duyệt hồ sơ</h4>
+            <h4 class="page-title">Phê duyệt mẫu hồ sơ</h4>
             @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -24,7 +24,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="m-b-30 m-t-0">Danh sách hồ sơ</h4>
+                            <h4 class="m-b-30 m-t-0">Danh sách mẫu hồ sơ</h4>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
@@ -73,6 +73,7 @@
                             </div>
                         </div>
                     </div>
+                    @include('admins.layouts.paginating',['job_listings' => $profile_list])
                 </div>
             </div> <!-- End row -->
 

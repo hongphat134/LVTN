@@ -22,7 +22,7 @@
           <li><a href="{{url('/about')}}">Về chúng tôi</a></li>
           <li><a href="{{url('/nhatuyendung/danh-sach-ho-so')}}">DS hồ sơ</a></li>                   
           </li>
-          <li><a href="{{url('/blog')}}">Blog</a></li>
+          <li><a href="{{url('/blog')}}">Diễn đàn</a></li>
           <li><a href="{{url('/contact')}}">Liên hệ</a></li>
             
           <li class="d-lg-none"><a href="#">Thông báo</a></li>          

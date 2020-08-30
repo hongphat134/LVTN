@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\NhaTuyenDung;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -75,12 +76,39 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
-        return User::create([
-            'ten' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'loaitk' => 0
-        ]);
+    {     
+        // Tạo Account Nhà tuyển dụng
+        if($data['loaitk'] == 1){
+            $user = new User;
+            $user->ten = $data['name'];
+            $user->email = $data['email'];
+            $user->password = bcrypt($data['password']);
+            $user->loaitk = 1;
+            $user->remember_token = $data['_token'];
+
+            $user->save();
+
+            $ntd = new NhaTuyenDung;
+
+            $ntd->idUser = $user->id;
+            $ntd->ten = $data['name_recruiter'];
+            $ntd->diachi = $data['address'];
+            $ntd->tinhthanhpho = $data['region'];
+            $ntd->quymodansu = $data['scale'];                
+            $ntd->remember_token = $data['_token'];
+
+            $ntd->save();  
+
+            return $user;           
+        }
+        // Tạo Account Người tìm việc
+        else{            
+            return User::create([
+                'ten' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'loaitk' => 0
+            ]);
+        }
     }
 }

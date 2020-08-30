@@ -88,13 +88,58 @@
              <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
             </label>              
             <div class="col-lg-4 col-sm-12{{ $errors->has('email')? ' has-error' : '' }}">                  
-              <input type="email" name="email" class="form-control" id="email" placeholder="Nhập Email...." value="{{ old('email') }}" required>
+              <input type="email" name="email" class="form-control" id="email" placeholder="Nhập Email...."
+              value="@if(old('email')) {{old('email')}}
+                    @else {{Auth::user()->email}}
+                    @endif" required>
               @if($errors->has('email'))
                     <span class="help-block">
                         <strong>{{ $errors->first('email') }}</strong>
                     </span>
               @endif 
             </div>
+          </div>
+
+          <div class="row form-group">              
+            <label for="job" class="col-lg-2 col-sm-12 col-form-label">Ngày sinh 
+              <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+            </label>              
+            <div class="col-lg-2 col-sm-12{{ $errors->has('date')? ' has-error' : '' }}">
+              <input type="date" name="date" class="form-control" value="{{ old('date') }}" required> 
+              @if($errors->has('date'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('date') }}</strong>
+                    </span>
+              @endif 
+            </div>
+
+            <label for="job" class="col-lg-2 col-sm-12 col-form-label">Giới tính
+             <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+            </label>              
+            <div class="col-lg-2 col-sm-12{{ $errors->has('gender')? ' has-error' : '' }}">     
+              <select class="selectpicker border" name="gender" data-style="btn-white" data-width="100%" data-live-search="true" title="Chọn giới tính" required>
+                <option>Nam</option>
+                <option>Nữ</option>
+              </select>
+               @if($errors->has('gender'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('gender') }}</strong>
+                    </span>
+              @endif   
+            </div>
+
+            <label for="job" class="col-lg-2 col-sm-12 col-form-label">SDT liên hệ
+             <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+            </label>              
+            <div class="col-lg-2 col-sm-12{{ $errors->has('phone')? ' has-error' : '' }}">     
+              <input type="text" name="phone" class="form-control" placeholder="Nhập SDT liên hệ...." value="{{ old('phone') }}" required> 
+              @if($errors->has('phone'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('phone') }}</strong>
+                    </span>
+              @endif                            
+            </div>
+
           </div>
 
           <div class="row form-group">              
@@ -351,6 +396,11 @@
           <div class="form-group">
               <textarea class="form-control" name="talent" cols="30" rows="3" placeholder="Nhập sở trường....">{{old('talent')}}</textarea>
           </div>
+
+          <h3 class="text-black my-5 border-bottom pb-2">Thông tin thêm</h3>
+          <div class="form-group">
+              <textarea class="form-control" name="plus" cols="30" rows="3" placeholder="Nhập thông tin thêm....">{{old('plus')}}</textarea>
+          </div>
           
         </form>
       </div>
@@ -404,6 +454,8 @@
             <h4 class="mt-5 mb-4" id="status-preview"></h4>
 
             <p id="marital_stt-preview"></p>
+            <p id="gender-preview"></p>
+            <p id="date-preview"></p>
 
             <p id="exp-preview">I</p>
             <p id="email-preview"></p>
@@ -412,10 +464,14 @@
               <p id="target-preview"></p>
             </div>
 
+            <div class="pt-5">
+              <p id="plus-preview"></p>
+            </div>
+
           </div>
           <div class="col-lg-4 sidebar pl-lg-5">
             <div class="sidebar-box">
-              <img src="{{asset('images/person_1.jpg')}}" alt="Image placeholder" class="img-fluid mb-4 w-50 rounded-circle">
+              <img src="{{asset('hinhdaidien/default.png')}}" alt="Default" class="img-fluid mb-4 w-50 rounded-circle">
               <h3 id="name-preview"></h3>
               <p id="talent-preview"></p>
               <p><a href="#" class="btn btn-primary btn-sm">Mô tả sơ lược</a></p>

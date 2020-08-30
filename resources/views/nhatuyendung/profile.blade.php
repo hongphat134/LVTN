@@ -52,10 +52,16 @@
               </div>
               @endif  
               <div class="form-group">
-                <label for="company-website-tw d-block">Upload logo</label> <br>
-                <label class="btn btn-primary btn-md btn-file">
+                <label for="company-website-tw d-block col-lg-2">Upload logo</label> <br>
+                <label class="btn btn-primary btn-md btn-file col-lg-2">
                   Browse File<input type="file" name="logo" hidden>
                 </label>
+                @if($profile->hinh)
+                <label class="col-lg-2 d-inline-flex">Logo hiện tại</label>
+                <div class="col-lg-6 d-inline-flex">
+                  <img src="{{asset('/logo/'.$profile->hinh)}}" alt="{{$profile->hinh}}" style="width: 200px; height: 200px">
+                </div>
+                @endif
               </div>
 
               <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -128,6 +134,11 @@
                       <option {{$profile->quymodansu == $scale ? 'selected':''}}>{{$scale}}</option>                  
                       @endforeach
                 </select>              
+              </div>
+
+              <div class="form-group">
+                <label for="company-website">Văn hoá & phúc lợi</label>
+                <textarea class="form-control" name="culture" id="" cols="30" rows="10" placeholder="Nhập văn hoá, phúc lợi...">{{$profile->vanhoaphucloi}}</textarea>
               </div>
 
               <div class="form-group{{ session('error') ? ' has-error' : '' }}">

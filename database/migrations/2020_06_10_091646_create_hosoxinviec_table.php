@@ -15,18 +15,23 @@ class CreateHosoxinviecTable extends Migration
     {
         Schema::create('hosoxinviec', function (Blueprint $table) {
             // Có số thuộc tính tối thiểu = ng` tìm việc
+            $table->increments('id');
             $table->integer('idUser')->unsigned();
             $table->foreign('idUser')->references('id')->on('users')->onUpdate('cascade');
             $table->integer('idTTD')->unsigned();
             $table->foreign('idTTD')->references('id')->on('tintuyendung')->onDelete('cascade')->onUpdate('cascade');
             $table->string('hoten')->nullable();
+            $table->string('hinh')->nullable();
             $table->string('emaillienhe')->nullable();
+            $table->string('sdtlienhe')->nullable();
             $table->string('nganh')->nullable();      
             $table->json('kinang')->nullable();
             $table->string('khuvuc')->nullable();            
-
+            $table->date('ngaysinh')->nullable();
+            $table->string('gioitinh')->nullable();
             $table->string('honnhan')->nullable();      
-            $table->string('trangthailv')->nullable();      
+            $table->string('hinhthuc_lv')->nullable();  
+            // $table->string('trangthai_lv')->nullable();          
             $table->string('bangcap')->nullable();      
             $table->string('capbac')->nullable();      
             $table->string('kinhnghiem')->nullable();
@@ -35,6 +40,7 @@ class CreateHosoxinviecTable extends Migration
             $table->json('ngoaingu')->nullable();
             $table->json('tinhoc')->nullable();
             $table->longText('sotruong')->nullable();
+            $table->longText('thongtinthem')->nullable();
             $table->longText('noidung_ungtuyen')->nullable();
             // 1 là chưa xem, 0 là xem rồi
             $table->boolean('new')->default(1);
@@ -42,8 +48,7 @@ class CreateHosoxinviecTable extends Migration
             $table->tinyInteger('ntd_ungtuyen')->default(0);  
             // 0 là chưa dc admin phê duyệt và 1 thì ngược lại          
             $table->tinyInteger('ad_pheduyet')->default(0);            
-            // các trường mong muốn         
-
+            // các trường mong muốn
             $table->rememberToken();            
             $table->timestamps();
             $table->engine = 'InnoDB';            

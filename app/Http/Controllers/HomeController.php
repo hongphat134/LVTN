@@ -18,8 +18,22 @@ use Illuminate\Support\Arr;
 // Thay thế cho autoload files vì gây lỗi trên HOST
 // include base_path()."/app/Function/functions.php";
 // Thầy yêu cầu thanh tìm kiếm city pải sắp xếp theo miền Bắc, Trung, Nam :D
+// Làm việc ngay, 2 , 3 thang nữa mới làm v.vv => nhảy việc
+// mẫu hồ sơ đa ngành nghề, cần bổ sung độ tuổi => ngày sinh
+// Tìm kiếm cơ bản trọng tâm có mức lương, cải thiện nâng cao = modal or popup cho tiện hoặc phần mở rộng
 class HomeController extends Controller
 {
+    // Hàm Fix resources file JSON
+    public function test(){
+        $path = public_path().'\resources\languages.json';
+        // dd($path);
+        
+        if(file_exists( public_path()."/resources/languages.json")){
+            $rank_list = json_decode(file_get_contents(url("resources/languages.json")));
+            // dd($rank_list);
+            file_put_contents($path,json_encode($rank_list,JSON_UNESCAPED_UNICODE));
+        }
+    }
     public function index(){    
     	$job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
                 ->select('tintuyendung.*','nhatuyendung.ten','nhatuyendung.hinh')
@@ -88,58 +102,46 @@ class HomeController extends Controller
     	return view('pages.job-listings',compact('job_listings'));
     }
     
-    public function search(Request $rq){    	
-    	$key = $rq->key;
-        // Single region
-    	// $region = $rq->region;
-    	$status = $rq->status;
-        // Multi region
-        $regions = $rq->region;
-        // dd($region);
-        $sort = $rq->sort;
+    public function search(Request $rq){
+        // dd($rq->all());  
 
     	$job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')->where('tintuyendung.ad_pheduyet',1);
-    	if(!empty($key)){
-            $job_listings->where(
-                function($query) use ($key){
-                    $query->orWhere('tintuyendung.nganh','LIKE','%'.$key.'%');
-                    $query->orWhere('tintuyendung.kinang','LIKE',"%\"$key\"%");
-                }
-            );                                       
-        } 
-    	// if(!empty($region)) $job_listings = $job_listings->where('tintuyendung.tinhthanhpho','LIKE','%'.$region.'%');
-    	if(!empty($status)) $job_listings = $job_listings->where('tintuyendung.trangthailv','LIKE',$status);
-
-        if(!empty($regions)){  
+        // Tìm theo ngành cơ bản
+    	if($rq->has('key')) $job_listings->where('tintuyendung.nganh','LIKE','%'.$rq->key.'%');
+        // Tìm theo khu vực cơ bản
+        if($rq->has('region')){
+            $regions = $rq->region;  
             $job_listings->where(
             function($query) use ($regions){                
                 foreach ($regions as $region) {
-                    $query->orWhere('tintuyendung.tinhthanhpho','LIKE','%'.$region.'%');
+                    $query->orWhere('tintuyendung.tinhthanhpho','LIKE',"%\"$region\"%");
                 }                                   
             });              
-        }      
-        if(!empty($sort)){
-            // Tin mới cập nhật
-            if($sort == 1){
-                $job_listings->orderBy('tintuyendung.updated_at','desc');
-            }
-            // Tin có hạn tuyển dụng dài
-            else if($sort == 2){
-                $job_listings->orderBy('tintuyendung.hantuyendung','desc');
-            }
-        }       
-    		
-    	$job_listings = $job_listings->paginate(15)->fragment('next')->appends(
-    										[
-    											'key' => $key, 
-    											'region' => $regions,
-    											'status' => $status,
-                                                'sort' => $sort,
-    										]);
+        }  
+        if($rq->has('salary')) $job_listings->whereIn('tintuyendung.mucluong',$rq->salary);
+        if($rq->has('job')) $job_listings->whereIn('tintuyendung.nganh',$rq->job);
+        if($rq->has('skill')){
+            $skills = $rq->skill; 
+            $job_listings->where(
+            function($query) use ($skills){                
+                foreach ($skills as $skill) {
+                    $query->orWhere('tintuyendung.kinang','LIKE',"%\"$skill\"%");
+                }                                   
+            });
+        }
+        if($rq->has('degree')) $job_listings->where('tintuyendung.bangcap','LIKE',$rq->degree);
+        if($rq->has('rank')) $job_listings->where('tintuyendung.capbac','LIKE',$rq->rank);
+        if($rq->has('sex')) $job_listings->where('tintuyendung.gioitinh','LIKE',$rq->sex);
+        if($rq->has('status')) $job_listings->where('tintuyendung.hinhthuc_lv','LIKE',$rq->status);
+        if($rq->has('exp')) $job_listings->where('tintuyendung.kinhnghiem','LIKE',$rq->exp);
+        if($rq->has('number')) $job_listings->where('tintuyendung.soluong','<=',$rq->number);
+
+        $job_listings = $job_listings->take(10)->orderBy('tintuyendung.mucluong')->get();
         // dd($job_listings);
         $job_listings->typeRecord = 1;
-        return view('pages.job-listings',compact('job_listings','key','regions','status','sort'));
-    }
+        $search_info = $rq->all();
+        return view('pages.search',compact('job_listings','search_info'));
+    }   
 
     public function searchBySkill($skill){           
         $job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
@@ -152,7 +154,6 @@ class HomeController extends Controller
     }
 
     public function getRecRegister(){       
-
         $scale_list = array(
                     'Dưới 20 người',
                     '20 - 150 người',
@@ -163,62 +164,6 @@ class HomeController extends Controller
         return view('pages.rec-register',compact('scale_list'));
     }
 
-    public function postRecRegister(Request $rq){
-        $validator = $this->validate($rq, 
-            [
-                //Kiểm tra giá trị rỗng
-                'usrname' => 'required|string|max:25',
-                'email' => 'required|string|email|max:40|unique:users',
-                'password' => 'required|string|min:6|confirmed',               
-            ],          
-            [
-                //Tùy chỉnh hiển thị thông báo
-                'password.min' => 'Password phải có tối thiểu 6 kí tự!',
-                'password.confirmed' => 'Bạn nhập lại password không đúng!', 
-                'usrname.max' => 'Tên tài khoản chỉ có tối đa 25 kí tự!',
-                'email.max' => 'Email chỉ có tối đa 40 kí tự!',
-                'email.unique' => 'Email đã có người sử dụng!',
-            ]
-        );
-        
-        if($validator != null){
-            if ($validator->fails()) {
-                return redirect()->back()
-                            ->withErrors($validator)
-                            ->withInput($rq);
-            }    
-        }
-
-        var_dump($rq->all());
-
-        // Xử lý hình trước
-
-        $user = new User;
-        $user->ten = $rq->usrname;
-        $user->email = $rq->email;
-        $user->password = bcrypt($rq->password);
-        $user->loaitk = 1;
-        $user->remember_token = $rq->_token;
-
-        $user->save();
-
-        $ntd = new NhaTuyenDung;
-
-        $ntd->idUser = $user->id;
-        $ntd->ten = $rq->name;
-        $ntd->diachi = $rq->address;
-        $ntd->tinhthanhpho = $rq->region;
-        $ntd->quymodansu = $rq->scale;
-        // Set up hình mặc định
-        $ntd->hinh = 'amazon.jpg';
-        // $ntd->vanhoaphucloi = $rq->asdasasdsdds;
-        $ntd->remember_token = $rq->_token;
-
-        $ntd->save();
-        // Chuyển thẳng vào trang chủ NTD
-        return redirect()->route('notification')->with(['alert' => 'Đăng ký nhà tuyển dụng thành công!']);      
-    }
-    
     public function getSkillsJobs($key){
         $list = [];
         if(file_exists( public_path()."/resources/skills.json") &&
@@ -507,72 +452,5 @@ class HomeController extends Controller
         $job_listings->typeRecord = 1;
         // dd($ntd);
         return view('pages.rec-details',compact('ntd','job_listings'));
-    }
-
-    public function getAdvancedSearch(){        
-        return view('pages.advance-search');
-    }
-
-    public function postAdvancedSearch(Request $rq){
-        // dd($rq->all());
-        $job_listings = null;
-        // Khởi động Eloquent
-        if($rq->has('_token')){
-            $job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
-                ->select('tintuyendung.*','nhatuyendung.hinh','nhatuyendung.ten');
-        }
-        if($rq->has('job')){
-            if($rq->condition == 'and') $job_listings->whereIn('tintuyendung.nganh',$rq->job);  
-            else $job_listings->orWhereIn('tintuyendung.nganh',$rq->job);
-        } 
-        if($rq->has('skill')){            
-            if($rq->condition == 'and'){
-                $cond_skills = $rq->skill;
-                $job_listings->where(function($query) use ($cond_skills){
-                    foreach ($cond_skills as $skill) {
-                        $query->orWhere('tintuyendung.kinang','LIKE','%"'.$skill.'"%');
-                    }            
-                });
-            }
-            else
-                foreach ($rq->skill as $skill) {
-                    $job_listings->orWhere('tintuyendung.kinang','LIKE','%"'.$skill.'"%');
-                }
-        }
-        if($rq->has('region')){
-            if($rq->condition == 'and'){
-                $cond_cities = $rq->region;
-                $job_listings->where(function($query) use ($cond_cities){
-                    foreach ($cond_cities as $city) {
-                        $query->orWhere('tintuyendung.tinhthanhpho','LIKE','%"'.$city.'"%');
-                    }            
-                });
-            }
-            else
-                foreach ($rq->region as $city) {
-                    $job_listings->orWhere('tintuyendung.tinhthanhpho','LIKE','%"'.$city.'"%');
-                }            
-        }
-        if($rq->has('degree')){
-            if($rq->condition == 'and') $job_listings->whereIn('tintuyendung.bangcap',$rq->degree);  
-            else $job_listings->orWhereIn('tintuyendung.bangcap',$rq->degree);
-
-        }
-        if($rq->has('salary')){
-            if($rq->condition == 'and') $job_listings->whereIn('tintuyendung.mucluong',$rq->salary);  
-            else $job_listings->orWhereIn('tintuyendung.mucluong',$rq->salary);
-        }
-        if($rq->number){
-            $job_listings->where('tintuyendung.soluong','<=',$rq->number);  
-        }
-
-        if($job_listings){
-            $job_listings = $job_listings->where('ad_pheduyet',1)->paginate(5)->fragment('content');
-            $job_listings->typeRecord = 1;  
-        } 
-
-        $search_info = $rq->all();
-        // dd($job_listings);
-        return view('pages.advance-search',compact('job_listings','search_info'));        
     }
 }

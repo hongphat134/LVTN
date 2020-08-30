@@ -9,7 +9,7 @@
           <li><a href="{{url('/')}}" class="nav-link active">Trang chủ</a></li>
           <li><a href="{{url('/about')}}">Về chúng tôi</a></li>
           <li><a href="{{route('jobListings')}}">DS việc làm</a></li>                    
-          <li><a href="{{url('/blog')}}">Blog</a></li>
+          <li><a href="{{url('/blog')}}">Diễn đàn</a></li>
           <li><a href="{{url('/contact')}}">Liên hệ</a></li>
           
           <!-- FOR MOBILE -->

@@ -5,7 +5,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-7">
-        <h1 class="text-white font-weight-bold">Danh sách hồ sơ xin việc</h1>
+        <h1 class="text-white font-weight-bold">Danh sách hồ sơ ứng tuyển</h1>
         <div class="custom-breadcrumbs">
           <a href="#">Home</a> <span class="mx-2 slash">/</span>
           <span class="text-white"><strong>Hồ sơ xin việc</strong></span>
@@ -18,7 +18,7 @@
 <section class="site-section services-section bg-light block__62849" id="next-section">
   <div class="container">
     <div class="row">
-      <div class="col-lg-9">        
+      <div class="col-lg-8">        
         <h3><span class="icon-group_add mr-2"></span>Danh sách hồ sơ chờ phê duyệt <span class="icon-group_add"></span></h3>
         @if(session('success'))
          <div class="alert alert-success alert-dismissible fade show">
@@ -27,15 +27,15 @@
         </div>
         @endif
         <form action="{{route('searchByIDJob')}}">
-          <input type="text" name="key" value="{{!empty($key)? $key : ''}}" placeholder="Nhập ID Job....">
+          <input type="hidden" value="{{$job->id}}" name="job_id">
+          <input type="text" name="key" value="{{!empty($key)? $key : ''}}" placeholder="Nhập ngành nghề....">
           <button class="btn btn-info"><span class="icon-search"></span></button>
         </form>
         @if($profile_list->total() != 0)
         <form action="{{route('recruit')}}">
         <table class="table table-hover table-responsive">
           <thead style="font-weight: bold">
-          <tr>
-            <td>ID job</td>
+          <tr>           
             <td>Họ tên</td>
             <td>Ngành nghề</td>
             <td>Bằng cấp</td>           
@@ -47,8 +47,7 @@
           </thead>          
           <tbody>
           @foreach($profile_list as $key => $profile)
-          <tr>
-            <td>{{$profile->idTTD}}</td>
+          <tr>           
             <td>{{$profile->hoten}}</td>
             <td>{{$profile->nganh}}</td>
             <td>{{$profile->bangcap}}</td>          
@@ -76,8 +75,7 @@
           </tbody>
 
           <tfoot style="font-weight: bold">
-          <tr>
-            <td>ID job</td>
+          <tr>       
             <td>Họ tên</td>
             <td>Ngành nghề</td>
             <td>Bằng cấp</td>            
@@ -96,26 +94,48 @@
         @endif 
       </div>
 
+      <div class="col-lg-4 border p-5">
+        <h4>Thông tin tuyển dụng</h4>
+        <p>Ngành cần tuyển: {{$job->nganh}}</p>
+        <p>Số lượng: {{$job->soluong}}</p>
+        <p>Mức lương: {{$job->mucluong}}</p>
+        <p>Vị trí: {{$job->capbac}}</p>
+        <p>Hình thức làm việc: {{$job->hinhthuc_lv}}</p>
+        <p class="text-danger">Hạn tuyển dụng: {{date('d/m/Y',strtotime($job->hantuyendung))}}</p>
+        <p>Khu vực: 
+          @foreach(json_decode($job->tinhthanhpho) as $city)
+          {{$city}} #
+          @endforeach
+        </p>
 
-      <div class="col-lg-3">
-        <h4>Thống kê HSXV</h4>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <td>ID Job</td>
-              <td>Số lượng HSXV</td>
-            </tr>
-          </thead>
+        <h4>Yêu cầu</h4>
+        <p>Bằng cấp: {{$job->bangcap}}</p>
+        <p>Giới tính: {{$job->gioitinh}}</p>
+        <p>Kinh nghiệm: {{$job->kinhnghiem}}</p>
+        <p>Kĩ năng: 
+        @foreach(json_decode($job->kinang) as $skill)
+          {{$skill}} #
+        @endforeach</p>
 
-          <tbody>
-            @foreach($job_list as $job)
-            <tr>
-              <td><a href="{{url('nhatuyendung/tim-kiem-hs-ung-tuyen?key='.$job->id.'#next-section')}}">{{$job->id}}</a></td>
-              <td>{{$job->count}}</td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
+        <h4>Yêu cầu khác</h4>
+        @if($job->ngoaingu)
+        <p>Ngoại ngữ: 
+          @foreach(json_decode($job->ngoaingu) as $language)
+          {{$language}} &
+          @endforeach
+        </p>
+        @endif
+        @if($job->tinhoc)
+        <p>Tin học: 
+          @foreach(json_decode($job->tinhoc) as $itech)
+          {{$itech}} &
+          @endforeach</p>        
+        @endif
+
+        @if($job->yeucau_cv)
+        <h4>Yêu cầu thêm</h4>
+        {!! nl2br($job->yeucau_cv) !!}
+        @endif
       </div>  
     </div>        
   </div>
@@ -184,14 +204,14 @@
 
 <!-- Preview Modal -->
 @foreach($profile_list as $key => $profile)
- <!-- Profile Modal -->
+<!-- Profile Modal -->
   <div class="modal fade" id="Profile{{$key}}Modal" style="z-index: 9999">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Thông tin hồ sơ (ID account {{$profile->idUser}})</h4>
+          <h4 class="modal-title">Thông tin hồ sơ ứng tuyển</span></h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -208,22 +228,36 @@
   
 <p>Khu vực sinh sống {{$profile->khuvuc}}</p>
 
-<h4 class="mt-5 mb-4">Hình thức làm việc mong muốn: {{$profile->trangthailv}}</h4>
+<p><span class="text-danger">Ngày sinh: {{date('d/y/Y',strtotime($profile->ngaysinh))}}</span> - <span class="text-primary">Giới tính: {{$profile->gioitinh}}</span></p>
+
+<h4 class="mt-5 mb-4">Hình thức làm việc mong muốn: {{$profile->hinhthuc_lv}}</h4>
 
 <p>Tình trạng hôn nhân: {{$profile->honnhan}}</p>
-
 <p>Kinh nghiệm làm việc: {{$profile->kinhnghiem}}</p>
+<p class="text-info">Mức lương mong muốn: {{$profile->mucluongmm}}</p>
+
+<h4 class="mt-5 mb-4">Thông tin liên hệ:</h4>
 <p>Email liên hệ: {{$profile->emaillienhe}}</p>
+<p>SDT liên hệ: {{$profile->sdtlienhe}}</p>
 
 <div class="pt-5">
 <p><h4>Mục tiêu:</h4>
   {!! nl2br($profile->muctieu) !!}</p>
 </div>
 
+<div class="pt-5">
+<p><h4>Thông tin thêm:</h4>
+  {!! nl2br($profile->thongtinthem) !!}</p>
+</div>
+
 </div>
 <div class="col-lg-4 sidebar pl-lg-5">
 <div class="sidebar-box">
-<img src="{{asset('images/person_5.jpg')}}" alt="Image placeholder" class="img-fluid mb-4 w-50 rounded-circle">
+@if($profile->hinh)
+<img src="{{asset('hinhdaidien/'.$profile->hinh)}}" alt="{{$profile->hinh}}" class="img-fluid mb-4 w-50 rounded-circle">
+@else
+<img src="{{asset('hinhdaidien/default.png')}}" alt="Default" class="img-fluid mb-4 w-50 rounded-circle">
+@endif
 <h3>{{$profile->hoten}}</h3>
 <p><strong>Sở trường:</strong></br> <i>{!! nl2br($profile->sotruong) !!}</i></p>
 <p><a href="#" class="btn btn-primary btn-sm">Mô tả sơ lược</a></p>

@@ -36,6 +36,8 @@ class NguoiTimViecSeeder extends Seeder
             $email = str_slug($name).'_'.Str::random(5).'@gmail.com';
             $kinang = Arr::random($kinang_list,mt_rand(1,5));
             $nganh = Arr::random($nganh_list); 
+            // $nganh = Arr::random($nganh_list,mt_rand(1,3)); 
+
             $tp = Arr::random($region_list->MienNam)->Ten;
             $kinhnghiem = Arr::random($kinhnghiem_list);
             $mucluong = Arr::random($mucluong_list);
@@ -56,14 +58,19 @@ class NguoiTimViecSeeder extends Seeder
             
         	DB::table('nguoitimviec')->insert(
 	            [
-					"hinh" => 'person_2.jpg',
+					"hinh" =>  Arr::random(['default.png','person_2.jpg','person_6.jpg']),
 					"hoten" => $name,
 					"emaillienhe" => $email,
-					"nganh" => $nganh,
+                    "sdtlienhe" => '0938922315',
+                    "nganh" => $nganh,
+					// "nganh" => json_encode($nganh,JSON_UNESCAPED_UNICODE),
 					"kinang" => json_encode($kinang,JSON_UNESCAPED_UNICODE),
 					"khuvuc" => $tp,
 					"honnhan" => Arr::random(['Độc thân','Đã kết hôn']),
-					"trangthailv" => Arr::random(['Part Time','Full Time']),
+                    "gioitinh" => 'Nam',
+                    'ngaysinh' => '1998-05-05',
+                    'trangthai_lv' => 'Nhận việc ngay',
+					"hinhthuc_lv" => Arr::random(['Part Time','Full Time']),
 					"bangcap" => $bangcap,
 					"capbac" => $capbac,
 					"kinhnghiem" => $kinhnghiem,

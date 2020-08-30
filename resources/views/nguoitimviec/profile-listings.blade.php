@@ -54,7 +54,7 @@
               <div class="ribbon-right blue">Public</div>  
             </div>
             @endif
-            @if($profile->trangthai == 1)
+            @if($profile->ad_pheduyet == 1)
             <div class="ribbon-wrapper">
               <div class="ribbon red">Duyệt</div>  
             </div>
@@ -62,7 +62,7 @@
               <span class="custom-icon mx-auto"><span class="icon-file-text d-block"></span></span>
               <h3>{{$profile->nganh}} </h3>
               <p>Họ & tên: {{ $profile->hoten }}</p>
-              @if($profile->trangthai == 1)              
+              @if($profile->ad_pheduyet == 1)              
               <p>Lượt xem: {{ $profile->luotxem }}</p>  
               @else
               <p><span class="badge badge-pill badge-danger">Đang chờ duyệt</span></p>
@@ -76,10 +76,8 @@
   <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="icon-th-large"></i> Quản lý mẫu hồ sơ
   </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    @if($profile->trangthai == 0)
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">   
     <a class="dropdown-item" href="{{url('nguoitimviec/update-profile',$profile->id)}}" target="_blank">Cập nhật mẫu</a>
-    @endif
     <a class="dropdown-item" href="{{route('pdf-profile',$profile->id)}}" target="_blank">Xuất PDF</a>
     <a class="dropdown-item call-delete" id="{{$profile->id}}" data-toggle="modal" data-target="#deleteModal" href="javascript:void(0)">Xoá</a>
   </div>
@@ -119,16 +117,55 @@
               <ul class="list-unstyled block__47528 mb-0">
                 <li><span class="active"><h3>{{$profile->nganh}}</h3></span></li>
                 <li>Họ & tên: <a href="#">{{$profile->hoten}}</a></li>
+                <li>Giới tính: <a href="#">{{$profile->gioitinh}}</a></li>
+                <li>Ngày sinh: <a href="#">{{date('d/m/Y',strtotime($profile->ngaysinh))}}</a></li>
                 <li>Email: <a href="#">{{$profile->emaillienhe}}</a></li>
-                <li>Nơi sinh sống: <a href="#">{{$profile->khuvuc}}</a></li>
+                <li>SDT liên hệ: <a href="#">{{$profile->sdtlienhe}}</a></li>
+                <li>Khu vực: <a href="#">{{$profile->khuvuc}}</a></li>
                 <li>Hôn nhân: <a href="#">{{$profile->honnhan}}</a></li>
-                <li>Thời gian làm việc: <a href="#">{{$profile->trangthailv}}</a></li>
-                <li>Bằng cấp cao nhất: <a href="#">{{$profile->bangcap}}</a></li>
-                <li>Cấp bậc cao nhất: <a href="#">{{$profile->capbac}}</a></li>
+                <li>Hình thức làm việc mong muốn: <a href="#">{{$profile->hinhthuc_lv}}</a></li>
+                <li>Mức lương mong muốn: <a href="#">{{$profile->mucluongmm}}</a></li>
+                <li>Bằng cấp: <a href="#">{{$profile->bangcap}}</a></li>
+                <li>Cấp bậc: <a href="#">{{$profile->capbac}}</a></li>
                 <li>Kinh Nghiệm: <a href="#">{{$profile->kinhnghiem}}</a></li>              
-                <li>Trạng thái: <a href="#">{{$profile->trangthai == 1 ? 'Công khai': 'Chưa công khai'}} mẫu hồ sơ</a></li>              
+                <li><span class="text-info">Trạng thái: </span>
+                  <a href="#">
+                  @if($profile->congkhai == 1) <span class="badge badge-info">Công khai</span>
+                  @else <span class="badge badge-danger">Chưa công khai</span>
+                  @endif
+                  </a>
+                </li>
+                @if($profile->ad_pheduyet == 1)
+                <li><span class="text-danger">Lượt xem: {{$profile->luotxem}}</span></li>
+                @endif
               </ul>
             </div>
+
+            <div class="border p-4 rounded">
+            <h3>Kĩ năng</h3>
+            @foreach(json_decode($profile->kinang) as $kinang)
+            <div><span class="icon-hand-o-right"> {{$kinang}}</span></div>
+            @endforeach
+            </div>
+
+            @if($profile->ngoaingu)
+            <div class="border p-4 rounded">
+            <h3>Ngoại ngữ</h3>
+            @foreach(json_decode($profile->ngoaingu) as $ngoaingu)
+            <div><span class="icon-language mx-2"> {{$ngoaingu}}</span></div>
+            @endforeach
+            </div>
+            @endif
+
+            @if($profile->tinhoc)
+            <div class="border p-4 rounded">
+            <h3>Tin học</h3>
+            @foreach(json_decode($profile->tinhoc) as $tinhoc)
+            <div><span class="icon-caret-right mr-2"> {{$tinhoc}}</span></div>
+            @endforeach
+            </div>
+            @endif
+
           </div>
           <div class="col-lg-8">
             <span class="text-primary d-block mb-5">
@@ -141,44 +178,26 @@
               <span class="icon-file-word-o display-1"></span>
               <span class="icon-insert_drive_file display-1"></span>
             </span>
+            @if($profile->hinh)
+            <img src="{{asset('hinhdaidien/'.$profile->hinh)}}" alt="{{$profile->hinh}}" style="width: 200px; height: 200px">
+            @else
+            <img src="{{asset('hinhdaidien/default.png')}}" alt="Chưa có hình">
+            @endif
             <h2 class="mb-4">Mục tiêu</h2>
             <p>
               {!! $profile->muctieu ? nl2br($profile->muctieu) : 'Bạn để trống mục này!' !!}
-            </p>
-            <h2 class="mb-4">Kỹ năng</h2>
-            <p>              
-              @foreach(json_decode($profile->kinang) as $skill)
-              {{$skill}} &
-              @endforeach
             </p>           
-            <h2 class="mb-4">Trình độ ngoại ngữ</h2>
-            <p>
-              @if($profile->ngoaingu)              
-              @foreach(json_decode($profile->ngoaingu) as $language)
-              {{$language}} <strong>&</strong>
-              @endforeach
-              @else
-                Bạn để trống mục này!
-              @endif
-            </p>           
-            <h2 class="mb-4">Trình độ tin học</h2>
-            <p>
-              @if($profile->tinhoc)
-              @foreach(json_decode($profile->tinhoc) as $itech)
-              {{$itech}} <strong>&</strong>
-              @endforeach
-              @else
-                Bạn để trống mục này!
-              @endif
-            </p>     
-            <h2 class="mb-4">Sở trường</h2>
-            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam dolorum incidunt dolorem facere, officiis placeat consequuntur odit quasi, quam voluptates, deleniti! Neque tenetur in, omnis consectetur molestias expedita nostrum et.</p> <-->
+            <h2 class="mb-4">Sở trường</h2>          
             <p>
               {!! $profile->sotruong ? nl2br($profile->sotruong) : 'Bạn để trống mục này!' !!}
+            </p>
+            <h2 class="mb-4">Thông tin thêm</h2>
+            <p>
+              {!! $profile->thongtinthem ? nl2br($profile->thongtinthem) : 'Bạn để trống mục này!' !!}
             </p>            
             <p>
-              <a href="#" class="btn btn-primary btn-md mt-4">Ngày đăng: {{time_elapsed_string($profile->created_at)}}</a>
-              <a href="#" class="btn btn-primary btn-md mt-4">Ngày cập nhật: {{time_elapsed_string($profile->updated_at)}}</a>
+              <a href="javascript::void(0)" class="btn btn-primary btn-md mt-4">Ngày đăng: {{time_elapsed_string($profile->created_at)}}</a>
+              <a href="javascript::void(0)" class="btn btn-primary btn-md mt-4">Ngày cập nhật: {{time_elapsed_string($profile->updated_at)}}</a>
             </p>
 
           </div>

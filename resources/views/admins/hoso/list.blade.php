@@ -1,73 +1,89 @@
 @extends('admins.layouts.master')
 @section('content')
- <!-- Start right Content here -->
 <div class="content-page">
 <!-- Start content -->
-<div class="content">
+	<div class="content">
 
-    <div class="">
-        <div class="page-header-title">
-            <h4 class="page-title">Blank Page</h4>
-        </div>
-    </div>
+	    <div class="">
+	        <div class="page-header-title">
+	            <h4 class="page-title">Danh sách mẫu hồ sơ</h4>
+	            @if(session('success'))
+	            <div class="alert alert-success alert-dismissible fade show">
+	                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+	                {{session('success')}} <a href="#" class="alert-link">Alert Link</a>.
+	            </div>
+	            @endif
+	            @if(session('error'))
+	            <div class="alert alert-danger alert-dismissible fade show">
+	                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+	                {{session('error')}} <a href="#" class="alert-link">Alert Link</a>.
+	            </div>
+	            @endif
+	        </div>
+	    </div>
 
-    <div class="page-content-wrapper ">
-
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="m-b-30 m-t-0">Danh sách mẫu hồ sơ</h4>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Họ tên</th>                                 
-                                                <th>Bằng cấp cao nhất</th>
-                                                <th>Cấp bậc cao nhất</th>
-                                                <th>Kinh nghiệm</th>
-                                                <th>Khu vực</th>
-                                                <th>Email liên hệ</th>
-                                                <th>Trạng thái</th>
-                                                <th>Thao tác</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($profile_list as $profile)
-                                            <tr>
-                                                <td>{{$profile->id}}</td>
-                                                <td>{{$profile->hoten}}</td>
-                                                <td>{{$profile->bangcap}}</td>
-                                                <td>{{$profile->capbac}}</td>
-                                                <td>{{$profile->kinhnghiem}}</td>
-                                                <td>{{$profile->khuvuc}}</td>
-                                                <td>{{$profile->emaillienhe}}</td>
-                                                <td>{{$profile->trangthai == 0 ? 'Chưa duyệt' : 'Đã duyệt' }}</td>
-                                                <td>
-                                                    <a href="#"><i class="mdi mdi-table-search"></i></a>
-                                                    <a href="#"><i class="mdi mdi-delete-circle"></i></a>
-                                                    <a href="#"><i class="mdi mdi-calendar-edit"></i></a>
-                                                </td>
-                                            </tr>
-                                            @endforeach                       
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @include('admins.layouts.paginating',['job_listings' => $profile_list])
-                </div>
-            </div> <!-- End row -->
-
-        </div><!-- container-fluid -->
-
-    </div> <!-- Page content Wrapper -->
-
-</div> <!-- content -->
+		<div class="page-content-wrapper">                    
+			<div class="container-fluid">
+				<div class="row">
+				    <div class="col-lg-12">				    	
+				        <div class="card">
+				        	@if(!empty($profile_list))
+				            <div class="card-body">
+				                <h4 class="m-b-30 m-t-0">
+				                	Danh sách mẫu hồ sơ (Tổng cộng có {{$profile_list->count()}} hồ sơ)                                	
+				                </h4>
+				                <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+				                    <thead>
+				                    <tr>
+				                        <th>ID</th>
+				                        <th>Họ tên</th>
+				                        <th>Email liên hệ</th>				                        
+				                        <th>SDT liên hệ</th>
+				                        <th>Ngành nghề</th>				                        
+				                        <th>Ngày đăng</th>
+				                        <th>Trạng thái xử lý</th>
+				                        <th>Thao tác</th>
+				                        <th>Mục tiêu</th>			                       
+				                        <th>Sở trường</th>
+				                        <th>Thông tin thêm</th>
+				                        <th>Ngoại ngữ</th>
+				                        <th>Tin học</th>
+				                    </tr>
+				                    </thead>
+				                    <tbody>
+				                    @foreach($profile_list as $profile)
+				                    <tr>
+				                    	<td>{{$profile->id}}</td>
+				                    	<td>{{$profile->hoten}}</td>
+				                    	<td>{{$profile->emaillienhe}}</td>
+				                    	<td>{{$profile->sdtlienhe}}</td>
+				                    	<td>{{$profile->nganh}}</td>
+				                    	<td>{{date('d/m/Y',strtotime($profile->updated_at))}}</td>
+				                    	<td>
+				                    		@if($profile->ad_pheduyet == 0)
+				                    		<span class="badge badge-danger">Chưa xử lý</span>
+				                    		@else
+				                    		<span class="badge badge-success">Đã xử lý</span>
+				                    		@endif
+				                    	</td>
+				                    	<td><a href="{{url('/administrators/ho-so/phe-duyet',$profile->id)}}"><button class="btn btn-white">Phê duyệt</button></a></td>
+				                    	<td>{{$profile->muctieu}}</td>
+				                    	<td>{{$profile->sotruong}}</td>
+				                    	<td>{{$profile->thongtinthem}}</td>
+				                    	<td>{{$profile->ngoaingu}}</td>
+				                    	<td>{{$profile->tinhoc}}</td>
+									</tr>				                    	
+				                    @endforeach
+				                	</tbody>
+				                </table>
+				            </div>
+				            @else <h4>Không có mẫu hồ sơ nào cả!</h4>
+				            @endif
+				         </div>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 @endsection

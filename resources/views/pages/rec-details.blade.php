@@ -21,11 +21,13 @@
           <div class="col-lg-4 mr-auto">
             <div class="border p-4 rounded">
               <ul class="list-unstyled block__47528 mb-0">
-                <li><span class="active">Thông tin liên hệ</span></li>
+                <li><span class="active"><h4>Thông tin liên hệ</h4></span></li>
                 <li>Tên người liên hệ:<a href="#"> {{$ntd->tenlh}}</a></li>
                 <li>Email liên hệ:<a href="#"> {{$ntd->email}}</a></li>
-                <li>SDT liên hệ:<a href="#"> {{$ntd->sdt}}</a></li>
-                <li>Địa chỉ:<a href="#"> {{$ntd->diachi}}, {{$ntd->tinhthanhpho}}</a></li>
+                <li>SDT liên hệ:<a href="#"> {{$ntd->sdt}}</a></li>                
+                @if($ntd->website)
+                <li>Website: <span class="text-danger">{{$ntd->website}}</span></li>
+                @endif
               </ul>
             </div>
 			@if(Auth::check())
@@ -33,8 +35,8 @@
         		<span class="icon-asterisk mr-2"></span>Bạn có muốn nhận thông báo việc làm mới nhất từ Nhà tuyển dụng này?
         		<hr>
         		 <span class="icon-arrow-right mr-2"></span>
-				@if(Auth::user()->theodoi_add)
-					@if(in_array($ntd->idUser,json_decode(Auth::user()->theodoi_add)))
+				@if(Auth::user()->theodoi_ntd)
+					@if(in_array($ntd->idUser,json_decode(Auth::user()->theodoi_ntd)))
 					<a href="javascript:void(0)" id="{{$ntd->idUser}}" class="btn btn-danger theo-doi">ĐANG THEO DÕI</a>	
 					@else
 					<a href="javascript:void(0)" id="{{$ntd->idUser}}" class="btn btn-outline-danger theo-doi follow-rec">THEO DÕI</a>
@@ -44,23 +46,24 @@
 				@endif
 		    </div>
 		    <script src="{{url('ajax/follow-recruiters.js')}}"></script>
+        @else <strong>Đăng ký trở thành thành viên để có thể nhận thông báo từ nhà tuyển dụng bạn nhé!</strong>
 		    @endif
           </div>
 						
-          <div class="col-lg-8 border" style="background-color: lav">
+          <div class="col-lg-8 border" style="background-color: lavender">
             <span class="text-primary d-block mb-5">
-            	<img src="{{asset('logo/'.$ntd->hinh)}}" alt="">
+              @if($ntd->hinh)
+            	<img src="{{asset('logo/'.$ntd->hinh)}}" alt="{{$ntd->hinh}}" class="img-fluid">
+              @else
+              <img src="{{url('logo/default.png')}}" alt="Không có hình" class="img-fluid">
+              @endif
             </span>
             <h2 class="mb-4">Công ty {{$ntd->ten}}</h2>
             <h4>Quy mô dân sự</h4>            
             <p>{{$ntd->quymodansu}}</p>
             <h4>Văn hoá & phúc lợi</h4>
             <p>{{$ntd->vanhoaphucloi}}</p>
-            @if($ntd->website)
-            <h4>Website</h4>
-            <p>{{$ntd->website}}</p>
-            @endif
-            <!-- <p><a href="#" class="btn btn-primary btn-md mt-4">Hire Us, Our Agency</a></p> -->
+            <p><strong><span class="text-danger">Địa chỉ:</span><a href="#"> {{$ntd->diachi}}, {{$ntd->tinhthanhpho}}</a></strong></p>
           </div>
         </div>
       </div>
@@ -83,13 +86,17 @@
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
             <a href="{{route('news',$news->id)}}"></a>
             <div class="job-listing-logo">
-              <img src="{{asset('logo/'.$ntd->hinh)}}" alt="Free Website Template by Free-Template.co" class="img-fluid">
+              @if($ntd->hinh)
+              <img src="{{url('logo/'.$ntd->hinh)}}" alt="{{$ntd->hinh}}" style="width: 200px; height: 150px">
+              @else
+              <img src="{{url('logo/default.png')}}" alt="Không có hình" class="img-fluid">
+              @endif
             </div>
 
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
               <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
                 <h2>{{$news->nganh}}</h2>
-                <strong>Nhà tuyển dụng {{$news->ten}}</strong>              
+                <strong>Nhà tuyển dụng {{$ntd->ten}}</strong>              
                 <div class="keywords">
                   @foreach(json_decode($news->kinang) as $skill)
                   <button class="btn btn-outline-info skill">{{$skill}}</button>
@@ -103,9 +110,9 @@
               </div>
               <div class="job-listing-meta">
                 @if($news->trangthailv == 'Part Time')
-                <span class="badge badge-danger">{{$news->trangthailv}}</span>
+                <span class="badge badge-danger">{{$news->hinhthuc_lv}}</span>
                 @else
-                <span class="badge badge-success">{{$news->trangthailv}}</span>
+                <span class="badge badge-success">{{$news->hinhthuc_lv}}</span>
                 @endif
                 </br>
                 <span class="badge badge-dark">

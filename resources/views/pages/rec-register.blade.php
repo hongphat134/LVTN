@@ -20,17 +20,13 @@
         <div class="row">
           <div class="col-lg-6 mb-5">
             <h2 class="mb-4">Thông tin nhà tuyển dụng</h2>
-            <form method="POST" action="{{ route('recRegister') }}" class="p-4 border rounded">
+            <form method="POST" action="{{ route('register') }}" class="p-4 border rounded">
             {{csrf_field()}}
+            <input type="hidden" name="loaitk" value="1">
               <div class="row form-group">
-                <div class="col-md-12 mb-3 mb-md-0  {{ $errors->has('name') ? ' has-error' : '' }}">
-                  <label class="text-black" for="fname">Tên nhà tuyển dụng</label>
-                  <input type="text" id="name"  name="name" class="form-control" placeholder="Nhập tên...." value="{{ old('name') }}" required>
-                  @if ($errors->has('name'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('name') }}</strong>
-                      </span>
-                  @endif
+                <div class="col-md-12 mb-3 mb-md-0">
+                  <label class="text-black" for="name-recruiter">Tên nhà tuyển dụng</label>
+                  <input type="text" id="tenntd"  name="name_recruiter" class="form-control" placeholder="Nhập tên công ty...." value="{{ old('name_recruiter') }}" required>                  
                 </div>
                 <div class="col-md-12 mb-3 mb-md-0">
                   <label class="text-black" for="fname">Địa chỉ</label>
@@ -40,7 +36,7 @@
               
               <div class="form-group">
                 <label class="text-black" for="job-region">Khu vực làm việc</label>
-                <select class="selectpicker form-control border rounded" name="region" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn khu vực..." required>                     
+                <select class="selectpicker form-control border rounded" name="region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn khu vực..." required>                     
                       @foreach($region_list as $region => $city_list) 
                       <optgroup label="{{$region == 'MienNam' ? 'Miền Nam' : ($region == 'MienBac' ? 'Miền Bắc' : 'Miền Trung')}}">
                         @foreach($city_list as $city)
@@ -55,7 +51,7 @@
               
               <div class="form-group">
                 <label class="text-black" for="job-region">Quy mô dân sự</label>
-                <select class="selectpicker form-control border rounded" name="scale" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn quy mô..." required>
+                <select class="selectpicker form-control border rounded" name="scale" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn quy mô..." required>
                       @foreach($scale_list as $scale)
                       <option {{ old('scale')==$scale ? 'selected':''}}>
                         {{$scale}}
@@ -74,12 +70,12 @@
           <div class="col-lg-6 mb-5">
             <h2 class="mb-4">Thông tin tài khoản</h2>                      
             <div class="row form-group">
-              <div class="col-md-12 mb-3 mb-md-0  {{ $errors->has('usrname') ? ' has-error' : '' }}">
+              <div class="col-md-12 mb-3 mb-md-0  {{ $errors->has('name') ? ' has-error' : '' }}">
                 <label class="text-black" for="fname">Tên tài khoản</label>
-                <input type="text" id="usrname"  name="usrname" class="form-control" placeholder="Nhập tên tài khoản...." value="{{ old('usrname') }}" required autofocus>
-                @if ($errors->has('usrname'))
+                <input type="text" id="name"  name="name" class="form-control" placeholder="Nhập tên tài khoản...." value="{{ old('name') }}" required autofocus>
+                @if ($errors->has('name'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('usrname') }}</strong>
+                        <strong>{{ $errors->first('name') }}</strong>
                     </span>
                 @endif
               </div>

@@ -71,7 +71,6 @@ Route::group(['middleware' => ['guest','isEmailVerified']], function() {
 	Route::get('/job-list','HomeController@getJobs')->name('jobListings');
 	// Đăng ký dành cho nhà tuyển dụng
 	Route::get('/dangky-ntd', 'HomeController@getRecRegister')->name('recRegister');
-	Route::post('/dangky-ntd', 'HomeController@postRecRegister');
 	// Show chi tiết nhà tuyển dụng
 	Route::get('/thong-tin-ntd/{rec_id}','HomeController@showRecDetails')->where('rec_id', '[0-9]+');
 	// Tìm kiếm nâng cao
@@ -128,7 +127,7 @@ Route::group(['prefix' => 'nhatuyendung','middleware' => ['auth','recruiter','is
 	Route::get('/post-job','NhaTuyenDungController@getPostJob')->name('postJob');
 	Route::post('/post-job','NhaTuyenDungController@postPostJob');
 	// BUG
-	Route::delete('/delete-job/{id}','NhaTuyenDungController@destroy');
+	Route::get('/delete-job/{news_id}','NhaTuyenDungController@deleteJob')->where('news_id', '[0-9]+');
 	// Cập nhật tin tuyển dụng
 	Route::get('/update-job/{news_id}','NhaTuyenDungController@getUpdateJob')->name('updateJob')->where('news_id', '[0-9]+');
 	Route::post('/update-job/{news_id}','NhaTuyenDungController@postUpdateJob');
@@ -162,6 +161,10 @@ Route::group(['prefix' => 'nhatuyendung','middleware' => ['auth','recruiter','is
 	Route::get('/tim-kiem-hs-ung-tuyen','NhaTuyenDungController@searchByIDJob')->name('searchByIDJob');
 	// Ngỏ ý Người tìm việc
 	Route::post('/ngo-y','NhaTuyenDungController@offerSeeker');
+	// Tìm kiếm ứng viên và ngỏ ý
+	Route::get('/tim-kiem-ung-vien/{job_id}','NhaTuyenDungController@searchSeekers')->where('job_id','[0-9]+');
+	// 
+	Route::get('/nhieu-ngo-y','NhaTuyenDungController@offerManySeekers');
 });
 
 Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
@@ -182,6 +185,9 @@ Route::get('/login-admin','AdminController@getLogin');
 Route::group(['prefix' => 'administrators','middleware' => ['admin']], function () {
 	Route::get('/','AdminController@home');
 	Route::get('/home','AdminController@home');
+	Route::get('/test',function(){
+		return view('admins.tintuyendung.list1');
+	});
 
 	Route::get('/lien-he','AdminController@getContactList');
 	Route::get('/lien-he/feedback/{id}','LienHeController@reponseMessage')->where('id', '[0-9]+')->name('feedback');
@@ -216,5 +222,11 @@ Route::group(['prefix' => 'administrators','middleware' => ['admin']], function 
 		Route::get('/nguoi-tim-viec','AdminController@getJobSeekerList');
 		Route::get('/nha-tuyen-dung','AdminController@getBusinessList');
 		Route::get('/quan-tri-vien','AdminController@getAdminList');
+	});
+
+	Route::group(['prefix' => 'thu-thap-y-kien'], function () {
+		Route::get('/danh-sach','AdminController@getOpinionList');
+		Route::get('/them/{opinion_id}','AdminController@insertOpinion');
+		Route::get('/xoa/{opinion_id}','AdminController@deleteOpinion');
 	});
 });

@@ -22,7 +22,7 @@
               <li><a href="{{url('/gallery')}}">Gallery</a></li>
             </ul>
           </li> -->
-          <li><a href="{{url('/blog')}}">Blog</a></li>
+          <li><a href="{{url('/blog')}}">Diễn đàn</a></li>
           <li><a href="{{url('/contact')}}">Liên hệ</a></li>
           
           <!-- FOR MOBILE -->         

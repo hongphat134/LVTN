@@ -40,7 +40,7 @@ class LienHeController extends Controller
             ['user' => $user, 'repond' => $repond], 
             function ($m) use ($user) {
             // $m->from('hello@app.com', 'Your Application');
-            
+        
             $m->to($user->from_email, $user->ten)->subject('Thông tin liên hệ HTP!');
         });
 

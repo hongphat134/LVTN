@@ -20,6 +20,8 @@ class PDFController extends Controller
     // save($path) => tự động save theo path chỉ định
     public function pdfProfile($profile_id){
         $profile = NguoiTimViec::find($profile_id);
+
+        // dd($profile);
         if(!$profile) return redirect('error')->with(['error' => 'Ko tìm thấy hồ sơ!']);
         // dd($profile);      
         // $pdf = \App::make('dompdf.wrapper');

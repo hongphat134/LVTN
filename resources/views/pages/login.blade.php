@@ -24,6 +24,7 @@
             <h2 class="mb-4">Đăng ký dành cho người tìm việc</h2>
             <form method="POST" action="{{ route('register') }}" class="p-4 border rounded">
             {{ csrf_field() }}
+              <input type="hidden" name="loaitk" value="0">
               <div class="row form-group">
                 <div class="col-md-12 mb-3 mb-md-0  {{ $errors->has('name') ? ' has-error' : '' }}">
                   <label class="text-black" for="fname">Tên xưng danh</label>

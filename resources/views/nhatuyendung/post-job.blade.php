@@ -54,36 +54,94 @@
             <form id="post-job" action="{{route('postJob')}}" class="p-4 p-md-5 border rounded" method="post">
               {{csrf_field()}}
               <h3 class="text-black mb-5 border-bottom pb-2">Thông tin tuyển dụng</h3>
-              <div class="form-group{{ $errors->has('deadline')||session('error') ? ' has-error' : '' }}">
-                <label for="job-title">Hạn tuyển dụng</label>
-                <input type="date" class="form-control" name="deadline" placeholder="Chọn hạn...." value="{{ old('deadline')}}">
-                @if ($errors->has('deadline'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('deadline') }}</strong>
-                    </span>                
-                @elseif (session('error'))
-                    <span class="help-block">
-                        <strong>{{ session('error') }}</strong>
-                    </span>
-                @endif
+
+              <div class="row form-group">              
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Hạn tuyển dụng 
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-2 col-sm-12{{ $errors->has('deadline') || session('errorDate') ? ' has-error' : '' }}">
+                  <input type="date" class="form-control" name="deadline" value="{{ old('deadline')}}">
+                  @if ($errors->has('deadline'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('deadline') }}</strong>
+                      </span>                
+                  @elseif (session('errorDate'))
+                      <span class="help-block">
+                          <strong>{{ session('errorDate') }}</strong>
+                      </span>
+                  @endif 
+                </div>  
+
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Số lượng
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-2 col-sm-12{{ $errors->has('vacancy')? ' has-error' : '' }}">                  
+                  <input type="number" class="form-control" id="job-title" name="vacancy" min="1" max="99" placeholder="Nhập số lượng...." value="{{old('vacancy')}}">
+                  @if ($errors->has('vacancy'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('vacancy') }}</strong>
+                      </span>
+                  @endif
+                </div>
+
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Giới tính 
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-2 col-sm-12">
+                  <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="gender">
+                    <option selected>Không yêu cầu</option>
+                    <option {{old('gender') == 'Nam' ? 'selected':''}}>Nam</option>
+                    <option {{old('gender') == 'Nữ' ? 'selected':''}}>Nữ</option>
+                  </select> 
+                </div> 
               </div>
 
-              <div class="form-group{{ $errors->has('vacancy') ? ' has-error' : '' }}">
-                <label for="job-title">Số lượng tuyển dụng</label>
-                <input type="number" class="form-control" id="job-title" name="vacancy" min="1" max="99" placeholder="Nhập số lượng...." value="{{old('vacancy')}}">
-                @if ($errors->has('vacancy'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('vacancy') }}</strong>
-                    </span>
-                @endif
-              </div>
+              <div class="row form-group">              
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Ngành nghề
+                  <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-4 col-sm-12{{ $errors->has('job')? ' has-error' : '' }}">
+                  <select class="selectpicker border" name="job" id="title" data-style="btn-white" data-width="100%" data-live-search="true" data-size="8" title="Chọn ngành nghề" required>                
+                      @foreach($job_list as $job)                      
+                      <option {{ strcasecmp(old('title'),$job) == 0?'selected':'' }}>{{$job}}</option>                      
+                      @endforeach
+                      <option value="other" @if(old('other_title') || session('errorJob')) selected @endif>Khác</option>
+                  </select> 
+                  @if($errors->has('job'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('job') }}</strong>
+                        </span>
+                  @endif 
+                </div>  
 
-              <div class="form-group{{ $errors->has('skill') ? ' has-error' : '' }}">
-                <label for="job-region">Kĩ năng cần thiết</label>
-                <select class="selectpicker border rounded" id="skill-list" data-style="btn-black" data-width="100%" data-live-search="true" name="skill[]" title="Chọn kĩ năng..." multiple data-max-options="5">
+                <div id="other_title" class="col-lg-6 col-sm-12" 
+                @if(!old('other_title') && !session('errorJob')) style="display: none;"
+                @endif>
+                  <div class="row">
+                    <label for="job" class="col-lg-4 col-sm-12 col-form-label">Ngành nghề khác
+                     <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                    </label>              
+                    <div class="col-lg-8 col-sm-12{{ session('errorJob')? ' has-error' : '' }}">                  
+                      <input type="text" name="other_title" class="form-control" placeholder="Nhập tên ngành nghề..." value="{{old('other_title')}}" required>
+                      @if(session('errorJob'))
+                        <span class="help-block">
+                            <strong>{{ session('errorJob') }}</strong>
+                        </span>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+              </div> 
+
+              <div class="row form-group"> 
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Kĩ năng cần thiết 
+                  <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-4 col-sm-12{{ $errors->has('skill')? ' has-error' : '' }}">
+                  <select class="selectpicker border rounded" id="skill-list" data-style="btn-black" data-width="100%" data-size="10" data-live-search="true" name="skill[]" title="Chọn kĩ năng (tối đa 5)" multiple data-max-options="5">
                   @foreach($skill_list as $skill)
                   <option
-    {{ !empty(old('skill'))?(in_array($skill,old('skill')) ? 'selected':''):'' }}>
+                    {{ !empty(old('skill'))?(in_array($skill,old('skill')) ? 'selected':''):'' }}>
                         {{$skill}}
                   </option>
                   @endforeach
@@ -92,29 +150,66 @@
                     <span class="help-block">
                         <strong>{{ $errors->first('skill') }}</strong>
                     </span>
-                @endif
+                @endif 
+                </div>                             
+
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Vị trí tuyển dụng
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-4 col-sm-12{{ $errors->has('rank')? ' has-error' : '' }}">                  
+                  <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="rank" title="Chọn vị trí...">
+                  @foreach($rank_list as $rank)                      
+                    <option {{ $rank == old('rank') ?'selected':''}}>{{$rank}}</option>
+                  @endforeach
+                  </select>
+                  @if ($errors->has('rank'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('rank') }}</strong>
+                      </span>
+                  @endif
+                </div>
               </div>
 
-              <div class="form-group{{ $errors->has('job') ? ' has-error' : '' }}">
-                <label for="job-region">Ngành nghề cần tuyển</label>
-                <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="job" title="Chọn ngành nghề...">
-                  @foreach($job_list as $job)
-                  <option
-                      {{ $job == old('job') ? 'selected' : ''}}>
-                    {{$job}}
-                  </option>
+              <div class="row form-group">              
+                <label for="job" class="col-lg-3 col-sm-12 col-form-label">Yêu cầu kinh nghiệm 
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-3 col-sm-12{{ $errors->has('exp')? ' has-error' : '' }}">
+                  <select class="selectpicker border rounded" id="job-type" data-style="btn-black" data-width="100%" data-live-search="true" name="exp" title="Chọn yêu cầu...">
+                  @foreach($exp_list as $exp)                      
+                    <option {{ $exp == old('exp') ?'selected':''}}>{{$exp}}</option>
                   @endforeach
-                </select>
-                @if ($errors->has('job'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('job') }}</strong>
-                    </span>
-                @endif
+                  </select>
+                  @if ($errors->has('exp'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('exp') }}</strong>
+                      </span>
+                  @endif
+                </div>  
+
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Mức lương
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-4 col-sm-12{{ $errors->has('salary')? ' has-error' : '' }}">                  
+                  <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="salary" title="Chọn mức lương...">
+                  @foreach($salary_list as $salary)                      
+                    <option {{ $salary == old('salary') ?'selected':''}}>{{$salary}}</option>
+                  @endforeach
+                  </select>
+                  @if ($errors->has('salary'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('salary') }}</strong>
+                      </span>
+                  @endif
+                </div>
               </div>
-              
-              <div class="form-group{{ $errors->has('degree') ? ' has-error' : '' }}">
-                <label for="job-type">Yêu cầu trình độ</label>
-                <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="degree" title="Chọn yêu cầu...">
+                    
+              <div class="row form-group">              
+                <label for="job" class="col-lg-3 col-sm-12 col-form-label">Yêu cầu trình độ 
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-3 col-sm-12{{ $errors->has('degree')? ' has-error' : '' }}">
+                  <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="degree" title="Chọn yêu cầu...">
                 @foreach($degree_list as $degree)                      
                   <option {{ $degree == old('degree') ?'selected':''}}>{{$degree}}</option>
                 @endforeach
@@ -123,71 +218,26 @@
                     <span class="help-block">
                         <strong>{{ $errors->first('degree') }}</strong>
                     </span>
-                @endif
-              </div>
+                @endif 
+                </div>  
 
-              <div class="form-group{{ $errors->has('rank') ? ' has-error' : '' }}">
-                <label for="job-type">Vị trí tuyển dụng</label>
-                <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="rank" title="Chọn vị trí...">
-                @foreach($rank_list as $rank)                      
-                  <option {{ $rank == old('rank') ?'selected':''}}>{{$rank}}</option>
-                @endforeach
+                <label for="job" class="col-lg-3 col-sm-12 col-form-label">Hình thức làm việc
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-3 col-sm-12{{ $errors->has('status')? ' has-error' : '' }}">                  
+                  <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="status">                    
+                    <option selected>Full Time</option>
+                    <option {{ old('status') == 'Part Time' ? 'selected':''}}>Part Time</option>
                 </select>
-                @if ($errors->has('rank'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('rank') }}</strong>
-                    </span>
-                @endif
+                </div>
               </div>
 
-              <div class="form-group{{ $errors->has('exp') ? ' has-error' : '' }}">
-                <label for="job-type">Yêu cầu kinh nghiệm</label>
-                <select class="selectpicker border rounded" id="job-type" data-style="btn-black" data-width="100%" data-live-search="true" name="exp" title="Chọn yêu cầu...">
-                @foreach($exp_list as $exp)                      
-                  <option {{ $exp == old('exp') ?'selected':''}}>{{$exp}}</option>
-                @endforeach
-                </select>
-                @if ($errors->has('exp'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('exp') }}</strong>
-                    </span>
-                @endif
-              </div>
-
-              <div class="form-group{{ $errors->has('salary') ? ' has-error' : '' }}">
-                <label for="job-type">Mức lương</label>
-                <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="salary" title="Chọn mức lương...">
-                @foreach($salary_list as $salary)                      
-                  <option {{ $salary == old('salary') ?'selected':''}}>{{$salary}}</option>
-                @endforeach
-                </select>
-                @if ($errors->has('salary'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('salary') }}</strong>
-                    </span>
-                @endif
-              </div>
-
-              <div class="form-group">
-                <label for="job-type">Giới tính</label>
-                <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="gender" title="Chọn hình thức...">
-                  <option selected>Bất kì</option>
-                  <option {{old('gender') == 'Nam' ? 'selected':''}}>Nam</option>
-                  <option {{old('gender') == 'Nữ' ? 'selected':''}}>Nữ</option>
-                </select>                
-              </div>
-
-              <div class="form-group">
-                <label for="job-type">Hình thức làm việc</label>
-                <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="status" title="Chọn hình thức...">
-                  <option selected>Full Time</option>
-                  <option {{ old('status') == 'Part Time' ? 'selected':''}}>Part Time</option>                  
-                </select>
-              </div>
-              
-              <div class="form-group{{ $errors->has('region') ? ' has-error' : '' }}">
-                <label for="job-region">Nơi làm việc</label>
-                <select class="selectpicker border rounded" id="region-list" data-style="btn-black" data-width="100%" data-live-search="true" name="region[]" title="Chọn khu vực..." multiple data-max-options="3">                     
+              <div class="row form-group">              
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Nơi làm việc
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-4 col-sm-12{{ $errors->has('region')? ' has-error' : '' }}">
+                  <select class="selectpicker border rounded" id="region-list" data-style="btn-black" data-width="100%" data-live-search="true" name="region[]" title="Chọn khu vực (tối đa 3)" data-size="10" multiple data-max-options="3">                     
                       @foreach($region_list as $region => $city_list)  
                       <optgroup label="{{$region == 'MienNam' ? 'Miền Nam' : ($region == 'MienBac' ? 'Miền Bắc' : 'Miền Trung')}}">
                         @foreach($city_list as $city)
@@ -204,44 +254,96 @@
                     <span class="help-block">
                         <strong>{{ $errors->first('region') }}</strong>
                     </span>
-                @endif                   
-              </div>
-             
+                  @endif  
+                </div>  
+
+                <label for="job" class="col-lg-2 col-sm-12 col-form-label">Thời gian thử việc
+                <sup><span class="text-danger"><i class="icon-asterisk"></i></span></sup>
+                </label>              
+                <div class="col-lg-4 col-sm-12{{ $errors->has('probation')? ' has-error' : '' }}">                  
+                  <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="probation">
+                    <option selected>Nhận việc ngay</option>                  
+                    <option>1 tháng</option>
+                    <option>2 tháng</option>
+                    <option>3 tháng</option>
+                    <option>Trao đổi trực tiếp khi phỏng vấn</option>
+                </select>
+                </div>
+              </div>                    
 
               <h3 class="text-black my-5 border-bottom pb-2">Yêu cầu trình độ ngoại ngữ</h3>
-              <div class="form-group">
-                <select class="selectpicker border rounded" id="language-list" data-style="btn-black" data-width="100%" data-live-search="true" name="language[]"  title="Chọn ngoại ngữ...(không bắt buộc)" multiple> 
-                @if(is_array(old('language')))
-                  @foreach($language_list as $language)
-                  <option {{in_array($language,old('language')) ? 'selected' : ''}}>
-                  {{$language}}
-                  </option>
-                  @endforeach
-                @else
-                  @foreach($language_list as $language)
-                  <option>{{$language}}</option>
-                  @endforeach
-                @endif
-                  <option>Ngôn ngữ khác</option>                
-                </select>
-              </div>
+              <div class="row form-group">              
+                <label for="language" class="col-lg-2 col-sm-12 col-form-label">Ngoại ngữ &nbsp;
+                  <span class="text-primary"><i class="icon-language"></i></span>
+                </label>              
+                <div class="col-lg-4 col-sm-12">
+                  <select class="selectpicker border rounded" name="language[]" id="language" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn ngoại ngữ" multiple>
+                      @foreach($language_list as $language)
+                      <option
+                      @if(is_array(old('language')))
+                      {{ in_array($language,old('language')) ? 'selected':'' }}
+                      @endif
+                      >
+                      {{$language}}
+                      </option>
+                      @endforeach
+                      <option value="other"
+                      @if(is_array(old('language')))
+                      {{ in_array('other',old('language')) ? 'selected':'' }}
+                      @endif
+                      >Ngôn ngữ khác
+                      </option>
+                  </select>  
+                </div>  
 
-              <h3 class="text-black my-5 border-bottom pb-2">Yêu cầu trình độ tin học</h3>
-              <div class="form-group">
-                <select class="selectpicker border rounded" data-style="btn-black" data-width="100%" data-live-search="true" name="itech[]" id="itech-list" title="Chọn phần mềm...(không bắt buộc)" multiple>
-                @if(is_array(old('itech')))
-                  @foreach($itech_list as $itech)
-                  <option {{in_array($itech,old('itech')) ? 'selected' : ''}}>
-                  {{$itech}}
-                  </option>
-                  @endforeach
-                @else
-                  @foreach($itech_list as $itech)
-                  <option>{{$itech}}</option>
-                  @endforeach
-                @endif       
-                <option>Phần mềm khác</option>           
-                </select>
+                <div id="other_language" class="col-lg-6 col-sm-12" 
+                @if(!old('other_language')) style="display: none;"
+                @endif>
+                  <div class="row">
+                    <label for="job" class="col-lg-4 col-sm-12 col-form-label">Ngoại ngữ khác &nbsp;
+                     <sup><span class="text-primary"><i class="icon-language"></i></span></sup>
+                    </label>              
+                    <div class="col-lg-8 col-sm-12">                  
+                      <input type="text" name="other_language" class="form-control" placeholder="Nếu nhập nhiều, hãy nhập (VD: Anh,Pháp,Đức,...)" value="{{old('other_language')}}" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                
+                <h3 class="text-black my-5 border-bottom pb-2">Yêu cầu trình độ tin học</h3>
+                <div class="row form-group">              
+                  <label for="itech" class="col-lg-2 col-sm-12 col-form-label">Phần mềm &nbsp;
+                    <span class="text-primary"><i class="icon-gear"></i></span>
+                  </label>              
+                  <div class="col-lg-4 col-sm-12">
+                     <select class="selectpicker border rounded" name="itech[]" id="itech" data-style="btn-black" data-width="100%" data-live-search="true" title="Chọn phần mềm" multiple>
+                      @foreach($itech_list as $itech)
+                      <option
+                      @if(is_array(old('itech')))
+                      {{ in_array($itech,old('itech')) ? 'selected':'' }}
+                      @endif
+                      >{{$itech}}</option>
+                      @endforeach
+                      <option value="other"
+                      @if(is_array(old('itech')))
+                      {{ in_array('other',old('itech')) ? 'selected':'' }}
+                      @endif
+                      >Phần mềm khác</option>
+                    </select>  
+                  </div>                
+
+                <div id="other_itech" class="col-lg-6 col-sm-12" 
+                @if(!old('other_itech')) style="display: none;"
+                @endif>
+                  <div class="row">
+                    <label for="job" class="col-lg-4 col-sm-12 col-form-label">Phần mềm khác &nbsp;
+                     <sup><span class="text-primary"><i class="icon-hand-o-right"></i></span></sup>
+                    </label>              
+                    <div class="col-lg-8 col-sm-12">                  
+                      <input type="text" name="other_itech" class="form-control" id="name" placeholder="Nhập tên phần mềm...(Access,Visio,Github,...)" value="{{ old('other_itech') }}" required>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <h3 class="text-black my-5 border-bottom pb-2">Mô tả công việc</h3>
@@ -283,7 +385,12 @@
                 <input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin..." value="Địa chỉ: {{$user->diachi}}, {{$user->tinhthanhpho}}">
               @endif
                 <button type="button" id="info-contact" class="btn btn-info form-control">Thêm <span class="icon-plus"></span></button>
-              </div>              
+              </div>
+
+              <h3 class="text-black my-5 border-bottom pb-2">Thông tin thêm</h3>
+              <div class="form-group">
+                <textarea class="form-control" name="plus" cols="30" rows="3" placeholder="Nhập yêu cầu....">{{ old('plus')}}</textarea>
+              </div>
             </form>
           </div>
 
@@ -339,6 +446,12 @@
               <h3 class="h5 d-flex align-items-center mb-4 text-info"><span class="icon-book mr-3"></span>Thông tin liên hệ</h3>
               <ul class="list-unstyled m-0 p-0" id="contact-preview">                
               </ul>
+            </div>
+
+            <div class="mb-5">
+              <h3 class="h5 d-flex align-items-center mb-4 text-info"><span class="icon-turned_in mr-3"></span>Yêu cầu thêm</h3>
+              <ul class="list-unstyled m-0 p-0" id="plus-preview">                
+              </ul>
             </div>         
 
           </div>
@@ -352,27 +465,28 @@
                 <li class="mb-2" id="vacancy-preview"></li>
                 <li class="mb-2" id="skill-preview"></li>
                 <li class="mb-2" id="degree-preview"></li>                
-                <li class="mb-2" id="exp-preview"></li>                
-                <li class="mb-2" id="language-preview"></li>
-                <li class="mb-2" id="itech-preview"></li>
+                <li class="mb-2" id="exp-preview"></li>                                
                 <li class="mb-2" id="salary-preview"></li>
                 <li class="mb-2" id="gender-preview"></li>
                 <li class="mb-2" id="region-preview"></li>
                 <li class="mb-2" id="status-preview"></li>
+                <li class="mb-2" id="probation-preview"></li>
                 <li class="mb-2" id="deadline-preview"></li>
-                <li class="mb-2" id="website-preview"></li>
               </ul>
             </div>
 
             <div class="bg-light p-3 border rounded">
-              <h3 class="text-info  mt-3 h5 pl-3 mb-3 ">Share</h3>
-              <div class="px-3">
-                <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-facebook"></span></a>
-                <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter"></span></a>
-                <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-linkedin"></span></a>
-                <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-pinterest"></span></a>
+              <h3 class="text-info  mt-3 h5 pl-3 mb-3">Yêu cầu trình độ ngoại ngữ</h3>
+              <div class="px-3" id="language-preview">               
               </div>
             </div>
+
+            <div class="bg-light p-3 border rounded">
+              <h3 class="text-info mt-3 h5 pl-3 mb-3">Yêu cầu trình độ tin học</h3>
+              <div class="px-3" id="itech-preview">                
+              </div>
+            </div>
+
 
           </div>
         </div>

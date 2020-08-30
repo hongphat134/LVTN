@@ -24,7 +24,11 @@
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
             <a href="{{route('news',$news->id)}}"></a>
             <div class="job-listing-logo">
-              <img src="{{url('logo/'.$news->hinh)}}" alt="Free Website Template by Free-Template.co" class="img-fluid">
+              @if($news->hinh)
+              <img src="{{url('logo/'.$news->hinh)}}" alt="{{$news->hinh}}" style="width: 200px; height: 150px">
+              @else
+              <img src="{{url('logo/default.png')}}" alt="{{$news->hinh}}" class="img-fluid">
+              @endif
             </div>
 
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
@@ -43,14 +47,14 @@
                 @endforeach
               </div>
               <div class="job-listing-meta">
-                @if($news->trangthailv == 'Part Time')
-                <span class="badge badge-danger">{{$news->trangthailv}}</span>
+                @if($news->hinhthuc_lv == 'Part Time')
+                <span class="badge badge-danger">{{$news->hinhthuc_lv}}</span>
                 @else
-                <span class="badge badge-success">{{$news->trangthailv}}</span>
+                <span class="badge badge-success">{{$news->hinhthuc_lv}}</span>
                 @endif
                 </br>
                 <span class="badge badge-dark">
-                Giờ đăng: {{ time_elapsed_string($news->updated_at) }}
+                Mức lương: {{ $news->mucluong }}
                 </span>         
                 </br>
                 <span class="badge badge-info">

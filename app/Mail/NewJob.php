@@ -34,7 +34,7 @@ class NewJob extends Mailable
     {
         return $this->markdown('emails.new-job',$this->info)
                     ->subject('Tin tuyển dụng mới')
-                    ->to('hongphat701@gmail.com')
+                    ->to(config('mail.username'))
                     ->bcc($this->users);
     }
 }

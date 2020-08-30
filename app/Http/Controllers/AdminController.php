@@ -11,10 +11,11 @@ use App\LienHe;
 use App\User;
 use App\Blog;
 use App\Comment;
+use App\YKien;
 use Mail;
 use App\Mail\NewJob;
 use DB;
-
+// include base_path()."/app/Function/functions.php";
 class AdminController extends Controller
 {
     //
@@ -28,38 +29,40 @@ class AdminController extends Controller
 
     // Tin Tuyển dụng
     public function getRecList(){
-    	$job_list = TinTuyenDung::paginate(15);
-        // dd($job_list);            
+    	$job_list = TinTuyenDung::all();
+        // dd($job_list);
     	return view('admins.tintuyendung.list',compact('job_list'));
     }
 
     public function getApprovedRecList(){
-    	$job_list = TinTuyenDung::where('ad_pheduyet',0)->paginate(15);
+    	$job_list = TinTuyenDung::where('ad_pheduyet',0)->get();
     	return view('admins.tintuyendung.approved',compact('job_list'));
     }
 
-    public function approvedRec($ttd_id){
-    	// $post = TinTuyenDung::where('id',$ttd_id)
-    	// 			->update(['ad_pheduyet' => 1]);
-        
+    public function approvedRec($ttd_id){   
         // Thông báo cho nh~ NTV đang theo dõi NTD sở hữu TTD này
-        $post = TinTuyenDung::where('id',$ttd_id)->select('idNTD')->get()->first();
+        $post = TinTuyenDung::where('id',$ttd_id)->get()->first();
         // dd($post);
         $ntd = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
             ->select('nhatuyendung.ten',DB::raw('COUNT(*) as count'))
+            ->where('tintuyendung.ad_pheduyet',1)
             ->where('tintuyendung.idNTD',$post->idNTD)
             ->groupBy('nhatuyendung.ten')
-            ->get()->first()->toArray();
-        // dd($ntd);
-        $f_user_list = User::where('theodoi_add','LIKE',"%\"$post->idNTD\"%")
+            ->get()->first()->toArray();        
+        // dd($ntd);        
+        $f_user_list = User::where('theodoi_ntd','LIKE',"%\"$post->idNTD\"%")
                     ->select('email')
-                    ->get()->first()->toArray();        
-        // dd($f_user_list);
+                    ->get()->first();
+        // dd($f_user_list);        
         // Example
         // $f_user_list = ['email' => 'conbaba999990@gmail.com' , 'email' => 'hongphat701@gmail.com'];
         // $f_user_list = array_values($f_user_list);   
-        if(count($f_user_list) != 0) Mail::send(new NewJob($f_user_list,$ntd));
-
+        if($f_user_list){
+            $f_user_list = $f_user_list->toArray(); 
+            $ntd['count'] = $ntd['count'] + 1;
+            
+            Mail::send(new NewJob($f_user_list,$ntd));  
+        } 
         $post->ad_pheduyet = 1;
         $post->update();
     	return redirect()->back()->with(['success' => 'hoàn tất phê duyệt tin tuyển dụng '.$ttd_id.'!']);
@@ -77,12 +80,12 @@ class AdminController extends Controller
 
     // Hồ sơ
     public function getProfileList(){
-    	$profile_list = NguoiTimViec::paginate(15);
+    	$profile_list = NguoiTimViec::all();
     	return view('admins.hoso.list',compact('profile_list'));
     }
 
     public function getApprovedPrfList(){
-    	$profile_list = NguoiTimViec::where('ad_pheduyet',0)->paginate(15);
+    	$profile_list = NguoiTimViec::where('ad_pheduyet',0)->get();
     	return view('admins.hoso.approved',compact('profile_list'));
     }
     // Hàm này chỉ xét mẫu hồ sơ
@@ -99,7 +102,8 @@ class AdminController extends Controller
     }
 
     public function getAppliedPrfList(){
-        $profile_list = HoSoXinViec::where('ad_pheduyet',0)->paginate(15);
+        // $profile_list = HoSoXinViec::where('ad_pheduyet',0)->get();
+        $profile_list = HoSoXinViec::all();
         // dd($profile_list);
         return view('admins.hoso.applied_list',compact('profile_list'));
     }
@@ -115,6 +119,7 @@ class AdminController extends Controller
         // Mail::send(new Applied($to_email));
 
         $hs = HoSoXinViec::where('idTTD',$ttd_id)->where('idUser',$usr_id)->get()->first()->update(['ad_pheduyet' => 1]);
+        dd($hs);
         
         return redirect()->back()->with(['success' => 'hoàn tất phê duyệt hồ sơ, đã gửi thông báo đến nhà tuyển dụng!']);
     }
@@ -143,7 +148,7 @@ class AdminController extends Controller
 
     // Blog
     public function getBlogList(){
-        $blog_list = Blog::paginate(15);
+        $blog_list = Blog::all();
         return view('admins.baiviet.list',compact('blog_list'));   
     }
 
@@ -160,5 +165,41 @@ class AdminController extends Controller
     public function deleteCmt($cmt_id){
         Comment::where('id',$cmt_id)->delete();
         return redirect()->back()->with(['success' => 'Đã xoá bình luận ID '.$cmt_id.' ,Success!']);
+    }
+
+    // Thu thập ý Kiến
+    public function getOpinionList(){
+        $opinion_list = YKien::all();
+        // dd($opinion_list);
+        return view('admins.ykien.list',compact('opinion_list'));
+    }
+
+    public function insertOpinion($opinion_id){
+        $opinion = YKien::find($opinion_id);
+        // Thêm
+        if($opinion->loai == 'ngành'){
+            if(file_exists( public_path()."/resources/jobs.json")){
+                $job_list = json_decode(file_get_contents(url("resources/jobs.json")));
+                // Chuẩn hoá về thường rồi mới so sánh
+                $job_list_comparison = array_map('mb_strtolower', $job_list);
+                $ten = trim(mb_strtolower($opinion->ten));
+                // dd($job_list);
+                // Kiểm xem trong ds có chưa?
+                if(!in_array($ten, $job_list_comparison)){
+                    array_push($job_list,$opinion->ten);
+                    $path = public_path().'\resources\jobs.json';
+                    file_put_contents($path,json_encode($job_list,JSON_UNESCAPED_UNICODE));
+                }
+                
+            }
+        }
+        // dd($opinion);
+        YKien::destroy($opinion_id);
+        return redirect()->back()->with(['success' => 'Đã thêm ý kiến vào danh sách!']);
+    }
+
+    public function deleteOpinion($opinion_id){
+        YKien::destroy($opinion_id);
+        return redirect()->back()->with(['success' => 'Đã xoá ý kiến vừa chỉ định!']);
     }
 }

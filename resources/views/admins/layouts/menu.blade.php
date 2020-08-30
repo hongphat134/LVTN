@@ -26,7 +26,7 @@
                             </li>
 
                             <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i> <span> Bài viết </span> <span class="float-right"><i class="mdi mdi-plus"></i></span></a>
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-blogger"></i> <span> Bài viết </span> <span class="float-right"><i class="mdi mdi-plus"></i></span></a>
                                 <ul class="list-unstyled">
                                     <li><a href="{{url('/administrators/bai-viet/danh-sach')}}">Danh sách</a></li>                                    
                                 </ul>
@@ -37,9 +37,12 @@
                                 <ul class="list-unstyled">
                                     <li><a href="{{url('/administrators/nguoi-dung/nguoi-tim-viec')}}">Người tìm việc</a></li>
                                     <li><a href="{{url('/administrators/nguoi-dung/nha-tuyen-dung')}}">Nhà tuyển dụng</a></li>   
-                                    <li><a href="{{url('/administrators/nguoi-dung/quan-tri-vien')}}">Quản trị viên</a></li>
-                                    <li><a href="{{url('/administrators/nguoi-dung/quan-tri-vien')}}">Thêm nhân viên</a></li>                                
+                                    <li><a href="{{url('/administrators/nguoi-dung/quan-tri-vien')}}">Quản trị viên</a></li>          
                                 </ul>
+                            </li>
+
+                            <li>
+                                <a href="{{url('/administrators/thu-thap-y-kien/danh-sach')}}" class="waves-effect"><i class="mdi mdi-arch"></i><span> Thu thập ý kiến <span class="badge badge-pill badge-primary float-right">9</span></span></a>
                             </li>
                         </ul>
                     </div>

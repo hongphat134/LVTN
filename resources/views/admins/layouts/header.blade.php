@@ -12,7 +12,7 @@
         <link rel="shortcut icon" href="{{asset('admin\images\favicon.ico')}}">
 
         <!--Morris Chart CSS -->
-        <link rel="stylesheet" href="{{asset('admin\plugins\morris\morris.css')}}">
+       <!--  <link rel="stylesheet" href="{{asset('admin\plugins\morris\morris.css')}}"> -->
 
         <link href="{{asset('admin\css\bootstrap.min.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('admin\css\icons.css')}}" rel="stylesheet" type="text/css">
@@ -20,6 +20,61 @@
 
         <!-- jQuery  -->
         <script src="{{asset('admin\js\jquery.min.js')}}"></script>
+
+        <!-- DataTables -->
+        <link href="{{asset('admin/plugins/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('admin/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('admin/plugins/datatables/fixedHeader.bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('admin/plugins/datatables/responsive.bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('admin/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('admin/plugins/datatables/scroller.bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+
+        <!-- Required datatable js-->
+        <script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+        <!-- Buttons examples -->
+        <script src="{{asset('admin/plugins/datatables/dataTables.buttons.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
+
+        <script src="{{asset('admin/plugins/datatables/jszip.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/pdfmake.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/vfs_fonts.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/buttons.html5.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/buttons.print.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/dataTables.fixedHeader.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/dataTables.keyTable.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/dataTables.scroller.min.js')}}"></script>
+
+        <!-- Responsive examples -->
+        <script src="{{asset('admin/plugins/datatables/dataTables.responsive.min.js')}}"></script>
+        <script src="{{asset('admin/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
+
+        <!-- Datatable init js -->
+        <!-- <script src="{{asset('admin/pages/datatables.init.js')}}"></script> -->
+        <script>
+            $(document).ready(function(){
+                $("#datatable-responsive").DataTable({
+                    fixedHeader: !0,
+                    dom: "Bfrtip",
+                    buttons: [{
+                        extend: "copy",
+                        className: "btn-primary"
+                    }, {
+                        extend: "csv",
+                        className: "btn-primary"
+                    }, {
+                        extend: "excel",
+                        className: "btn-primary"
+                    }, {
+                        extend: "pdf",
+                        className: "btn-primary"
+                    }, {
+                        extend: "print",
+                        className: "btn-primary"
+                    }],            
+                });
+            });
+        </script>
 
     </head>
 

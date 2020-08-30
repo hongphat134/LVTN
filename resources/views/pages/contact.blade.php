@@ -68,10 +68,10 @@
           <div class="col-lg-5 ml-auto">
             <div class="p-4 mb-3 bg-white">
               <p class="mb-0 font-weight-bold">Địa chỉ</p>
-              <p class="mb-4">180 Cao Lỗ, Phường 14, Quận 8</p>
+              <p class="mb-4">180 Cao Lỗ, Phường 4, Quận 8, TP Hồ Chí Minh</p>
 
               <p class="mb-0 font-weight-bold">Số điện thoại</p>
-              <p class="mb-4"><a href="#">+0938 229 513</a></p>
+              <p class="mb-4"><a href="#">+0938 922 315</a></p>
 
               <p class="mb-0 font-weight-bold">Email liên hệ</p>
               <p class="mb-0"><a href="#">hongphat701@gmail.com</a></p>

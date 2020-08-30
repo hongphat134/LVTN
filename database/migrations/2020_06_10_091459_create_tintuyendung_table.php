@@ -21,21 +21,17 @@ class CreateTintuyendungTable extends Migration
             $table->integer('soluong')->nullable();
             $table->string('bangcap')->nullable();
             $table->string('capbac')->nullable();
-            // giờ hành chính or tại gia or overtime
-            // $table->string('tinhchatcv')->nullable();
-            // thực tập hoặc nhân viên chính thức
-            // $table->string('hinhthuclv')->nullable();
-            // Full time or Part time
-            $table->string('trangthailv')->nullable();
+            $table->string('hinhthuc_lv')->nullable();
             $table->json('tinhthanhpho')->nullable();
             $table->string('gioitinh')->nullable();            
             $table->string('kinhnghiem')->nullable();
             $table->json('ngoaingu')->nullable();
             $table->json('tinhoc')->nullable();  
-            //  3 tháng , 6 tháng or trao đổi trực tiếp khi phỏng vấn?
-            // $table->string('tgthuviec')->nullable();
+            //  Nhận việc ngay, 1 tháng ,2 tháng, 3 tháng or trao đổi trực tiếp khi phỏng vấn?
+            $table->string('tg_thuviec')->nullable();
             $table->date('hantuyendung')->nullable();            
-            $table->json('motacv')->nullable();            
+            $table->json('motacv')->nullable();
+            $table->longText('yeucau_cv')->nullable();            
             $table->json('quyenloi')->nullable();            
             // Thông tin liên hệ với cá nhân phụ trách đăng tin này
             $table->json('ttlienhe')->nullable();                        

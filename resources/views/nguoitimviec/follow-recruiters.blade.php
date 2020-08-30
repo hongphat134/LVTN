@@ -23,7 +23,7 @@
 		@if(count($ntd_list) > 0)
 		@foreach($ntd_list as $ntd)		
 			<div class="card d-inline-flex" style="width:200px">
-		    <a href="{{url('/thong-tin-ntd',$ntd->idUser)}}"><img class="card-img-top" src="{{asset('/logo/'.$ntd->hinh)}}" alt="Card image" style="width:100%"></a>
+		    <a href="{{url('/thong-tin-ntd',$ntd->idUser)}}"><img class="card-img-top" src="{{asset('/logo/'.$ntd->hinh)}}" alt="Card image" style="width:100%; height: 150px"></a>
 		    <div class="card-body">
 		      <h4 class="card-title"><a href="{{url('/thong-tin-ntd',$ntd->idUser)}}">{{$ntd->ten}}</a></h4>
 		      <p class="card-text">{{$ntd->tinhthanhpho}}</p>

@@ -69,6 +69,12 @@ function transPreview(name){
 			return 'mức lương mong muốn';
 		case 'title':
 			return 'ngành nghề'; 
+		case 'gender':
+			return 'giới tính';
+		case 'plus':
+			return 'thông tin thêm'; 
+		case 'date':
+			return 'ngày sinh'; 
 		default:
 			break;
 	}
@@ -126,9 +132,17 @@ $(".preview").click(function(){
 			} 							
 			if(v.value == 'other') v.value = '';
 
-			if(v.name == 'target' || v.name == 'talent')
-			$('#' + v.name + '-preview').html(
-				v.value? jsUcfirst('<strong>' + transPreview(v.name) + ':</strong></br> <pre>' + v.value + '</pre>') : '<div class="alert alert-dark">Chưa có ' + transPreview(v.name) + '!</div>');					
+			if(v.name == 'target' || v.name == 'talent' || v.name == 'plus')
+			$('#' + v.name + '-preview').html(				
+				v.value? jsUcfirst('<strong>' + transPreview(v.name) + ':</strong></br> <pre>' + v.value + '</pre>') : '<div class="alert alert-dark">Chưa có ' + transPreview(v.name) + '!</div>');
+			else if(v.name == 'date'){
+				const d = new Date('2010-08-05')
+				const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
+				const mo = new Intl.DateTimeFormat('vi', { month: 'short' }).format(d)
+				const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
+				$('#' + v.name + '-preview').html(
+				v.value? jsUcfirst(transPreview(v.name) + ': ' + `${da}-${mo}-${ye}`) : '<div class="alert alert-danger">Chưa có ' + transPreview(v.name) + '!</div>');	
+			}
 			else
 			$('#' + v.name + '-preview').html(
 				v.value? jsUcfirst(transPreview(v.name) + ': ' + v.value) : '<div class="alert alert-danger">Chưa có ' + transPreview(v.name) + '!</div>');	

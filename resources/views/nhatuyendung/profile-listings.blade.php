@@ -16,38 +16,42 @@
           </div>
         </div>
         <ul class="job-listings mb-5">
-          @foreach($profile_list as $profile)             
-          <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">  
-                         
+          @foreach($profile_list as $profile)          
+          <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">             
             <a href="{{route('detailPf',$profile->id)}}"></a>
             <div class="job-listing-logo">
-              <img 
-            @if($profile->hinh)
-            src="{{url('hinhdaidien/'.$profile->hinh)}}"
-            @else
-            src="{{url('hinhdaidien/person_2.jpg')}}"
-            @endif     
-              alt="No Image" class="img-fluid" style="width: 150px; height: 150px !important;">
+               
+    @if($profile->hinh)
+    <img src="{{url('hinhdaidien/'.$profile->hinh)}}" alt="{{$profile->hinh}}" class="img-fluid" style="width: 150px; height: 150px !important;">
+    @else  
+    <img src="{{url('hinhdaidien/default.png')}}" alt="Hình mặc định" class="img-fluid" style="width: 150px; height: 150px !important;">
+    @endif
+     
+              
             </div>
             <div class="ribbon-wrapper">
               <div class="ribbon red">Hot</div>
             </div>
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
               <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                <h2>{{$profile->nganh}}</h2>
-                Họ tên: <strong>{{$profile->hoten}}</strong></br>
+                <h2>{{$profile->nganh}} (<span class="text-info">{{$profile->kinhnghiem}}</span>)</h2>
+
+                Họ tên: <strong>{{$profile->hoten}}</strong> - Giới tính: <strong>{{$profile->gioitinh}}</strong></br>
                 Trình độ: <strong>{{$profile->bangcap}}</strong>
               </div>
               <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
                 <span class="icon-room"></span> {{$profile->khuvuc}}
               </div>
               <div class="job-listing-meta">
-                <span class="badge badge-danger">{{$profile->kinhnghiem}}</span></br>              
+                @if($profile->sdtlienhe)
+                <span class="badge badge-dark">SDT liên hệ: {{$profile->sdtlienhe}}</span></br>
+                @endif
+                <span class="badge badge-primary">Mức lương mong muốn: {{$profile->mucluongmm}}</span></br>                            
                 <span class="badge badge-info">Ngày cập nhật</span>
                 <span class="badge badge-danger">{{date('d/m/Y',strtotime($profile->updated_at))}}</span>
-              </div>            
-            </div>
-          </li>           
+              </div>
+            </div>            
+          </li>    
           @endforeach      
         </ul>
         

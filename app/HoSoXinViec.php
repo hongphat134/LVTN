@@ -9,7 +9,5 @@ class HoSoXinViec extends Model
     //
     protected $table = 'hosoxinviec';
 
-    // protected $primaryKey = ['idUser','idTTD'];
-
 	public $timestamps = true;
 }

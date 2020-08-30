@@ -1,6 +1,6 @@
 
                 <footer class="footer">
-                     © 2020 HTP - All Rights Reserved.
+                     © 2020 <mdi class="mdi mdi-cards-heart text-info"></mdi>HTP<mdi class="mdi mdi-cards-heart text-white"></mdi> - Luận văn tốt nghiệp - Hội đồng 7 - Thầy Trần Văn Hùng - Thầy Lương An Vinh - for STU <mdi class="mdi mdi-cards-heart text-danger"></mdi>.
                 </footer>
 
             </div>
@@ -22,12 +22,14 @@
         <script src="{{asset('admin\js\jquery.scrollTo.min.js')}}"></script>
 
         <!--Morris Chart-->
-        <script src="{{asset('admin\plugins\morris\morris.min.js')}}"></script>
-        <script src="{{asset('admin\plugins\raphael\raphael-min.js')}}"></script>
+        <!-- <script src="{{asset('admin\plugins\morris\morris.min.js')}}"></script> -->
+        <!-- <script src="{{asset('admin\plugins\raphael\raphael-min.js')}}"></script> -->
 
-        <script src="{{asset('admin\pages\dashborad.js')}}"></script>
+        <!-- <script src="{{asset('admin\pages\dashborad.js')}}"></script> -->
 
         <script src="{{asset('admin\js\app.js')}}"></script>
-        <!-- END wrapper -->        
+        <!-- END wrapper -->            
+
+        
     </body>
 </html>

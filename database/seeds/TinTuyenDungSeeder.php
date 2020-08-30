@@ -24,7 +24,7 @@ class TinTuyenDungSeeder extends Seeder
         $mucluong_list = json_decode(file_get_contents(public_path().'/resources/salaries.json'));
         $bangcap_list = json_decode(file_get_contents(public_path().'/resources/degrees.json'));
         $capbac_list = json_decode(file_get_contents(public_path().'/resources/ranks.json'));
-         $ngoaingu_list = json_decode(file_get_contents(public_path().'/resources/languages.json'));
+        $ngoaingu_list = json_decode(file_get_contents(public_path().'/resources/languages.json'));
         $tinhoc_list = json_decode(file_get_contents(public_path().'/resources/itechs.json'));
 
         $quyenloi_list = array(
@@ -46,6 +46,16 @@ class TinTuyenDungSeeder extends Seeder
             'Tham gia vào quá trình phân tích và thiết kế hệ thống',
             'Nghiên cứu và áp dụng các công nghệ mới để tối ưu hóa hiệu quả phát triển sản phẩm',
             'Tham gia phát triển hệ thống của công ty và theo yêu cầu của khách hàng');
+
+        $yeucaucv_list = array('Ngoại hình ưa nhìn',
+            'Giao tiếp tự tin, năng động, nhiệt huyết và máu lửa trong kinh doanh',
+            'Có kỹ năng làm việc độc lập và làm việc nhóm',
+            'Có khả năng thực hiện phân tích yêu cầu, xây dựng tài liệu nghiệp vụ',
+            'Kỹ năng thuyết trình, Kỹ năng giao tiếp',
+            'Khả năng phân tích và xây dựng hệ thống thông tin',
+            'Có kiến thức về quản trị web, lập trình cơ bản',
+            'Thành thạo internet, kỹ năng văn phòng tốt',
+            'Có khả năng phân tích, đánh giá từ khóa và đưa ra kế hoạch SEO hiệu quả');
         
         
         for ($i = 0 ; $i < COUNT ; $i++) {
@@ -62,6 +72,7 @@ class TinTuyenDungSeeder extends Seeder
             $tinhoc = Arr::random($tinhoc_list,mt_rand(1,4)); 
             $motacv = Arr::random($motacv_list,mt_rand(3,6));
             $quyenloi = Arr::random($quyenloi_list,mt_rand(3,6));
+            $yeucaucv = Arr::random($yeucaucv_list,mt_rand(1,5));
             DB::table('tintuyendung')->insert(
                 [
                     'kinang' => json_encode($kinang,JSON_UNESCAPED_UNICODE),
@@ -74,7 +85,9 @@ class TinTuyenDungSeeder extends Seeder
                     'bangcap' => $bangcap,
                     'capbac' =>  $capbac,
                     'hantuyendung' => $hantuyendung,
-                    'trangthailv' => Arr::random(['Full Time','Part Time']),                    
+                    'hinhthuc_lv' => Arr::random(['Full Time','Part Time']), 
+                    'tg_thuviec' => 'Trao đổi trực tiếp khi phỏng vấn',
+                    'yeucau_cv' => json_encode($yeucaucv,JSON_UNESCAPED_UNICODE),            
                     'ad_pheduyet' => mt_rand(0,1),
                     'motacv' => json_encode($motacv,JSON_UNESCAPED_UNICODE),
                     'quyenloi' => json_encode($quyenloi,JSON_UNESCAPED_UNICODE), 

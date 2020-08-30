@@ -19,55 +19,72 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-4 mr-auto">
-            <div class="border p-4 rounded">
+            <div class="border p-3 rounded">
           	<ul class="list-unstyled block__47528 mb-0">
                 <li><span class="active"><h3>{{$profile->nganh}}</h3></span></li>
                 <li>Email liên hệ: <a href="#">{{$profile->emaillienhe}}</a></li>
+                <li>SDT liên hệ: <a href="#">{{$profile->sdtlienhe}}</a></li>
                 <li>Khu vực sinh sống: <a href="#">{{$profile->khuvuc}}</a></li>
-                <li>Tình trạng hôn nhân: <a href="#">{{$profile->honnhan}}</a></li>
-                <li>Hình thức mong muốn: <a href="#">{{$profile->trangthailv}}</a></li>
+                <li>Tình trạng hôn nhân: <a href="#">{{$profile->honnhan}}</a></li>                
                 <li>Bằng cấp cao nhất: <a href="#">{{$profile->bangcap}}</a></li>
                 <li>Cấp bậc cao nhất: <a href="#">{{$profile->capbac}}</a></li>
                 <li>Kinh Nghiệm: <a href="#">{{$profile->kinhnghiem}}</a></li>
+                <li>Hình thức làm việc mong muốn: <a href="#">{{$profile->hinhthuc_lv}}</a></li>
+                <li>Mức lương mong muốn: <a href="#">{{$profile->mucluongmm}}</a></li>
     		    </ul>
             </div>    
 
             <div class="border p-4 rounded">
             <h3>Kĩ năng</h3>
             @foreach(json_decode($profile->kinang) as $kinang)
-            <div><span class="icon-hand-o-right">{{$kinang}}</span></div>
+            <div><span class="icon-hand-o-right"> {{$kinang}}</span></div>
             @endforeach
             </div>
-
+            @if($profile->ngoaingu)
             <div class="border p-4 rounded">
             <h3>Ngoại ngữ</h3>
             @foreach(json_decode($profile->ngoaingu) as $ngoaingu)
-            <div><span class="icon-language mx-2">{{$ngoaingu}}</span></div>
+            <div><span class="icon-language"> {{$ngoaingu}}</span></div>
             @endforeach
             </div>
-
+            @endif
+            @if($profile->tinhoc)
             <div class="border p-4 rounded">
             <h3>Tin học</h3>
             @foreach(json_decode($profile->tinhoc) as $tinhoc)
-            <div><span class="icon-caret-right mr-2">{{$tinhoc}}</span></div>
+            <div><span class="icon-caret-right"> {{$tinhoc}}</span></div>
             @endforeach
             </div>
-
+            @endif
           </div>
           <div class="col-lg-8">
             <span class="text-primary d-block mb-5">
               <div class="thumbnail">
-                <img src="{{url('hinhdaidien/'.$profile->hinh)}}" alt="Không có hình" class="img-thumbnail img-responsive">
+                @if($profile->hinh)
+                <img src="{{url('hinhdaidien/'.$profile->hinh)}}" alt="{{$profile->hinh}}" style="width: 200px; height: 200px">
+                @else
+                <img src="{{url('hinhdaidien/default.png')}}" alt="Không có hình" class="img-thumbnail img-responsive">
+                @endif
                 <div class="caption">
-                  <p><h3>{{$profile->hoten}} - {{ date('d/m/Y',strtotime($profile->updated_at))}}</h3></p>
+                  <p>
+                    <h3>{{$profile->hoten}}</h3>                    
+                  </p>                  
                 </div>
+                <p>
+                  <span class="text-secondary">Ngày sinh: {{date('d/m/Y',strtotime($profile->ngaysinh))}}</span> - <span class="badge badge-dark text-warning">Giới tính: {{$profile->gioitinh}}</span>
+                </p>
+                <p> 
+                  <span class="text-info">Ngày đăng: {{ date('d/m/Y',strtotime($profile->updated_at))}}</span> - 
+                  <span class="badge badge-danger">lượt xem: {{$profile->luotxem}}</span> 
+                </p>
               </div>
             </span>
-            <h2 class="mb-4">Mục tiêu</h2>
-           
+            <h2 class="mb-4">Mục tiêu</h2>           
             <p>{!! nl2br($profile->muctieu) !!}</p>                      
             <h2 class="mb-4">Sở trường</h2>
-            <p>{!! nl2br($profile->sotruong) !!}</p>           
+            <p>{!! nl2br($profile->sotruong) !!}</p>
+            <h2 class="mb-4">Thông tin thêm</h2>
+            <p>{!! nl2br($profile->thongtinthem) !!}</p>           
             <p>
               <div class="border p-3">
               <span class="icon-asterisk mr-2"></span><strong><a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalCenter">Ngỏ ý</a></strong> giúp người tìm việc biết bạn đang quan tâm hồ sơ của họ. <span class="icon-hand-o-right mr-2">
@@ -109,6 +126,7 @@
       <div class="modal-body">
         <form action="{{url('/nhatuyendung/ngo-y')}}" method="post">
           {{csrf_field()}}
+          <input type="hidden" name="idUser" value="{{$profile->idUser}}">
         <div class="form-group">
           <label for="comment">Lời nhắn:</label>
           <textarea class="form-control" rows="5" id="comment" name="content"></textarea>

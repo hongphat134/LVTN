@@ -32,6 +32,6 @@ class Applied extends Mailable
     {
         return $this->markdown('emails.applied')
                 ->subject('Hồ sơ xin việc')
-                ->to($to_email ? $to_email : 'conbaba999990@gmail.com');
+                ->to($this->to_email);
     }
 }

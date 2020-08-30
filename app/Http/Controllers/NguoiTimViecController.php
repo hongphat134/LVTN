@@ -51,7 +51,9 @@ class NguoiTimViecController extends Controller
                 'degree' => 'required',
                 'rank' => 'required',
                 'region' => 'required',
-
+                'gender' => 'required',
+                'date' => 'required',  
+                'phone' => "required|regex:/^[0-9\-\+]{9,15}$/u",     
             ],          
             [
                 //Tùy chỉnh hiển thị thông báo
@@ -64,6 +66,10 @@ class NguoiTimViecController extends Controller
                 'degree.required' => 'Bạn chưa chọn bằng cấp!',
                 'rank.required' => 'Bạn chưa chọn cấp bậc!',            
                 'region.required' => 'Bạn chưa chọn khu vực!',
+                'phone.required' => 'Hãy nhập sdt để nhà tuyển dụng có thể tiện liên lạc nhé!',
+                'phone.regex' => 'Bạn nhập không đúng định dạng sdt!',
+                'date.required' => 'Bạn chưa nhập ngày sinh!',
+                'gender.required' => 'Bạn chưa chọn giới tính!',
             ]
         );      
        
@@ -76,16 +82,20 @@ class NguoiTimViecController extends Controller
         $profile->hoten = $rq->name;
         $profile->kinang = $skills;
         $profile->emaillienhe = $rq->email;
+        $profile->sdtlienhe = $rq->phone;
         $profile->nganh = $rq->title;
         $profile->khuvuc = $rq->region;
         $profile->kinhnghiem = $rq->exp;
         $profile->honnhan = $rq->marital_stt;       
-        $profile->trangthailv = $rq->status;
+        $profile->hinhthuc_lv = $rq->status;
         $profile->bangcap = $rq->degree;
         $profile->capbac = $rq->rank;
         $profile->mucluongmm = $rq->salary;
         $profile->muctieu = $rq->target;    
         $profile->sotruong = $rq->talent;
+        $profile->gioitinh = $rq->gender;
+        $profile->ngaysinh = $rq->date;
+        $profile->thongtinthem = $rq->plus;
         $profile->remember_token = $rq->_token;
 
         if($rq->title != 'other') $profile->nganh = $rq->title;
@@ -143,7 +153,7 @@ class NguoiTimViecController extends Controller
     	return view('nguoitimviec.create-profile');
     }
     
-    public function postCreateProfile(Request $rq){    	        
+    public function postCreateProfile(Request $rq){    	                
         // dd($rq->all());
         // Problem: chưa giải quyết withInput
     	$this->validate($rq, 
@@ -152,25 +162,32 @@ class NguoiTimViecController extends Controller
                 'public' => 'required',
 				'email' => 'required|email',            
                 'name' => 'required',
+                'date' => 'required',
 				'title' => 'required',                
                 'skill' => 'required',
                 'exp' => 'required',
 				'degree' => 'required',
 				'rank' => 'required',
-				'region' => 'required',   
+                'gender' => 'required',
+				'region' => 'required',  
+                'phone' => "required|regex:/^[0-9\-\+]{9,15}$/u",                
 			],			
 			[
 				//Tùy chỉnh hiển thị thông báo
                 'public.required' => 'Bạn chưa chọn chế độ công khai!',
-				'email.required' => 'Bạn chưa nhập Email!',
+				'email.required' => 'Hãy nhập Email để nhà tuyển dụng có thể tiện liên lạc nhé!',
                 'name.required' => 'Bạn chưa nhập họ tên!',
+                'date.required' => 'Bạn chưa nhập ngày sinh!',
                 'skill.required' => 'Bạn chưa chọn kĩ năng!',
+                'gender.required' => 'Bạn chưa chọn giới tính!',
                 'exp.required' => 'Bạn chưa chọn số năm kinh nghiệm!',
 				'email.email' => 'Email không đúng định dạng!',
 				'title.required' => 'Bạn chưa chọn ngành nghề!',
 				'degree.required' => 'Bạn chưa chọn bằng cấp!',
 				'rank.required' => 'Bạn chưa chọn cấp bậc!',			
 				'region.required' => 'Bạn chưa chọn khu vực!',
+                'phone.required' => 'Hãy nhập sdt để nhà tuyển dụng có thể tiện liên lạc nhé!',
+                'phone.regex' => 'Bạn nhập không đúng định dạng sdt!',
 			]
 		);
     	
@@ -208,17 +225,22 @@ class NguoiTimViecController extends Controller
     	$profile->kinang = $skills;
     	$profile->emaillienhe = $rq->email;
     	
+        $profile->gioitinh = $rq->gender;
     	$profile->khuvuc = $rq->region;
         $profile->kinhnghiem = $rq->exp;
     	$profile->honnhan = $rq->marital_stt;    	
-    	$profile->trangthailv = $rq->status;
+    	$profile->hinhthuc_lv = $rq->status;
+        $profile->ngaysinh = $rq->date;
+        $profile->sdtlienhe = $rq->phone;
     	$profile->bangcap = $rq->degree;
     	$profile->capbac = $rq->rank;
         $profile->mucluongmm = $rq->salary;
-        $profile->remember_token = $rq->_token;        
+        $profile->remember_token = $rq->_token; 
+              
         
         $profile->muctieu = $rq->target;    
         $profile->sotruong = $rq->talent;
+        $profile->thongtinthem = $rq->plus;
         // echo '<pre>'.htmlentities($profile->sotruong).'</pre>';                
 
         if($rq->title != 'other') $profile->nganh = $rq->title;
@@ -300,10 +322,11 @@ class NguoiTimViecController extends Controller
                 'name' => 'required',
                 'title' => 'required',
                 'skill' => 'required',
-                'exp' => 'required',
+                'exp' => 'required',            
                 'degree' => 'required',
                 'rank' => 'required',
-                'region' => 'required',   
+                'region' => 'required',  
+                'phone' => "required|regex:/^[0-9\-\+]{9,15}$/u", 
             ],          
             [
                 //Tùy chỉnh hiển thị thông báo
@@ -317,6 +340,8 @@ class NguoiTimViecController extends Controller
                 'degree.required' => 'Bạn chưa chọn bằng cấp!',
                 'rank.required' => 'Bạn chưa chọn cấp bậc!',            
                 'region.required' => 'Bạn chưa chọn khu vực!',
+                'phone.required' => 'Hãy nhập sdt để nhà tuyển dụng có thể tiện liên lạc nhé!',
+                'phone.regex' => 'Bạn nhập không đúng định dạng sdt!',
             ]
         );
         $profile = NguoiTimViec::find($profile_id);        
@@ -350,11 +375,15 @@ class NguoiTimViecController extends Controller
         $profile->hoten = $rq->name;
         $profile->kinang = $skills;
         $profile->emaillienhe = $rq->email;
+        $profile->ngaysinh = $rq->date;
+        $profile->sdtlienhe = $rq->phone;
         $profile->nganh = $rq->title;
+
+        $profile->gioitinh = $rq->gender;
         $profile->khuvuc = $rq->region;
         $profile->kinhnghiem = $rq->exp;
         $profile->honnhan = $rq->marital_stt;       
-        $profile->trangthailv = $rq->status;
+        $profile->hinhthuc_lv = $rq->status;
         $profile->bangcap = $rq->degree;
         $profile->capbac = $rq->rank;
         $profile->mucluongmm = $rq->salary;
@@ -362,6 +391,7 @@ class NguoiTimViecController extends Controller
 
         $profile->muctieu = $rq->target;    
         $profile->sotruong = $rq->talent;
+        $profile->thongtinthem = $rq->plus;
 
         if($rq->title != 'other') $profile->nganh = $rq->title;
         else{            
@@ -411,6 +441,7 @@ class NguoiTimViecController extends Controller
 
         // 0 là chưa công khai, 1 là công khai
         $profile->congkhai = $rq->public;
+        $profile->ad_pheduyet = 0;
                 
         // dd($profile);
         $profile->update();
@@ -481,9 +512,11 @@ class NguoiTimViecController extends Controller
     }
 
     public function deleteProfile($profile_id){
+        $profile = NguoiTimViec::find($profile_id);
+        $profile_title = $profile->nganh;
         NguoiTimViec::destroy($profile_id);
 
-        return redirect()->back()->with(['success' => 'Đã xoá mẫu hồ sơ!']);
+        return redirect()->back()->with(['success' => 'Đã xoá mẫu hồ sơ "'.$profile_title.'"!']);
     }
 
     public function getSelectApply($news_id){        
@@ -502,7 +535,8 @@ class NguoiTimViecController extends Controller
     }
 
     public function apply(Request $rq){
-        
+
+        // dd($rq->all());        
         if(empty($rq->profile)) return redirect()->back()->with(['error' => 'Bạn chưa chọn hồ sơ để thao tác!']);
 
         if(isset($rq->copy)){
@@ -513,6 +547,11 @@ class NguoiTimViecController extends Controller
         
         $profile = NguoiTimViec::find($profile_id);
         // dd($profile);
+        // Kiểm tra xem đã nộp  hồ sơ vào tin này chưa?
+        $check = HoSoXinViec::where('idUser',$profile->idUser)
+                    ->where('idTTD',$rq->ttd_id)->count();
+        if($check > 0) return redirect('/'); 
+        // exit;                   
         $apply_profile = new HoSoXinViec;
 
         $apply_profile->idUser = $profile->idUser;
@@ -524,7 +563,14 @@ class NguoiTimViecController extends Controller
         $apply_profile->kinang = $profile->kinang;
         $apply_profile->khuvuc = $profile->khuvuc;
         $apply_profile->honnhan = $profile->honnhan;
-        $apply_profile->trangthailv = $profile->trangthailv;
+
+        $apply_profile->sdtlienhe = $profile->sdtlienhe;
+        $apply_profile->ngaysinh = $profile->ngaysinh;
+        $apply_profile->gioitinh = $profile->gioitinh;
+        $apply_profile->thongtinthem = $profile->thongtinthem;
+        if($profile->hinh) $apply_profile->hinh = $profile->hinh;
+
+        $apply_profile->hinhthuc_lv = $profile->hinhthuc_lv;
         $apply_profile->bangcap = $profile->bangcap;
         $apply_profile->capbac = $profile->capbac;
         $apply_profile->kinhnghiem = $profile->kinhnghiem;
@@ -533,10 +579,11 @@ class NguoiTimViecController extends Controller
         $apply_profile->ngoaingu = $profile->ngoaingu;
         $apply_profile->tinhoc = $profile->tinhoc;
         $apply_profile->sotruong = $profile->ngosotruongaingu;
-        $apply_profile->muctieu = $profile->muctieu;
+        $apply_profile->muctieu = $profile->muctieu;     
 
         $apply_profile->remember_token = $profile->remember_token;             
         $apply_profile->save();
+        // dd($apply_profile);
         // Mẫu hồ sơ đã được duyệt thì khi nộp sẽ đưa đến tay nhà tuyển dụng
         if($profile->ad_pheduyet == 1){
             // Gửi mail => Pải xác định danh tính Nhà tuyển dụng
@@ -544,7 +591,7 @@ class NguoiTimViecController extends Controller
                 ->select('nhatuyendung.idUser')
                 ->get()->first();
             $to_email = User::find($ntd->idUser)->email; 
-            dd($to_email);
+            // dd($to_email);
             Mail::send(new Applied($to_email));
         }
         return redirect()->route('notification')->with(['alert' => 'Nộp đơn thành công!']);

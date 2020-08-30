@@ -14,6 +14,7 @@ use App\Comment;
 use App\YKien;
 use Mail;
 use App\Mail\NewJob;
+use App\Mail\Applied;
 use DB;
 // include base_path()."/app/Function/functions.php";
 class AdminController extends Controller
@@ -103,7 +104,7 @@ class AdminController extends Controller
 
     public function getAppliedPrfList(){
         // $profile_list = HoSoXinViec::where('ad_pheduyet',0)->get();
-        $profile_list = HoSoXinViec::all();
+        $profile_list = HoSoXinViec::where('ad_pheduyet',0)->get();
         // dd($profile_list);
         return view('admins.hoso.applied_list',compact('profile_list'));
     }
@@ -112,16 +113,17 @@ class AdminController extends Controller
 
         $ntd = NhaTuyenDung::where('idUser',TinTuyenDung::find($ttd_id)->idNTD)
                     ->get()->first();
-        // Thông báo đến nhà tuyển dụng
-       
-        // $to_email = User::find($ntd->idUser)->email; 
+        // Thông báo đến nhà tuyển dụng       
+        $to_email = User::find($ntd->idUser)->email; 
         // dd($to_email);
-        // Mail::send(new Applied($to_email));
+        if($to_email) Mail::send(new Applied($to_email));
 
-        $hs = HoSoXinViec::where('idTTD',$ttd_id)->where('idUser',$usr_id)->get()->first()->update(['ad_pheduyet' => 1]);
-        dd($hs);
+        $hs = HoSoXinViec::where('idTTD',$ttd_id)->where('idUser',$usr_id)->get()->first();
+        $hs->ad_pheduyet = 1;
+        $hs->update();
+        // dd($hs);
         
-        return redirect()->back()->with(['success' => 'hoàn tất phê duyệt hồ sơ, đã gửi thông báo đến nhà tuyển dụng!']);
+        return redirect()->back()->with(['success' => 'hoàn tất phê duyệt hồ sơ ID "'.$hs->id.'", đã gửi thông báo đến nhà tuyển dụng!']);
     }
 
     // Liên hệ

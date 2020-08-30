@@ -36,7 +36,7 @@
 			Cấp bậc yêu cầu: {{$job->capbac}}
 		</div>
 		<div>
-			Hình thức làm việc: {{$job->trangthailv}}
+			Hình thức làm việc: {{$job->hinhthuc_lv}}
 		</div>		
 		<div>
 			Khu vực làm việc:
@@ -51,13 +51,54 @@
 			Yêu cầu kinh nghiệm: {{$job->kinhnghiem}}
 		</div>
 		<div>
+			Thời gian thử việc : {{$job->tg_thuviec}}
+		</div>
+		<div>
 			Hạn tuyển dụng: {{$job->hantuyendung}}
 		</div>
 		<div>
-			Quyền lợi: {{$job->quyenloi}}
+			Lượt xem: {{$job->luotxem}}
+		</div>
+		@if($job->ttlienhe)
+		<div>
+			<pre>
+			Thông tin liên hệ:
+			@foreach(json_decode($job->ttlienhe) as $des)
+			{{$des}}
+			@endforeach
+			</pre>
+		</div>
+		@endif
+
+		@if($job->ngoaingu)
+		<div>
+			<pre>
+			Yêu cầu ngoại ngữ:
+			@foreach(json_decode($job->ngoaingu) as $lang)
+			{{$lang}}
+			@endforeach
+			</pre>
+		</div>
+		@endif
+
+		@if($job->tinhoc)
+		<div>
+			<pre>
+			Yêu cầu trình độ tin học:
+			@foreach(json_decode($job->tinhoc) as $itech)
+			{{$itech}}
+			@endforeach
+			</pre>
+		</div>
+		@endif
+		<div>
+			Quyền lợi: {!! nl2br($job->quyenloi) !!}
 		</div>
 		<div>
-			Mô tả công việc: {{$job->motacv}}
+			Mô tả công việc: {!! nl2br($job->motacv) !!}
+		</div>
+		<div>
+			Yêu cầu thêm: {!! nl2br($job->yeucau_cv) !!}
 		</div>
 		<div>
 			Ngày tạo: {{$job->created_at}}

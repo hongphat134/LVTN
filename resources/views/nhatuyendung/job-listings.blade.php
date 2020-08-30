@@ -1,5 +1,56 @@
 @extends('layouts.master')
 @section('content')
+<!-- DataTables -->
+
+<!-- <link href="{{asset('admin/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"> -->
+<!-- <link href="{{asset('admin/plugins/datatables/fixedHeader.bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+<link href="{{asset('admin/plugins/datatables/responsive.bootstrap.min.css')}}" rel="stylesheet" type="text/css"> -->
+
+<!-- <link href="{{asset('admin/plugins/datatables/scroller.bootstrap.min.css')}}" rel="stylesheet" type="text/css"> -->
+
+<!-- Buttons examples -->
+<!-- <script src="{{asset('admin/plugins/datatables/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
+
+<script src="{{asset('admin/plugins/datatables/jszip.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/pdfmake.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/vfs_fonts.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/buttons.html5.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/buttons.print.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/dataTables.fixedHeader.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/dataTables.keyTable.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/dataTables.scroller.min.js')}}"></script> -->
+
+<link href="{{asset('admin/plugins/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css">
+<link href="{{asset('admin/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">
+
+<!-- Required datatable js-->
+<script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+<script>
+    $(document).ready(function(){
+        $("#datatable-responsive").DataTable({
+            // fixedHeader: !0,
+            // dom: "Bfrtip",
+            // buttons: [{
+            //     extend: "copy",
+            //     className: "btn-primary"
+            // }, {
+            //     extend: "csv",
+            //     className: "btn-primary"
+            // }, {
+            //     extend: "excel",
+            //     className: "btn-primary"
+            // }, {
+            //     extend: "pdf",
+            //     className: "btn-primary"
+            // }, {
+            //     extend: "print",
+            //     className: "btn-primary"
+            // }],            
+        });
+    });
+</script>        
 <!-- MODAL FORM DELETE -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
   <div class="modal-dialog" role="document">
@@ -51,10 +102,10 @@
             </h2>
           </div>
         </div>      
-      @if($job_listings->total() != 0)
+      @if($job_listings->count() != 0)
       <div class="row mb-5 justify-content-center">
       <form action="{{route('recruit')}}">
-        <table class="table table-responsive">
+        <table id="datatable-responsive" class="table table-responsive">
           <thead style="font-weight: bold">
           <tr>
             <td>Ngành tuyển dụng</td>
@@ -112,9 +163,7 @@
             });
           </script> 
           </tbody>        
-        </table>
-              
-      @include('layouts.paginating')
+        </table>   
       </div>
       @else
       Bạn chưa <a href="{{url('/nhatuyendung/post-job')}}">đăng tin</a> tuyển dụng nào cả! <a href="{{url('/nhatuyendung/post-job')}}">Đăng tin tuyển dụng</a> để nhanh chóng tìm kiếm được nhân lực bạn nhé!

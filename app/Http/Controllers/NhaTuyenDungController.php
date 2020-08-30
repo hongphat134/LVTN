@@ -289,7 +289,7 @@ class NhaTuyenDungController extends Controller
     public function getJobList(){    	
         $job_listings = TinTuyenDung::where('idNTD',Auth::user()->id)                
                 ->whereDate('hantuyendung','>',date('Y-m-d H:i:s'))
-                ->paginate(8)->fragment('next');
+                ->get();
         // Tính hồ sơ chờ duyệt và đã xử lý       
         foreach ($job_listings as $job) {
             $count1 = 0;
@@ -298,8 +298,7 @@ class NhaTuyenDungController extends Controller
             $count2 = HoSoXinViec::where('idTTD',$job->id)->where('ad_pheduyet',1)->where('ntd_ungtuyen',1)->count();
             $job->hschoduyet = $count1;
             $job->hsdaxuly = $count2;
-        }
-        
+        }        
         // 0 là hồ sơ, 1 là tin tuyển dụng
         $job_listings->typeRecord = 1;
         // dd($job_listings);
@@ -514,7 +513,7 @@ class NhaTuyenDungController extends Controller
         $profile_list = HoSoXinViec::where('idTTD',$job_id)
                         ->where('ad_pheduyet',1)
                         ->where('ntd_ungtuyen',0)
-                        ->paginate(15)->fragment('next-section');
+                        ->get();
         
         $profile_list->typeRecord = 0;
 
@@ -528,7 +527,7 @@ class NhaTuyenDungController extends Controller
                         ->where('ad_pheduyet',1)
                         ->where('ntd_ungtuyen',1)
                         ->orderBy('updated_at','desc') 
-                        ->paginate(15)->fragment('next-section');
+                        ->get();
 
         $profile_list->typeRecord = 0;
         $job = TinTuyenDung::find($job_id);

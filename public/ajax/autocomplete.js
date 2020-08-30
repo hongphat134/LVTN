@@ -8,14 +8,19 @@ $(document).on('input','#search',function(e){
 
 	if(!val) return false;
 
-	curr = -1;
-
+	curr = -1;	
+	var origin = ''; var str = window.location.origin;
+	if(str.indexOf("localhost") > 0){
+		var ten_folder_goc = 'Demo_LVTN';
+		origin = window.location.origin + '/' + ten_folder_goc + '/public';	
+	} 
+	// console.log(origin);
 	$.ajax({
-		url: "/skill-job/" + val,
+		url: origin + "/skill-job/" + val,
 		type: "get",
 		dataType: "json",
 		success: function(data){
-			console.log(data);
+			// console.log(data);
 			$.each(data,function(key,value){
 				$("#job-skill-autocomplete").append('<li class="list-group-item">' + value + '</li>');
 			});

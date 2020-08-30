@@ -67,11 +67,23 @@
 				                    		@endif
 				                    	</td>
 				                    	<td><a href="{{url('/administrators/ho-so/phe-duyet',$profile->id)}}"><button class="btn btn-white">Phê duyệt</button></a></td>
-				                    	<td>{{$profile->muctieu}}</td>
-				                    	<td>{{$profile->sotruong}}</td>
-				                    	<td>{{$profile->thongtinthem}}</td>
-				                    	<td>{{$profile->ngoaingu}}</td>
-				                    	<td>{{$profile->tinhoc}}</td>
+				                    	<td>{!! nl2br($profile->muctieu) !!}</td>
+				                    	<td>{!! nl2br($profile->sotruong) !!}</td>
+				                    	<td>{!! nl2br($profile->thongtinthem) !!}</td>
+				                    	<td>
+				                    		@if($profile->ngoaingu)
+				                    		@foreach(json_decode($profile->ngoaingu) as $lang)
+				                    		{{$lang}} #
+				                    		@endforeach				                    		
+				                    		@endif
+				                    	</td>
+				                    	<td>
+				                    		@if($profile->tinhoc)
+				                    		@foreach(json_decode($profile->tinhoc) as $itech)
+				                    		{{$itech}} #
+				                    		@endforeach				                    		
+				                    		@endif
+				                    	</td>
 									</tr>				                    	
 				                    @endforeach
 				                	</tbody>

@@ -608,7 +608,7 @@ class NguoiTimViecController extends Controller
     }
 
     public function getFollowRecruiter(){
-        $ntd_list = NhaTuyenDung::paginate(2)->fragment('next');
+        $ntd_list = NhaTuyenDung::paginate(4)->fragment('next');
         $ntd_list->typeRecord = 2;
         // Xử lý follow
         $follows = Auth::user()->theodoi_ntd;

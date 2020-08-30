@@ -40,7 +40,7 @@
             <a href="#" class="btn btn-block btn-primary btn-md"
                 onclick="event.preventDefault();
                        document.getElementById('profile').submit();">
-            <span class="icon-list-alt mr-2"></span>Tạo hồ sơ
+            <span class="icon-list-alt mr-2"></span>Nộp hồ sơ
           </a>
           </div>
         </div>
@@ -404,7 +404,7 @@
                   onclick="event.preventDefault();
                        document.getElementById('profile').submit();"
             >
-          <span class="icon-list-alt mr-2"></span>Tạo hồ sơ
+          <span class="icon-list-alt mr-2"></span>Nộp hồ sơ
           </a>
           </div>
         </div>
@@ -455,8 +455,8 @@
 
           </div>
           <div class="col-lg-4 sidebar pl-lg-5">
-            <div class="sidebar-box">
-              <img src="{{asset('images/person_1.jpg')}}" alt="Image placeholder" class="img-fluid mb-4 w-50 rounded-circle">
+            <div class="sidebar-box">              
+              <img src="{{asset('hinhdaidien/default.png')}}" alt="Default" class="img-fluid mb-4 w-50 rounded-circle">
               <h3 id="name-preview"></h3>
               <p id="talent-preview"></p>
               <p><a href="#" class="btn btn-primary btn-sm">Mô tả sơ lược</a></p>
@@ -495,7 +495,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
         <a href="javascript::void(0)"  onclick="event.preventDefault();
                            document.getElementById('profile').submit();"
-                ><button type="button" class="btn btn-primary">Tạo mẫu hồ sơ</button></a>
+                ><button type="button" class="btn btn-primary">Nộp hồ sơ</button></a>
       </div>
     </div>
   </div>

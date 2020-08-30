@@ -69,7 +69,6 @@ class HoSoXinViecSeeder extends Seeder
 					"kinang" => json_encode($kinang,JSON_UNESCAPED_UNICODE),
 					"khuvuc" => $tp,
 					"honnhan" => Arr::random(['Độc thân','Đã kết hôn']),
-                    'trangthai_lv' => 'Nhận việc ngay',
 					"hinhthuc_lv" => Arr::random(['Part Time','Full Time']),
                     "gioitinh" => 'Nữ',
                     'ngaysinh' => '1998-05-05',

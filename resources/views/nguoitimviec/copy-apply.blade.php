@@ -40,7 +40,7 @@
             <a href="#" class="btn btn-block btn-primary btn-md"
                 onclick="event.preventDefault();
                        document.getElementById('profile').submit();">
-            <span class="icon-list-alt mr-2"></span>Tạo hồ sơ
+            <span class="icon-list-alt mr-2"></span>Nộp hồ sơ
           </a>
           </div>
         </div>
@@ -59,10 +59,18 @@
               </div>
             @endif
           <div class="form-group">
-            <label for="company-website-tw d-block">Upload ảnh đại diện</label> <br>
-            <label class="btn btn-primary btn-md btn-file">
+            <label for="company-website-tw d-block col-lg-2">Upload ảnh đại diện</label> <br>
+            <label class="btn btn-primary btn-md btn-file col-lg-2">
               Browse File<input type="file" name="hinhthe" hidden>
-            </label>
+            </label>            
+            <label class="col-lg-2 d-inline-flex">Ảnh hiện tại</label>            
+            <div class="col-lg-6 d-inline-flex">
+              @if($hoso->hinh)
+              <img src="{{asset('/hinhdaidien/'.$hoso->hinh)}}" alt="{{$hoso->hinh}}" style="width: 200px; height: 200px">
+              @else
+              <img src="{{asset('/hinhdaidien/default.png')}}" alt="Chưa có hình">
+              @endif
+            </div>            
           </div>
 
           <div class="row form-group">              
@@ -473,7 +481,11 @@
           </div>
           <div class="col-lg-4 sidebar pl-lg-5">
             <div class="sidebar-box">
-              <img src="{{asset('images/person_1.jpg')}}" alt="Image placeholder" class="img-fluid mb-4 w-50 rounded-circle">
+              @if($hoso->hinh)
+              <img src="{{asset('hinhdaidien/'.$hoso->hinh)}}" alt="{{$hoso->hinh}}" class="img-fluid mb-4 w-50 rounded-circle">
+              @else
+              <img src="{{asset('hinhdaidien/default.png')}}" alt="Default" class="img-fluid mb-4 w-50 rounded-circle">
+              @endif
               <h3 id="name-preview"></h3>
               <p id="talent-preview"></p>
               <p><a href="#" class="btn btn-primary btn-sm">Mô tả sơ lược</a></p>
@@ -512,7 +524,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
         <a href="javascript::void(0)"  onclick="event.preventDefault();
                            document.getElementById('profile').submit();"
-                ><button type="button" class="btn btn-primary">Tạo mẫu hồ sơ</button></a>
+                ><button type="button" class="btn btn-primary">Nộp hồ sơ</button></a>
       </div>
     </div>
   </div>

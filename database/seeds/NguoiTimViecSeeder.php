@@ -69,7 +69,6 @@ class NguoiTimViecSeeder extends Seeder
 					"honnhan" => Arr::random(['Độc thân','Đã kết hôn']),
                     "gioitinh" => 'Nam',
                     'ngaysinh' => '1998-05-05',
-                    'trangthai_lv' => 'Nhận việc ngay',
 					"hinhthuc_lv" => Arr::random(['Part Time','Full Time']),
 					"bangcap" => $bangcap,
 					"capbac" => $capbac,

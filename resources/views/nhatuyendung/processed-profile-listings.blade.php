@@ -1,5 +1,15 @@
 @extends('layouts.master')
 @section('content')
+<link href="{{asset('admin/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">
+<!-- Required datatable js-->
+<script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('admin/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+<script>
+    $(document).ready(function(){
+        $("#datatable-responsive").DataTable({              
+        });
+    });
+</script>  
     <!-- HOME -->
     <section class="section-hero overlay inner-page bg-image" style="background-image: url({{ url('images/hero_1.jpg')}})" id="home-section">
       <div class="container">
@@ -31,9 +41,9 @@
         - Đến ngày: <input type="date" name="key" value="">
         <button class="btn btn-info"><span class="icon-search"></span></button>
       </form>
-      @if($profile_list->total() != 0)
+      @if($profile_list->count() != 0)
       <form action="{{url('/nhatuyendung/xoa-ho-so')}}">
-      <table class="table table-bordered table-hover">
+      <table id="datatable-responsive" class="table table-bordered table-hover">
         <thead style="font-weight: bold">
         <tr>
           <td>STT</td>
@@ -86,8 +96,7 @@
         </tr>
         </tfoot>
       </table>
-              
-      @include('layouts.paginating',['job_listings' => $profile_list])
+                   
       <button type="submit" id="recBtn" class="btn btn-danger">Xoá những hồ sơ đã chọn</button>
       @else
       Hiện tại chưa có hồ sơ nào cả! Hãy kiên nhẫn chờ đợi bạn nhé!

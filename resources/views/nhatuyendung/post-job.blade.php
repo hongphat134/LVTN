@@ -389,7 +389,16 @@
 
               <h3 class="text-black my-5 border-bottom pb-2">Thông tin thêm</h3>
               <div class="form-group">
-                <textarea class="form-control" name="plus" cols="30" rows="3" placeholder="Nhập yêu cầu....">{{ old('plus')}}</textarea>
+              <div class="form-group">    
+              @if(old('info_plus'))
+                @foreach(old('info_plus') as $info)
+                <input type="text" name="info_plus[]" class="form-control" id="company-name" placeholder="Thông tin..." value="{{$info}}">
+                @endforeach
+              @else                  
+                <input type="text" name="info_plus[]" class="form-control" id="company-name" placeholder="Thông tin...">
+              @endif
+                <button type="button" id="info-plus" class="btn btn-warning form-control">Thêm <span class="icon-plus"></span></button>
+              </div>
               </div>
             </form>
           </div>

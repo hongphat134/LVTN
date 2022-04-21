@@ -30,24 +30,24 @@
 <script>
     $(document).ready(function(){
         $("#datatable-responsive").DataTable({
-            // fixedHeader: !0,
-            // dom: "Bfrtip",
-            // buttons: [{
-            //     extend: "copy",
-            //     className: "btn-primary"
-            // }, {
-            //     extend: "csv",
-            //     className: "btn-primary"
-            // }, {
-            //     extend: "excel",
-            //     className: "btn-primary"
-            // }, {
-            //     extend: "pdf",
-            //     className: "btn-primary"
-            // }, {
-            //     extend: "print",
-            //     className: "btn-primary"
-            // }],            
+            fixedHeader: !0,
+            dom: "Bfrtip",
+            buttons: [{
+                extend: "copy",
+                className: "btn-primary"
+            }, {
+                extend: "csv",
+                className: "btn-primary"
+            }, {
+                extend: "excel",
+                className: "btn-primary"
+            }, {
+                extend: "pdf",
+                className: "btn-primary"
+            }, {
+                extend: "print",
+                className: "btn-primary"
+            }],            
         });
     });
 </script>        

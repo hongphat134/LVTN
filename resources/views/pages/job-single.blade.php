@@ -136,7 +136,12 @@
             <div class="mb-5">
               <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-asterisk mr-3"></span>Yêu cầu thêm</h3>
               <ul class="list-unstyled m-0 p-0">
-              {!! nl2br($news->yeucau_cv) !!}             
+                 
+              @if($news->yeucau_cv)
+                @foreach(json_decode($news->yeucau_cv) as $chitiet)
+                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>{!! $chitiet !!}</span></li>
+                @endforeach
+              @endif             
               </ul>
             </div>          
             @endif

@@ -408,8 +408,14 @@
               </div>
 
                <h3 class="text-black my-5 border-bottom pb-2">Thông tin thêm</h3>
-              <div class="form-group">
-                <textarea class="form-control" name="plus" cols="30" rows="3" placeholder="Nhập yêu cầu....">{{ $news->yeucau_cv}}</textarea>
+              <div class="form-group">        
+              @if($news->yeucau_cv)                        
+                @foreach(json_decode($news->yeucau_cv) as $info)
+                <input type="text" name="info_plus[]" class="form-control" id="company-name" placeholder="Thông tin..." value="{{$info}}">
+                @endforeach              
+              @endif
+                <input type="text" name="info_plus[]" class="form-control" id="company-name" placeholder="Thông tin...">
+                <button type="button" id="info-plus" class="btn btn-info form-control">Thêm <span class="icon-plus"></span></button>
               </div>
             </form>
           </div>

@@ -52,7 +52,7 @@
           <div class="col-12">
             <p class="copyright"><small>
               <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            Copyright &copy;<script>document.write(new Date().getFullYear());</script> Luận văn tốt ngiệp - Hội đồng 7 - Thầy Trần Văn Hùng - Thầy Lương An Vinh | Website này được xây dựng bởi <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >HTP</a> for <strong>STU</strong> <i class="icon-heart text-danger"></i>
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> Luận văn tốt ngiệp - Hội đồng 7 - Thầy Trần Văn Hùng - Thầy Lương An Vinh | Website này được xây dựng <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >HTP</a> for <strong>STU</strong> <i class="icon-heart text-danger"></i>
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></small></p>
           </div>
         </div>

@@ -14,6 +14,8 @@ use App\Mail\CancelJob;
 use Auth;
 use Mail;
 use DB;
+use Illuminate\Support\Facades\Mail as FacadesMail;
+
 // include base_path()."/app/Function/functions.php";
 
 class NhaTuyenDungController extends Controller
@@ -131,7 +133,7 @@ class NhaTuyenDungController extends Controller
             if(in_array('other', $languages)){
                 // Bỏ mục other
                 array_pop($languages);
-                if(!empty($rq->other_language)){                
+                if(!empty($rq->other_language)){  
                     $other_languages = explode(',',$rq->other_language);
                     // Chuẩn hoá giá trị của mảng
                     $other_languages = array_map('perfect_trim', $other_languages);
@@ -167,7 +169,10 @@ class NhaTuyenDungController extends Controller
         }
         if($rq->info_contact = array_values(array_filter($rq->info_contact))){         
             $news->ttlienhe = json_encode($rq->info_contact,JSON_UNESCAPED_UNICODE);
-        }      
+        }   
+        if($rq->info_plus = array_values(array_filter($rq->info_plus))){         
+            $news->yeucau_cv = json_encode($rq->info_plus,JSON_UNESCAPED_UNICODE);
+        }    
        
     	$news->save();        
     	return redirect()->route('updateJob',$news->id)->with(['success' => 'Lưu thành công!']);
@@ -279,6 +284,9 @@ class NhaTuyenDungController extends Controller
         if($rq->info_contact = array_values(array_filter($rq->info_contact))){         
             $news->ttlienhe = json_encode($rq->info_contact,JSON_UNESCAPED_UNICODE);
         }      
+        if($rq->info_plus = array_values(array_filter($rq->info_plus))){         
+            $news->yeucau_cv = json_encode($rq->info_plus,JSON_UNESCAPED_UNICODE);
+        }           
 
         $news->ad_pheduyet = 0;
         $news->update();
@@ -292,12 +300,12 @@ class NhaTuyenDungController extends Controller
                 ->get();
         // Tính hồ sơ chờ duyệt và đã xử lý       
         foreach ($job_listings as $job) {
-            $count1 = 0;
-            $count2 = 0;
-            $count1 = HoSoXinViec::where('idTTD',$job->id)->where('ad_pheduyet',1)->where('ntd_ungtuyen',0)->count();
-            $count2 = HoSoXinViec::where('idTTD',$job->id)->where('ad_pheduyet',1)->where('ntd_ungtuyen',1)->count();
-            $job->hschoduyet = $count1;
-            $job->hsdaxuly = $count2;
+            $numsOfUnapproved = 0;
+            $numsOfApproved = 0;
+            $numsOfUnapproved = HoSoXinViec::where('idTTD',$job->id)->where('ad_pheduyet',1)->where('ntd_ungtuyen',0)->count();
+            $numsOfApproved = HoSoXinViec::where('idTTD',$job->id)->where('ad_pheduyet',1)->where('ntd_ungtuyen',1)->count();
+            $job->hschoduyet = $numsOfUnapproved;
+            $job->hsdaxuly = $numsOfApproved;
         }        
         // 0 là hồ sơ, 1 là tin tuyển dụng
         $job_listings->typeRecord = 1;
@@ -495,7 +503,6 @@ class NhaTuyenDungController extends Controller
         $recruiter = NhaTuyenDung::find(Auth::user()->id);
         $reply_to = $rq->has('recEmail') ? $rq->recEmail : Auth::user()->email;
         
-
         Mail::send('emails.recruited',
             ['status' => $rq->recRadio, 'content' => $rq->recContent , 'recruiter' => $recruiter],
             function ($message) use ($mail_list,$reply_to){

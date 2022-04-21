@@ -25,14 +25,15 @@ class HomeController extends Controller
 {
     // Hàm Fix resources file JSON
     public function test(){
-        $path = public_path().'\resources\languages.json';
-        // dd($path);
+        // $path = public_path().'\resources\abcdef.json';
+        // // dd($path);
         
-        if(file_exists( public_path()."/resources/languages.json")){
-            $rank_list = json_decode(file_get_contents(url("resources/languages.json")));
-            // dd($rank_list);
-            file_put_contents($path,json_encode($rank_list,JSON_UNESCAPED_UNICODE));
-        }
+        // if(file_exists( public_path()."/resources/languages.json")){
+        //     $rank_list = json_decode(file_get_contents(url("resources/languages.json")));
+        //     // dd(asset("resources/languages.json"));  
+        //     //   what's different between url(), asset() and public_path()?
+        //     file_put_contents($path,json_encode($rank_list,JSON_UNESCAPED_UNICODE));
+        // }
     }
     public function index(){    
     	$job_listings = NhaTuyenDung::join('tintuyendung','nhatuyendung.idUser','=','tintuyendung.idNTD')
@@ -413,7 +414,7 @@ class HomeController extends Controller
 
         $comment->idUser = Auth::user()->id;
         $comment->idBlog = (int)$rq->idBlog;
-        $comment->noidung = $rq->content;
+        $comment->noidung = $rq->content;    
 
         $comment->save();
         $arr = $rq->all();

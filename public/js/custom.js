@@ -262,10 +262,15 @@ jQuery(function($) {
 	// }
 	// quillInit();
   	
+	var origin = ''; var str = window.location.origin;
+	if(str.indexOf("localhost") > 0){
+		var ten_folder_goc = 'LVTN';
+		origin = window.location.origin + '/' + ten_folder_goc + '/public';	
+	} 
   	// Tìm kiếm theo Skill
   	$(".skill").click(function(){
   		console.log("U clicked a " + $(this).text() + " skill!");
-  		window.location.href = '/tim-kiem-skill/' + $(this).text();
+  		window.location.href = origin + '/tim-kiem-skill/' + $(this).text();
   		return;
   	});
 });

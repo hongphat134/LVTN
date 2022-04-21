@@ -94,7 +94,7 @@ class TinTuyenDungSeeder extends Seeder
                     "luotxem" => mt_rand(0,10000),
                     // 'new' => mt_rand(0,1),                  
                     'idNTD' => mt_rand(1,5),
-                    'created_at' => Carbon\Carbon::now()->subDays(mt_rand(30,60))->toDateTimeString(),                   
+                    'created_at' => Carbon\Carbon::now()->subDays(mt_rand(1,90))->toDateTimeString(),                   
                     'updated_at' => Carbon\Carbon::now()->subDays(mt_rand(1,29))->toDateTimeString()
                 ]
             );

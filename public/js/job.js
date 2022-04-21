@@ -12,6 +12,10 @@ $("#info-contact").click(function(){
 	$(this).before('<input type="text" name="info_contact[]" class="form-control" id="company-name" placeholder="Thông tin...">');
 });
 
+$("#info-plus").click(function(){
+	$(this).before('<input type="text" name="info_plus[]" class="form-control" id="company-name" placeholder="Thông tin...">');
+});
+
 $("#language").change(function(){
 	// console.log($(this).children("option:selected:last").val());
 
@@ -171,6 +175,7 @@ $(".preview").click(function(){
 	$("#des-preview").html('');
 	$("#benefit-preview").html('');
 	$("#contact-preview").html('');
+	$("#plus-preview").html('');
 	$.each(f,function(k,v){		
 		if(v.name == "des_job[]" && v.value != ''){
 			$("#des-preview").append('<p>' + v.value + '</p>');
@@ -181,13 +186,13 @@ $(".preview").click(function(){
 		else if(v.name == 'info_contact[]' && v.value != ''){
 			$("#contact-preview").append('<li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>' + v.value + '</span></li>');
 		}
-		else if(v.name == 'plus' && v.value != ''){
-			$("#plus-preview").append('<pre>' + v.value + '</pre>');	
+		else if(v.name == 'info_plus[]' && v.value != ''){			
+			$("#plus-preview").append('<li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>' + v.value + '</span></li>');
 		}
 		else{
 			if(v.name == 'skill[]' || v.name == 'region[]' || v.name == 'language[]' 
 				|| v.name == 'itech[]' || v.name =='des_job[]' || v.name =='benefit[]'
-				|| v.name == 'info_contact[]' || v.name == 'plus') ;
+				|| v.name == 'info_contact[]' || v.name == 'info_plus[]') ;
 			else{
 				$('#' + v.name + '-preview').html(v.value ? transPreview(v.name,v.value)
 				: '<div class="alert alert-danger">Chưa có ' + transName(v.name) + '!</div>');		

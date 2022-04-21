@@ -11,10 +11,10 @@ $(document).on('input','#search',function(e){
 	curr = -1;	
 	var origin = ''; var str = window.location.origin;
 	if(str.indexOf("localhost") > 0){
-		var ten_folder_goc = 'Demo_LVTN';
+		var ten_folder_goc = 'LVTN';
 		origin = window.location.origin + '/' + ten_folder_goc + '/public';	
 	} 
-	// console.log(origin);
+	console.log(origin);
 	$.ajax({
 		url: origin + "/skill-job/" + val,
 		type: "get",
@@ -58,7 +58,7 @@ $("#search").keyup(function(e){
 	}
 	else if(e.keyCode == 13 || e.which == 13){
 		
-		console.log("ENTER");		
+		// console.log("ENTER");		
 				
 		if(curr > -1){
 			if(x) x[curr].click();

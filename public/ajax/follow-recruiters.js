@@ -1,4 +1,9 @@
 $('.theo-doi').click(function(){	
+	var origin = ''; var str = window.location.origin;
+	if(str.indexOf("localhost") > 0){
+		var ten_folder_goc = 'LVTN';
+		origin = window.location.origin + '/' + ten_folder_goc + '/public';	
+	} 
 	if($(this).hasClass('follow-rec')){	
 		$(this).removeClass('btn-outline-danger follow-rec');	
 		$(this).text('ĐANG THEO DÕI');
@@ -7,7 +12,7 @@ $('.theo-doi').click(function(){
 		let id = $(this).attr('id');		
 		if(id != ''){
 			$.ajax({
-				url: "/nguoitimviec/save-rec/" + id,
+				url: origin + "/nguoitimviec/save-rec/" + id,
 				type: "get",				
 				success:function(data){
 					console.log(data);
@@ -23,7 +28,7 @@ $('.theo-doi').click(function(){
 		let id = $(this).attr('id');		
 		if(id != ''){
 			$.ajax({
-				url: "/nguoitimviec/unsave-rec/" + id,
+				url: origin + "/nguoitimviec/unsave-rec/" + id,
 				type: "get",				
 				success:function(data){
 					console.log(data);
